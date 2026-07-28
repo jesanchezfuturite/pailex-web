@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@config "../../tailwind.config.ts";
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+}
+
+body {
+  color: #000;
+  background: #fff;
+  font-family: var(--font-schibsted-grotesk), sans-serif;
+}
+
+/* Utilidad para el scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ocultar scrollbar en el carrusel si es necesario */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Motivo de marca Pailex: cortes a 45° (derivados del isotipo).
+   El brandbook usa plecas y tarjetas con esquinas cortadas en diagonal. */
+.clip-notch-br {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%);
+}
+.clip-notch-br-sm {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+}
+.clip-notch-tl {
+  clip-path: polygon(28px 0, 100% 0, 100% 100%, 0 100%, 0 28px);
+}
+
+::selection {
+  background: #E8FFC0;
+  color: #004431;
+}
+
+/* Animaciones del hero (video con Ken Burns + entrada escalonada del texto) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-video {
+    animation: heroZoom 28s ease-in-out infinite alternate;
+  }
+  .anim-fade-up {
+    animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .anim-delay-1 { animation-delay: 0.15s; }
+  .anim-delay-2 { animation-delay: 0.35s; }
+  .anim-delay-3 { animation-delay: 0.55s; }
+  .anim-delay-4 { animation-delay: 0.75s; }
+  .anim-grow-x {
+    animation: growX 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+    transform-origin: left;
+  }
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.12); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes growX {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}

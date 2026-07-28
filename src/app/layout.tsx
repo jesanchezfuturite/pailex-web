@@ -1,0 +1,38 @@
+import type { Metadata } from "next";
+import { Space_Grotesk, Schibsted_Grotesk } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"], 
+  variable: "--font-space-grotesk",
+  weight: ["400", "500", "600", "700"]
+});
+
+const schibstedGrotesk = Schibsted_Grotesk({ 
+  subsets: ["latin"], 
+  variable: "--font-schibsted-grotesk",
+  weight: ["400", "500", "600", "700"]
+});
+
+export const metadata: Metadata = {
+  title: "Pailex | Soluciones Metalmecánicas Industriales",
+  description: "Pailería, Maquinados, Automatización y Proyectos Llave en Mano desde Monterrey.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="es">
+      <body className={`${spaceGrotesk.variable} ${schibstedGrotesk.variable} font-body antialiased`}>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}
