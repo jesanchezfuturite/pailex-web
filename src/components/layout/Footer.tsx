@@ -25,7 +25,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div className="lg:col-span-2">
+        <div id="cotizar" className="lg:col-span-2 scroll-mt-24">
           <h3 className="font-title font-bold mb-6 text-support uppercase tracking-wider">¡Contáctanos para cotizar tu proyecto!</h3>
           <form className="grid grid-cols-2 gap-4">
             <input type="text" placeholder="Nombre" className="bg-white/5 border border-white/10 p-3 text-sm focus:border-accent outline-none transition-all" />

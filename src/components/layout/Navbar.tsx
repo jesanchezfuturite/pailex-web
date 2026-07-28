@@ -5,11 +5,11 @@ import Logo from '@/components/brand/Logo';
 export default function Navbar() {
   const menuItems = [
     { name: 'Inicio', href: '/' },
-    { name: 'Nosotros', href: '#' },
-    { name: 'Soluciones', href: '#' },
-    { name: 'Industrias', href: '#' },
-    { name: 'Portafolio', href: '#' },
-    { name: 'Contacto', href: '#' },
+    { name: 'Nosotros', href: '/nosotros' },
+    { name: 'Soluciones', href: '/soluciones' },
+    { name: 'Industrias', href: '/industrias' },
+    { name: 'Portafolio', href: '/portafolio' },
+    { name: 'Contacto', href: '/contacto' },
   ];
 
   return (

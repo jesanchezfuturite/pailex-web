@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Hero from "@/components/sections/Hero";
 import BrandSlider from "@/components/sections/BrandSlider";
 import FAQAccordion from "@/components/sections/FAQAccordion";
@@ -22,16 +23,19 @@ export default function Home() {
               title="Servicios industriales"
               desc="Maquila especializada en pailería y maquinados CNC bajo estrictas tolerancias técnicas."
               image="/images/paileria.webp"
+              href="/soluciones#servicios"
             />
             <SolutionCard
               title="Suministros"
               desc="Venta y habilitado de acero, placas y piezas cortadas a la medida bajo tus especificaciones exactas."
               image="/images/almacen-placas-acero.webp"
+              href="/soluciones#productos"
             />
             <SolutionCard
               title="Infraestructura"
               desc="Tecnología de corte automatizado para garantizar rapidez y repetibilidad en cada pieza."
               image="/images/corte-plasma.webp"
+              href="/soluciones#capacidad-instalada"
             />
           </div>
         </div>
@@ -159,7 +163,7 @@ export default function Home() {
   );
 }
 
-function SolutionCard({ title, desc, image }: { title: string, desc: string, image: string }) {
+function SolutionCard({ title, desc, image, href }: { title: string, desc: string, image: string, href: string }) {
   return (
     <div className="border border-support/20 hover:bg-primary group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br">
       <div className="absolute top-0 left-0 w-full h-1 bg-support group-hover:bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10" />
@@ -176,10 +180,10 @@ function SolutionCard({ title, desc, image }: { title: string, desc: string, ima
       <div className="p-10">
         <h3 className="font-title text-3xl font-bold text-primary group-hover:text-accent mb-6 transition-colors uppercase tracking-tight leading-none">{title}</h3>
         <p className="text-industrial-gray group-hover:text-white/70 mb-10 font-body transition-colors leading-relaxed text-lg">{desc}</p>
-        <button className="relative overflow-hidden group/btn text-primary font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center">
+        <Link href={href} className="relative overflow-hidden group/btn text-primary font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center">
           <span className="relative z-10 group-hover:text-accent transition-colors duration-300">Ver más</span>
           <div className="absolute bottom-0 left-0 w-full h-[2px] bg-support group-hover:bg-accent transform origin-left transition-all duration-300" />
-        </button>
+        </Link>
       </div>
     </div>
   );
