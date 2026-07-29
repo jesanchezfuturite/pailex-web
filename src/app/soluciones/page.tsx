@@ -55,8 +55,8 @@ const services = [
     id: "automatizacion",
     title: "Automatización",
     desc: "Ingeniería y fabricación de maquinaria especial para procesos productivos de alta exigencia.",
-    image: "/images/porcelana.webp",
-    imageAlt: "Maquinaria especial y automatización para la industria cerámica",
+    image: "/images/soluciones-automatizacion.webp",
+    imageAlt: "Esmeriladora fabricada por Pailex para la industria cerámica",
     items: [
       "Fabricación de maquinaria especial",
       "Esmeriladoras para industria cerámica",
@@ -67,7 +67,7 @@ const services = [
     id: "mantenimiento",
     title: "Mantenimiento Industrial",
     desc: "Soporte técnico para que tu producción nunca se detenga: intervención en planta y fabricación de refacciones.",
-    image: "/images/industria-en-general.webp",
+    image: "/images/soluciones-mantenimiento.webp",
     imageAlt: "Mantenimiento industrial preventivo y correctivo en planta",
     items: [
       "Apoyo preventivo y correctivo",
@@ -80,7 +80,7 @@ const services = [
     id: "llave-en-mano",
     title: "Proyectos Llave en Mano",
     desc: "Integración total: no solo entregamos la pieza — vamos a tu planta y la dejamos operando.",
-    image: "/images/energia.webp",
+    image: "/images/soluciones-llave-en-mano.webp",
     imageAlt: "Proyectos industriales llave en mano: diseño, fabricación e instalación",
     items: ["Diseño", "Fabricación", "Instalación"],
   },
