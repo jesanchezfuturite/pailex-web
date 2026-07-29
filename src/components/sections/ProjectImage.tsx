@@ -9,7 +9,17 @@ import { X, Expand } from "lucide-react";
    sobre la misma página. Cierra con clic, botón X o tecla Escape.
    El overlay se monta en <body> vía portal: el clip-path de la tarjeta
    recortaría cualquier hijo fixed, aunque cubra el viewport. */
-export default function ProjectImage({ src, title }: { src: string; title: string }) {
+export default function ProjectImage({
+  src,
+  title,
+  width,
+  height,
+}: {
+  src: string;
+  title: string;
+  width: number;
+  height: number;
+}) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -29,14 +39,15 @@ export default function ProjectImage({ src, title }: { src: string; title: strin
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`Ver imagen de ${title} en pantalla completa`}
-        className="relative min-h-[320px] h-full w-full overflow-hidden cursor-zoom-in text-left block"
+        className="relative w-full overflow-hidden cursor-zoom-in text-left block self-start"
       >
         <Image
           src={src}
           alt={title}
-          fill
+          width={width}
+          height={height}
           sizes="(max-width: 1024px) 100vw, 40vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent transition-colors duration-500 group-hover:via-primary/60" />
         <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-accent/50" />

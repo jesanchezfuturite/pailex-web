@@ -10,26 +10,28 @@ export const metadata: Metadata = {
     "Casos reales de fabricación e instalación industrial: esmeriladoras, sistemas automatizados, bandas transportadoras y proyectos llave en mano para la industria cerámica.",
 };
 
-/* ⚠️ Las imágenes de cada proyecto son PROVISIONALES (fotografía genérica del repo).
-   Reemplazar por las fotografías reales de cada proyecto cuando el cliente las entregue. */
 const projects = [
   {
-    title: "Banco de vaciado de taza",
+    title: "Fabricación e instalación de banco de vaciado de taza",
     desc: "Fabricación e instalación de banco de vaciado de taza.",
     client: "KOHLER / Industria de cerámica",
     sector: "Industrial",
     scope: "Diseño, fabricación, pintura e instalación",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/porcelana.webp",
+    image: "/images/proyecto-banco-vaciado-taza.webp",
+    imageWidth: 1309,
+    imageHeight: 1202,
   },
   {
-    title: "Humectadora de moldes de yeso",
+    title: "Proyecto de humectadora de moldes de yeso",
     desc: "Diseño, fabricación e instalación de sistema automatizado.",
     client: "KOHLER / Industria de cerámica",
     sector: "Industrial",
     scope: "Diseño, fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/industria-en-general.webp",
+    image: "/images/proyecto-humectadora-moldes-yeso.webp",
+    imageWidth: 1341,
+    imageHeight: 1173,
   },
   {
     title: "Esmeriladora de taza de pared",
@@ -38,7 +40,9 @@ const projects = [
     sector: "Industrial",
     scope: "Diseño, fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/metalmecanica.webp",
+    image: "/images/proyecto-esmeriladora-taza-pared.webp",
+    imageWidth: 1364,
+    imageHeight: 1153,
   },
   {
     title: "Loop automático para recabado de taza",
@@ -47,7 +51,9 @@ const projects = [
     sector: "Industrial",
     scope: "Modificación, fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/paileria.webp",
+    image: "/images/proyecto-loop-recabado-taza.webp",
+    imageWidth: 1322,
+    imageHeight: 1190,
   },
   {
     title: "Banda transportadora para scrap",
@@ -56,7 +62,9 @@ const projects = [
     sector: "Industrial",
     scope: "Fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/corte-plasma.webp",
+    image: "/images/proyecto-banda-transportadora-scrap.webp",
+    imageWidth: 1295,
+    imageHeight: 1215,
   },
 ];
 
@@ -129,7 +137,12 @@ export default function PortafolioPage() {
             <article className="border border-support/20 clip-notch-br group hover:border-primary/40 transition-colors bg-white">
               <div className="grid lg:grid-cols-[1fr_1.4fr]">
                 {/* Fotografía del proyecto: clic para verla a pantalla completa */}
-                <ProjectImage src={project.image} title={project.title} />
+                <ProjectImage
+                  src={project.image}
+                  title={project.title}
+                  width={project.imageWidth}
+                  height={project.imageHeight}
+                />
 
                 {/* Ficha técnica */}
                 <div className="p-10 grid sm:grid-cols-2 gap-x-10 gap-y-8 content-center">

@@ -9,6 +9,16 @@ export const metadata: Metadata = {
     "Soluciones integrales en pailería industrial y maquinados CNC: estructuras metálicas, corte plasma y láser, rolado, mantenimiento industrial, automatización y proyectos llave en mano.",
 };
 
+/* Banner del sub-hero. PROVISIONAL: usar la imagen generada con este prompt cuando
+   esté lista y colocarla en /public/images/banners/soluciones.webp:
+   "Macro close-up shot of a heavy-duty CNC machining center or laser cutting raw
+   steel sheet, dramatic orange sparks flying against a dark green mood background,
+   rich dark emerald and deep forest green color grading, industrial precision
+   engineering, high-contrast lighting with cold lime accents, crisp details, high
+   motion freeze, shot on 85mm macro lens, ultra-realistic, cinematic industrial
+   aesthetic, --ar 21:9 --style raw" */
+const bannerImage = "/images/corte-plasma.webp";
+
 const services = [
   {
     id: "paileria",
@@ -110,21 +120,27 @@ const capacity = [
 export default function SolucionesPage() {
   return (
     <div className="bg-white">
-      {/* Sub-hero de página interna: fotografía en duotono verde */}
+      {/* Sub-hero: gradación esmeralda cinematográfica de alto contraste
+          con acentos lima fríos (dirección de arte del banner) */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src="/images/corte-plasma.webp"
+            src={bannerImage}
             alt="Corte plasma CNC en planta de Pailex"
             fill
             priority
             sizes="100vw"
-            className="object-cover"
+            className="object-cover contrast-125 saturate-[0.85]"
           />
+          {/* Gradación esmeralda profunda en multiply + sombra hacia negro */}
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-primary/10 to-black/30" />
+          {/* Acento lima frío: resplandor lateral sutil */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-accent/10" />
         </div>
 
+        {/* Línea lima en la base del banner */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent/60 via-accent/10 to-transparent z-20" />
         <div className="absolute top-24 right-6 w-10 h-10 border-t-2 border-r-2 border-accent/40 z-20 hidden md:block" />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-16 pt-40">
