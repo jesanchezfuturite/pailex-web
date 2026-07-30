@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-primary text-white pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div className="space-y-6">
-          <Logo variant="onDark" markClassName="h-9 w-9" textClassName="text-2xl" />
+          <Logo variant="onDark" markClassName="h-9 w-auto" textClassName="text-2xl" />
           <p className="text-white/60 text-sm leading-relaxed">
             Especialistas en proyectos de pailería, soldadura calificada y maquinados CNC
             con los más altos estándares de calidad y precisión.

@@ -21,7 +21,7 @@ export default function Navbar() {
     <nav className="fixed w-full z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10 py-4">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <Link href="/" aria-label="Pailex — Inicio" onClick={() => setOpen(false)}>
-          <Logo variant="onDark" markClassName="h-7 w-7" textClassName="text-xl" />
+          <Logo variant="onDark" markClassName="h-7 w-auto" textClassName="text-xl" />
         </Link>
 
         {/* Menú de escritorio */}

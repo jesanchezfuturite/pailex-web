@@ -1,11 +1,15 @@
+import Image from "next/image";
+
 /**
- * Imagotipo PAILEX (isotipo + wordmark).
+ * Imagotipo PAILEX oficial (entregado el 30/jul/2026).
  *
- * IMPORTANTE: el isotipo de abajo es una APROXIMACIÓN provisional construida
- * a ojo desde el brandbook (cortes geométricos a 45° sobre la inicial "P").
- * El manual prohíbe deformar o alterar la marca, así que en cuanto el equipo
- * creativo entregue el vector oficial (.svg / .ai), reemplazar los <path>
- * de <Isotipo /> por los trazos oficiales. Nada más del componente cambia.
+ * Se renderiza desde los archivos oficiales en /public/images:
+ * - onDark  → logo-pailex-blanco.webp (isotipo oliva + wordmark blanco, 2000×347,
+ *             desde "Pailex 1200x1200.png" recortado al contenido)
+ * - onLight → logo-pailex.webp        (isotipo verde  + wordmark gris,   896×156)
+ *
+ * <Isotipo /> conserva el trazo vectorizado del mark (extraído por análisis de
+ * píxeles del original) para usos donde se requiera SVG: favicon, mono, acentos.
  */
 
 const COLORS = {
@@ -29,18 +33,18 @@ export function Isotipo({
     variant === "onDark" ? COLORS.olive : variant === "mono" ? "currentColor" : COLORS.dark;
   return (
     <svg
-      viewBox="0 0 96 96"
+      viewBox="0 0 206 154"
       className={className}
       fill={fill}
       aria-hidden="true"
       focusable="false"
     >
-      {/* Viga superior con corte diagonal (provisional) */}
-      <path d="M26 8h30l32 32v18H62V46L38 22H26z" />
-      {/* Descendente inferior derecho (provisional) */}
-      <path d="M62 58h26L62 88H30V68h32z" />
-      {/* Cuadro suelto inferior izquierdo (provisional) */}
-      <rect x="8" y="62" width="18" height="18" />
+      {/* Viga superior con corte a 45° y triángulo colgante izquierdo */}
+      <path d="M0 0h104l50 50h-102v52L0 50Z" />
+      {/* Columna derecha con base extendida y corte diagonal inferior */}
+      <path d="M155 51h51v103H103L52 103h103Z" />
+      {/* Cuadro suelto inferior izquierdo */}
+      <path d="M0 103h52v51H0Z" />
     </svg>
   );
 }
@@ -48,24 +52,26 @@ export function Isotipo({
 export default function Logo({
   className = "",
   variant = "onDark",
-  markClassName = "h-8 w-8",
-  textClassName = "text-2xl",
+  markClassName = "h-8 w-auto",
 }: {
   className?: string;
   variant?: Variant;
   markClassName?: string;
-  textClassName?: string;
+  textClassName?: string; // conservado por compatibilidad; el wordmark va en el archivo
 }) {
-  const textColor =
-    variant === "onDark" ? "text-white" : variant === "mono" ? "" : "text-primary";
+  const src =
+    variant === "onDark" ? "/images/logo-pailex-blanco.webp" : "/images/logo-pailex.webp";
+  const dims = variant === "onDark" ? { width: 2000, height: 347 } : { width: 896, height: 156 };
   return (
-    <span className={`inline-flex items-center gap-3 ${className}`}>
-      <Isotipo className={markClassName} variant={variant} />
-      <span
-        className={`font-title font-bold tracking-tight leading-none ${textColor} ${textClassName}`}
-      >
-        PAILEX
-      </span>
+    <span className={`inline-flex items-center ${className}`}>
+      <Image
+        src={src}
+        alt="Pailex"
+        width={dims.width}
+        height={dims.height}
+        className={markClassName}
+        priority
+      />
     </span>
   );
 }
