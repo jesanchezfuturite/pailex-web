@@ -17,14 +17,14 @@ export const metadata: Metadata = {
    engineering, high-contrast lighting with cold lime accents, crisp details, high
    motion freeze, shot on 85mm macro lens, ultra-realistic, cinematic industrial
    aesthetic, --ar 21:9 --style raw" */
-const bannerImage = "/images/corte-plasma.webp";
+const bannerImage = "/images/placeholder-pailex.webp";
 
 const services = [
   {
     id: "paileria",
     title: "Pailería Industrial",
     desc: "Fabricación de estructuras metálicas y de acero bajo plano, con procesos completos de corte, formado y acabado.",
-    image: "/images/paileria.webp",
+    image: "/images/placeholder-pailex.webp",
     imageAlt: "Fabricación de estructuras metálicas en pailería industrial",
     items: [
       "Estructuras ligeras y pesadas",
@@ -40,7 +40,7 @@ const services = [
     id: "maquinados",
     title: "Maquinados de Precisión",
     desc: "Mecanizado de precisión en torno convencional y CNC para piezas especiales y refacciones industriales.",
-    image: "/images/metalmecanica.webp",
+    image: "/images/placeholder-pailex.webp",
     imageAlt: "Maquinados CNC de precisión en torno y fresadora",
     items: [
       "Torno convencional y CNC",
@@ -55,7 +55,7 @@ const services = [
     id: "automatizacion",
     title: "Automatización",
     desc: "Ingeniería y fabricación de maquinaria especial para procesos productivos de alta exigencia.",
-    image: "/images/soluciones-automatizacion.webp",
+    image: "/images/placeholder-pailex.webp",
     imageAlt: "Esmeriladora fabricada por Pailex para la industria cerámica",
     items: [
       "Fabricación de maquinaria especial",
@@ -67,7 +67,7 @@ const services = [
     id: "mantenimiento",
     title: "Mantenimiento Industrial",
     desc: "Soporte técnico para que tu producción nunca se detenga: intervención en planta y fabricación de refacciones.",
-    image: "/images/soluciones-mantenimiento.webp",
+    image: "/images/placeholder-pailex.webp",
     imageAlt: "Mantenimiento industrial preventivo y correctivo en planta",
     items: [
       "Apoyo preventivo y correctivo",
@@ -80,7 +80,7 @@ const services = [
     id: "llave-en-mano",
     title: "Proyectos Llave en Mano",
     desc: "Integración total: no solo entregamos la pieza — vamos a tu planta y la dejamos operando.",
-    image: "/images/soluciones-llave-en-mano.webp",
+    image: "/images/placeholder-pailex.webp",
     imageAlt: "Proyectos industriales llave en mano: diseño, fabricación e instalación",
     items: ["Diseño", "Fabricación", "Instalación"],
   },
@@ -264,7 +264,7 @@ export default function SolucionesPage() {
       {/* Capacidad instalada */}
       <section id="capacidad-instalada" className="py-32 bg-primary text-white relative overflow-hidden scroll-mt-24">
         <Image
-          src="/images/almacen-placas-acero.webp"
+          src="/images/placeholder-pailex.webp"
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"

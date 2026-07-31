@@ -15,7 +15,7 @@ export default function NosotrosPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src="/images/metalmecanica.webp"
+            src="/images/placeholder-pailex.webp"
             alt="Planta metalmecánica de Pailex"
             fill
             priority
@@ -72,7 +72,7 @@ export default function NosotrosPage() {
           <div className="relative">
             <div className="relative h-[520px] overflow-hidden clip-notch-br">
               <Image
-                src="/images/paileria.webp"
+                src="/images/placeholder-pailex.webp"
                 alt="Trabajos de pailería industrial y soldadura calificada"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -90,7 +90,7 @@ export default function NosotrosPage() {
       {/* El valor que aportamos a tu negocio */}
       <section className="py-28 bg-primary text-white relative overflow-hidden">
         <Image
-          src="/images/industria-en-general.webp"
+          src="/images/placeholder-pailex.webp"
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"

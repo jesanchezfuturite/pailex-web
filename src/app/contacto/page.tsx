@@ -15,7 +15,7 @@ export default function ContactoPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src="/images/contacto.webp"
+            src="/images/placeholder-pailex.webp"
             alt="Contacta al equipo de ingeniería de Pailex"
             fill
             priority

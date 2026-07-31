@@ -18,7 +18,7 @@ const projects = [
     sector: "Industrial",
     scope: "Diseño, fabricación, pintura e instalación",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/proyecto-banco-vaciado-taza.webp",
+    image: "/images/placeholder-pailex.webp",
     imageWidth: 1309,
     imageHeight: 1202,
   },
@@ -29,7 +29,7 @@ const projects = [
     sector: "Industrial",
     scope: "Diseño, fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/proyecto-humectadora-moldes-yeso.webp",
+    image: "/images/placeholder-pailex.webp",
     imageWidth: 1341,
     imageHeight: 1173,
   },
@@ -40,7 +40,7 @@ const projects = [
     sector: "Industrial",
     scope: "Diseño, fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/proyecto-esmeriladora-taza-pared.webp",
+    image: "/images/placeholder-pailex.webp",
     imageWidth: 1364,
     imageHeight: 1153,
   },
@@ -51,7 +51,7 @@ const projects = [
     sector: "Industrial",
     scope: "Modificación, fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/proyecto-loop-recabado-taza.webp",
+    image: "/images/placeholder-pailex.webp",
     imageWidth: 1322,
     imageHeight: 1190,
   },
@@ -62,7 +62,7 @@ const projects = [
     sector: "Industrial",
     scope: "Fabricación, instalación y automatización en planta",
     result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/proyecto-banda-transportadora-scrap.webp",
+    image: "/images/placeholder-pailex.webp",
     imageWidth: 1295,
     imageHeight: 1215,
   },
@@ -89,7 +89,7 @@ export default function PortafolioPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src="/images/porcelana.webp"
+            src="/images/placeholder-pailex.webp"
             alt="Proyectos de Pailex para la industria cerámica"
             fill
             priority
@@ -168,7 +168,7 @@ export default function PortafolioPage() {
       {/* Desarrollo continuo */}
       <section className="py-32 bg-primary text-white relative overflow-hidden">
         <Image
-          src="/images/industria-en-general.webp"
+          src="/images/placeholder-pailex.webp"
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"

@@ -22,19 +22,19 @@ export default function Home() {
             <SolutionCard
               title="Servicios industriales"
               desc="Maquila especializada en pailería y maquinados CNC bajo estrictas tolerancias técnicas."
-              image="/images/paileria.webp"
+              image="/images/placeholder-pailex.webp"
               href="/soluciones#servicios"
             />
             <SolutionCard
               title="Suministros"
               desc="Venta y habilitado de acero, placas y piezas cortadas a la medida bajo tus especificaciones exactas."
-              image="/images/almacen-placas-acero.webp"
+              image="/images/placeholder-pailex.webp"
               href="/soluciones#productos"
             />
             <SolutionCard
               title="Infraestructura"
               desc="Tecnología de corte automatizado para garantizar rapidez y repetibilidad en cada pieza."
-              image="/images/corte-plasma.webp"
+              image="/images/placeholder-pailex.webp"
               href="/soluciones#capacidad-instalada"
             />
           </div>
@@ -45,7 +45,7 @@ export default function Home() {
       <section className="py-28 bg-primary text-white overflow-hidden relative">
         {/* Textura fotográfica sutil bajo el verde institucional */}
         <Image
-          src="/images/industria-en-general.webp"
+          src="/images/placeholder-pailex.webp"
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
@@ -81,7 +81,7 @@ export default function Home() {
       <section className="py-24 bg-primary relative overflow-hidden">
         {/* Fondo fotográfico en duotono verde */}
         <Image
-          src="/images/contacto.webp"
+          src="/images/placeholder-pailex.webp"
           alt=""
           fill
           className="object-cover opacity-30 pointer-events-none"
@@ -112,11 +112,11 @@ export default function Home() {
         </div>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {[
-            { name: "Cerámica y sanitarios", image: "/images/porcelana.webp" },
-            { name: "Metalmecánica", image: "/images/metalmecanica.webp" },
-            { name: "Energía e industrial", image: "/images/energia.webp" },
-            { name: "Transporte y logística", image: "/images/trasporte-logistica.webp" },
-            { name: "Plástico e industria", image: "/images/industria-plastico.webp" },
+            { name: "Cerámica y sanitarios", image: "/images/placeholder-pailex.webp" },
+            { name: "Metalmecánica", image: "/images/placeholder-pailex.webp" },
+            { name: "Energía e industrial", image: "/images/placeholder-pailex.webp" },
+            { name: "Transporte y logística", image: "/images/placeholder-pailex.webp" },
+            { name: "Plástico e industria", image: "/images/placeholder-pailex.webp" },
           ].map((sector) => (
             <div key={sector.name} className="relative h-72 group overflow-hidden clip-notch-br-sm cursor-default">
               <Image

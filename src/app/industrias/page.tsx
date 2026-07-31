@@ -16,31 +16,31 @@ const industries = [
     name: "Cerámica y sanitarios",
     desc: "Experiencia demostrada, esmeriladoras, carros transportadores.",
     clients: ["Kohler", "Toto", "Interceramic", "Vivolmex", "Animex"],
-    image: "/images/porcelana.webp",
+    image: "/images/placeholder-pailex.webp",
   },
   {
     name: "Metalmecánica",
     desc: "Estructuras y maquinado para planta industrial.",
     clients: ["Metalsa", "CICSA", "Suminregio"],
-    image: "/images/metalmecanica.webp",
+    image: "/images/placeholder-pailex.webp",
   },
   {
     name: "Energía e industrial",
     desc: "Acero inoxidable, bronce, alta exigencia técnica.",
     clients: ["Pemex", "Ternium"],
-    image: "/images/energia.webp",
+    image: "/images/placeholder-pailex.webp",
   },
   {
     name: "Plástico e industria general",
     desc: "Fabricación de piezas y estructuras para planta plástica.",
     clients: ["Delquin"],
-    image: "/images/industria-plastico.webp",
+    image: "/images/placeholder-pailex.webp",
   },
   {
     name: "Transporte y logística",
     desc: "Reparación y mantenimiento de equipo pesado.",
     clients: ["LM Transport", "GC Transportes", "Grúas Flores", "Crazy Horse Trucking"],
-    image: "/images/trasporte-logistica.webp",
+    image: "/images/placeholder-pailex.webp",
   },
 ];
 
@@ -51,7 +51,7 @@ export default function IndustriasPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src="/images/industria-en-general.webp"
+            src="/images/placeholder-pailex.webp"
             alt="Planta industrial atendida por Pailex"
             fill
             priority
@@ -130,7 +130,7 @@ export default function IndustriasPage() {
       {/* CTA hacia cotización */}
       <section className="py-28 bg-primary text-white relative overflow-hidden">
         <Image
-          src="/images/contacto.webp"
+          src="/images/placeholder-pailex.webp"
           alt=""
           fill
           className="object-cover opacity-20 pointer-events-none"
