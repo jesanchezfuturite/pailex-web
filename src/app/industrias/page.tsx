@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getPage, type IndustriasCollections } from "@/lib/api";
+import { getPage, FALLBACK_IMAGE, type IndustriasCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,16 +20,14 @@ export default async function IndustriasPage() {
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
-          {media.hero && (
-            <Image
-              src={media.hero.url}
-              alt={media.hero.alt ?? ""}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          )}
+          <Image
+            src={FALLBACK_IMAGE}
+            alt={media.hero?.alt ?? ""}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
         </div>
@@ -71,15 +69,13 @@ export default async function IndustriasPage() {
           <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className={index % 2 === 1 ? "lg:order-2" : ""}>
               <div className="relative h-[360px] overflow-hidden clip-notch-br group">
-                {industry.image && (
-                  <Image
-                    src={industry.image.url}
-                    alt={industry.image.alt ?? industry.name}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                )}
+                <Image
+                  src={FALLBACK_IMAGE}
+                  alt={industry.image?.alt ?? industry.name}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
                 <div className="absolute inset-0 bg-primary/25 mix-blend-multiply" />
                 <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-accent/50" />
               </div>
@@ -102,14 +98,12 @@ export default async function IndustriasPage() {
 
       {/* CTA hacia cotización */}
       <section className="py-28 bg-primary text-white relative overflow-hidden">
-        {media.cta_background && (
-          <Image
-            src={media.cta_background.url}
-            alt=""
-            fill
-            className="object-cover opacity-20 pointer-events-none"
-          />
-        )}
+        <Image
+          src={FALLBACK_IMAGE}
+          alt=""
+          fill
+          className="object-cover opacity-20 pointer-events-none"
+        />
         <div className="absolute inset-0 bg-primary/80 pointer-events-none" />
         <div className="absolute top-0 right-0 w-48 h-48 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
 

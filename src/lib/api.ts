@@ -4,6 +4,11 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+/** Imagen de respaldo para los espacios fotográficos: lienzo 1600×900 con el
+ *  imagotipo oficial centrado a tamaño proporcional (no se estira ni recorta
+ *  el logo en contenedores con object-cover). */
+export const FALLBACK_IMAGE = "/images/placeholder-pailex.webp";
+
 export interface MediaItem {
   url: string;
   alt: string | null;

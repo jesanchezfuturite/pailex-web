@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getPage, type NosotrosCollections } from "@/lib/api";
+import { getPage, FALLBACK_IMAGE, type NosotrosCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,16 +20,14 @@ export default async function NosotrosPage() {
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
-          {media.hero && (
-            <Image
-              src={media.hero.url}
-              alt={media.hero.alt ?? ""}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          )}
+          <Image
+            src={FALLBACK_IMAGE}
+            alt={media.hero?.alt ?? ""}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
         </div>
@@ -70,15 +68,13 @@ export default async function NosotrosPage() {
 
           <div className="relative">
             <div className="relative h-[520px] overflow-hidden clip-notch-br">
-              {media.experience_image && (
-                <Image
-                  src={media.experience_image.url}
-                  alt={media.experience_image.alt ?? ""}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              )}
+              <Image
+                src={FALLBACK_IMAGE}
+                alt={media.experience_image?.alt ?? ""}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-primary/25 mix-blend-multiply" />
             </div>
             {/* Esquinero en L y pleca: detalles geométricos de marca */}
@@ -90,14 +86,12 @@ export default async function NosotrosPage() {
 
       {/* El valor que aportamos a tu negocio */}
       <section className="py-28 bg-primary text-white relative overflow-hidden">
-        {media.value_background && (
-          <Image
-            src={media.value_background.url}
-            alt=""
-            fill
-            className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-          />
-        )}
+        <Image
+          src={FALLBACK_IMAGE}
+          alt=""
+          fill
+          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
+        />
         <div
           className="absolute inset-0 opacity-5 pointer-events-none"
           style={{

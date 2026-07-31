@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import ProjectImage from "@/components/sections/ProjectImage";
-import { getPage, type PortafolioCollections } from "@/lib/api";
+import { getPage, FALLBACK_IMAGE, type PortafolioCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -22,16 +22,14 @@ export default async function PortafolioPage() {
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
-          {media.hero && (
-            <Image
-              src={media.hero.url}
-              alt={media.hero.alt ?? ""}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          )}
+          <Image
+            src={FALLBACK_IMAGE}
+            alt={media.hero?.alt ?? ""}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
         </div>
@@ -73,14 +71,12 @@ export default async function PortafolioPage() {
             <article className="border border-support/20 clip-notch-br group hover:border-primary/40 transition-colors bg-white">
               <div className="grid lg:grid-cols-[1fr_1.4fr]">
                 {/* Fotografía del proyecto: clic para verla a pantalla completa */}
-                {project.image && (
-                  <ProjectImage
-                    src={project.image.url}
-                    title={project.title}
-                    width={project.image.width}
-                    height={project.image.height}
-                  />
-                )}
+                <ProjectImage
+                  src={FALLBACK_IMAGE}
+                  title={project.title}
+                  width={1600}
+                  height={900}
+                />
 
                 {/* Ficha técnica */}
                 <div className="p-10 grid sm:grid-cols-2 gap-x-10 gap-y-8 content-center">
@@ -105,14 +101,12 @@ export default async function PortafolioPage() {
 
       {/* Desarrollo continuo */}
       <section className="py-32 bg-primary text-white relative overflow-hidden">
-        {media.development_background && (
-          <Image
-            src={media.development_background.url}
-            alt=""
-            fill
-            className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-          />
-        )}
+        <Image
+          src={FALLBACK_IMAGE}
+          alt=""
+          fill
+          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
+        />
         <div
           className="absolute inset-0 opacity-5 pointer-events-none"
           style={{

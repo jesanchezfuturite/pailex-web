@@ -5,7 +5,7 @@ import {
   Cable, Droplets, Layers, Filter, Container, Forklift, Check,
   Wrench, Cog, Package, type LucideIcon,
 } from "lucide-react";
-import { getPage, type SolucionesCollections } from "@/lib/api";
+import { getPage, FALLBACK_IMAGE, type SolucionesCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -39,16 +39,14 @@ export default async function SolucionesPage() {
           con acentos lima fríos (dirección de arte del banner) */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
-          {media.hero && (
-            <Image
-              src={media.hero.url}
-              alt={media.hero.alt ?? ""}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover contrast-125 saturate-[0.85]"
-            />
-          )}
+          <Image
+            src={FALLBACK_IMAGE}
+            alt={media.hero?.alt ?? ""}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover contrast-125 saturate-[0.85]"
+          />
           {/* Gradación esmeralda profunda en multiply + sombra hacia negro */}
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-primary/10 to-black/30" />
@@ -95,15 +93,13 @@ export default async function SolucionesPage() {
           <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className={index % 2 === 1 ? "lg:order-2" : ""}>
               <div className="relative h-[380px] overflow-hidden clip-notch-br">
-                {service.image && (
-                  <Image
-                    src={service.image.url}
-                    alt={service.image.alt ?? service.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                )}
+                <Image
+                  src={FALLBACK_IMAGE}
+                  alt={service.image?.alt ?? service.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
                 <div className="absolute inset-0 bg-primary/25 mix-blend-multiply" />
               </div>
             </div>
@@ -183,14 +179,12 @@ export default async function SolucionesPage() {
 
       {/* Capacidad instalada */}
       <section id="capacidad-instalada" className="py-32 bg-primary text-white relative overflow-hidden scroll-mt-24">
-        {media.capacity_background && (
-          <Image
-            src={media.capacity_background.url}
-            alt=""
-            fill
-            className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-          />
-        )}
+        <Image
+          src={FALLBACK_IMAGE}
+          alt=""
+          fill
+          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
+        />
         <div
           className="absolute inset-0 opacity-5 pointer-events-none"
           style={{

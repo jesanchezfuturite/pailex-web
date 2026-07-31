@@ -4,7 +4,7 @@ import Link from "next/link";
 import Hero from "@/components/sections/Hero";
 import BrandSlider from "@/components/sections/BrandSlider";
 import FAQAccordion from "@/components/sections/FAQAccordion";
-import { getPage, type HomeCollections, type MediaItem } from "@/lib/api";
+import { getPage, FALLBACK_IMAGE, type HomeCollections, type MediaItem } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -49,14 +49,12 @@ export default async function Home() {
       {/* ¿Por qué elegir a Pailex? - Refinado con líneas de acento */}
       <section className="py-28 bg-primary text-white overflow-hidden relative">
         {/* Textura fotográfica sutil bajo el verde institucional */}
-        {media.why_background && (
-          <Image
-            src={media.why_background.url}
-            alt=""
-            fill
-            className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-          />
-        )}
+        <Image
+          src={FALLBACK_IMAGE}
+          alt=""
+          fill
+          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
+        />
         <div className="absolute inset-0 opacity-5 pointer-events-none"
              style={{backgroundImage: 'radial-gradient(#E8FFC0 1px, transparent 1px)', backgroundSize: '30px 30px'}} />
 
@@ -78,14 +76,12 @@ export default async function Home() {
       {/* Banner CTA Central — verde institucional; lima solo como acento (brandbook: uso moderado) */}
       <section className="py-24 bg-primary relative overflow-hidden">
         {/* Fondo fotográfico en duotono verde */}
-        {media.cta_background && (
-          <Image
-            src={media.cta_background.url}
-            alt=""
-            fill
-            className="object-cover opacity-30 pointer-events-none"
-          />
-        )}
+        <Image
+          src={FALLBACK_IMAGE}
+          alt=""
+          fill
+          className="object-cover opacity-30 pointer-events-none"
+        />
         <div className="absolute inset-0 bg-primary/80 pointer-events-none" />
         <div className="absolute inset-0 opacity-[0.06] pointer-events-none"
              style={{backgroundImage: 'radial-gradient(#E8FFC0 2px, transparent 2px)', backgroundSize: '24px 24px'}} />
@@ -113,15 +109,13 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {collections.sectors.map((sector) => (
             <div key={sector.name} className="relative h-72 group overflow-hidden clip-notch-br-sm cursor-default">
-              {sector.image && (
-                <Image
-                  src={sector.image.url}
-                  alt={sector.image.alt ?? sector.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              )}
+              <Image
+                src={FALLBACK_IMAGE}
+                alt={sector.image?.alt ?? sector.name}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/30 to-transparent transition-colors duration-500 group-hover:from-primary" />
               <div className="absolute bottom-0 left-0 right-0 p-5">
                 <div className="w-6 h-[2px] bg-accent mb-3 transition-all duration-500 group-hover:w-10" />
@@ -164,15 +158,13 @@ function SolutionCard({ title, desc, image, href }: { title: string, desc: strin
     <div className="border border-support/20 hover:bg-primary group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br">
       <div className="absolute top-0 left-0 w-full h-1 bg-support group-hover:bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10" />
       <div className="relative h-56 overflow-hidden">
-        {image && (
-          <Image
-            src={image.url}
-            alt={image.alt ?? title}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-        )}
+        <Image
+          src={FALLBACK_IMAGE}
+          alt={image?.alt ?? title}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
         <div className="absolute inset-0 bg-primary/15 group-hover:bg-primary/40 transition-colors duration-500" />
       </div>
       <div className="p-10">

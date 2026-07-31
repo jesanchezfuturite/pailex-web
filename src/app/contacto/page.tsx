@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 import ContactQuoteForm from "@/components/forms/ContactQuoteForm";
-import { getPage, getSite } from "@/lib/api";
+import { getPage, getSite, FALLBACK_IMAGE } from "@/lib/api";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("contacto");
@@ -24,16 +24,14 @@ export default async function ContactoPage() {
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
-          {media.hero && (
-            <Image
-              src={media.hero.url}
-              alt={media.hero.alt ?? ""}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          )}
+          <Image
+            src={FALLBACK_IMAGE}
+            alt={media.hero?.alt ?? ""}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
         </div>
