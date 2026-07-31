@@ -1,27 +1,35 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { getPage, type NosotrosCollections } from "@/lib/api";
+import { withHighlight } from "@/lib/highlight";
 
-export const metadata: Metadata = {
-  title: "Nosotros | Pailex — 35 años en el sector metalmecánico",
-  description:
-    "Más de 35 años como proveedor metalmecánico industrial: pailería, soldadura calificada y maquinados CNC. Tu aliado estratégico en soluciones metalmecánicas para la industria.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage<NosotrosCollections>("nosotros");
+  return {
+    title: page.seo.title ?? undefined,
+    description: page.seo.description ?? undefined,
+  };
+}
 
-export default function NosotrosPage() {
+export default async function NosotrosPage() {
+  const { texts, media, collections } = await getPage<NosotrosCollections>("nosotros");
+
   return (
     <div className="bg-white">
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
-          <Image
-            src="/images/metalmecanica.webp"
-            alt="Planta metalmecánica de Pailex"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
+          {media.hero && (
+            <Image
+              src={media.hero.url}
+              alt={media.hero.alt ?? ""}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          )}
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
         </div>
@@ -30,10 +38,10 @@ export default function NosotrosPage() {
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-16 pt-40">
           <p className="anim-fade-up anim-delay-1 text-accent font-title text-xs md:text-sm uppercase tracking-[0.25em] mb-4">
-            Tu equipo de ingeniería extendido
+            {texts.hero_eyebrow}
           </p>
           <h1 className="anim-fade-up anim-delay-2 text-white font-title text-5xl md:text-7xl font-bold uppercase tracking-tight">
-            Nosotros
+            {texts.hero_title}
           </h1>
           <div className="anim-grow-x w-24 h-[3px] bg-accent mt-6" />
         </div>
@@ -44,40 +52,33 @@ export default function NosotrosPage() {
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight leading-none">
-              Más de 35 años de experiencia
+              {texts.experience_title}
             </h2>
             <div className="w-20 h-1.5 bg-support mt-6 mb-10" />
             <div className="space-y-6 text-industrial-gray font-body text-lg leading-relaxed">
-              <p>
-                Somos una empresa con amplia experiencia en el sector metalmecánico,
-                especializada en ofrecer soluciones integrales a la industria.
-              </p>
-              <p>
-                Hoy, bajo una nueva razón social, ampliamos nuestras capacidades para
-                adaptarnos a las necesidades actuales del mercado, manteniendo nuestro
-                compromiso con la calidad, precisión y servicio personalizado.
-              </p>
-              <p className="text-primary font-medium">
-                Nos posicionamos como un aliado estratégico para nuestros clientes.
-              </p>
+              <p>{texts.experience_paragraph_1}</p>
+              <p>{texts.experience_paragraph_2}</p>
+              <p className="text-primary font-medium">{texts.experience_paragraph_3}</p>
             </div>
             <Link
               href="#cotizar"
               className="inline-block mt-10 bg-primary text-white px-10 py-5 font-title font-bold text-lg hover:bg-accent hover:text-primary transition-all uppercase tracking-widest clip-notch-br-sm"
             >
-              ¡Contáctanos para cotizarte!
+              {texts.experience_cta_label}
             </Link>
           </div>
 
           <div className="relative">
             <div className="relative h-[520px] overflow-hidden clip-notch-br">
-              <Image
-                src="/images/paileria.webp"
-                alt="Trabajos de pailería industrial y soldadura calificada"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
+              {media.experience_image && (
+                <Image
+                  src={media.experience_image.url}
+                  alt={media.experience_image.alt ?? ""}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              )}
               <div className="absolute inset-0 bg-primary/25 mix-blend-multiply" />
             </div>
             {/* Esquinero en L y pleca: detalles geométricos de marca */}
@@ -89,12 +90,14 @@ export default function NosotrosPage() {
 
       {/* El valor que aportamos a tu negocio */}
       <section className="py-28 bg-primary text-white relative overflow-hidden">
-        <Image
-          src="/images/industria-en-general.webp"
-          alt=""
-          fill
-          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-        />
+        {media.value_background && (
+          <Image
+            src={media.value_background.url}
+            alt=""
+            fill
+            className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
+          />
+        )}
         <div
           className="absolute inset-0 opacity-5 pointer-events-none"
           style={{
@@ -106,17 +109,14 @@ export default function NosotrosPage() {
 
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <h2 className="font-title text-3xl md:text-5xl font-bold uppercase tracking-tight text-white mb-8">
-            El valor que aportamos a <span className="text-accent">tu negocio</span>
+            {withHighlight(texts.value_title, texts.value_title_highlight)}
           </h2>
           <div className="w-16 h-[3px] bg-accent mx-auto mb-10" />
           <p className="text-white/85 font-body text-lg md:text-xl leading-relaxed">
-            Optimizamos tus tiempos y recursos asegurando que cada componente cumpla con
-            los estándares más estrictos del sector. Traducimos tus necesidades de
-            ingeniería en soluciones industriales tangibles, garantizando entregas ágiles
-            y un soporte cercano en cada etapa del proceso.
+            {texts.value_body}
           </p>
           <p className="text-support font-body text-lg md:text-xl leading-relaxed mt-6">
-            Con nosotros, la calidad de tu producción está respaldada.
+            {texts.value_highlight}
           </p>
         </div>
       </section>
@@ -126,30 +126,18 @@ export default function NosotrosPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="border-t-4 border-support pt-12 mb-16">
             <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight">
-              Lo que nos hace diferentes
+              {texts.differentiators_title}
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-10">
-            <DifferentiatorCard
-              number="01"
-              title="Precisión al primer intento"
-              desc="Diseñamos y fabricamos con una exactitud milimétrica desde el día uno para honrar tu tiempo y evitar retrasos en tu cadena de suministro."
-            />
-            <DifferentiatorCard
-              number="02"
-              title="Cumplimiento sin excusas"
-              desc="Nuestra palabra es un contrato. No hacemos promesas que no podamos sostener; entregamos exactamente lo pactado, cuando lo pactado."
-            />
-            <DifferentiatorCard
-              number="03"
-              title="Mentalidad de solución"
-              desc="Ante los desafíos técnicos, no buscamos culpables; enfocamos toda nuestra energía en resolver y avanzar."
-            />
-            <DifferentiatorCard
-              number="04"
-              title="Calidad de largo plazo"
-              desc="No buscamos transacciones rápidas, sino relaciones duraderas. Trabajamos para que el valor de nuestro resultado permanezca impecable mucho después de la entrega."
-            />
+            {collections.differentiators.map((item, i) => (
+              <DifferentiatorCard
+                key={item.title}
+                number={String(i + 1).padStart(2, "0")}
+                title={item.title}
+                desc={item.description}
+              />
+            ))}
           </div>
         </div>
       </section>

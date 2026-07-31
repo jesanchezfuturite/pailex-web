@@ -3,15 +3,16 @@ import { Space_Grotesk, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getSite } from "@/lib/api";
 
-const spaceGrotesk = Space_Grotesk({ 
-  subsets: ["latin"], 
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
   variable: "--font-space-grotesk",
   weight: ["400", "500", "600", "700"]
 });
 
-const schibstedGrotesk = Schibsted_Grotesk({ 
-  subsets: ["latin"], 
+const schibstedGrotesk = Schibsted_Grotesk({
+  subsets: ["latin"],
   variable: "--font-schibsted-grotesk",
   weight: ["400", "500", "600", "700"]
 });
@@ -21,17 +22,19 @@ export const metadata: Metadata = {
   description: "Pailería, Maquinados, Automatización y Proyectos Llave en Mano desde Monterrey.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const site = await getSite();
+
   return (
     <html lang="es">
       <body className={`${spaceGrotesk.variable} ${schibstedGrotesk.variable} font-body antialiased`}>
-        <Navbar />
+        <Navbar menu={site.menu} />
         <main>{children}</main>
-        <Footer />
+        <Footer settings={site.settings} />
       </body>
     </html>
   );

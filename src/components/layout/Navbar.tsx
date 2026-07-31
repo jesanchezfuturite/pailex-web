@@ -5,17 +5,9 @@ import Link from 'next/link';
 import { Search, Menu, X } from 'lucide-react';
 import Logo from '@/components/brand/Logo';
 
-export default function Navbar() {
+// El menú es administrable desde el CMS (recurso "Menú de navegación")
+export default function Navbar({ menu }: { menu: { label: string; href: string }[] }) {
   const [open, setOpen] = useState(false);
-
-  const menuItems = [
-    { name: 'Inicio', href: '/' },
-    { name: 'Nosotros', href: '/nosotros' },
-    { name: 'Soluciones', href: '/soluciones' },
-    { name: 'Industrias', href: '/industrias' },
-    { name: 'Portafolio', href: '/portafolio' },
-    { name: 'Contacto', href: '/contacto' },
-  ];
 
   return (
     <nav className="fixed w-full z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10 py-4">
@@ -26,13 +18,13 @@ export default function Navbar() {
 
         {/* Menú de escritorio */}
         <div className="hidden md:flex items-center space-x-8">
-          {menuItems.map((item) => (
+          {menu.map((item) => (
             <Link
-              key={item.name}
+              key={item.href}
               href={item.href}
               className="text-white/80 hover:text-accent transition-colors text-sm font-medium uppercase tracking-wider"
             >
-              {item.name}
+              {item.label}
             </Link>
           ))}
           <button className="text-white hover:text-accent">
@@ -56,14 +48,14 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden bg-primary border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col">
-            {menuItems.map((item) => (
+            {menu.map((item) => (
               <Link
-                key={item.name}
+                key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className="text-white/80 hover:text-accent transition-colors text-sm font-medium uppercase tracking-wider py-3 border-b border-white/5 last:border-b-0"
               >
-                {item.name}
+                {item.label}
               </Link>
             ))}
           </div>
