@@ -1,4 +1,5 @@
 import Logo from '@/components/brand/Logo';
+import FooterQuoteForm from '@/components/forms/FooterQuoteForm';
 
 // Convierte "+52 828 289 7071" en "tel:+528282897071"
 const telHref = (phone?: string) => `tel:${(phone ?? '').replace(/[^\d+]/g, '')}`;
@@ -29,17 +30,7 @@ export default function Footer({ settings }: { settings: Record<string, string> 
 
         <div id="cotizar" className="lg:col-span-2 scroll-mt-24">
           <h3 className="font-title font-bold mb-6 text-support uppercase tracking-wider">{settings.footer_form_title}</h3>
-          <form className="grid grid-cols-2 gap-4">
-            <input type="text" placeholder="Nombre" className="bg-white/5 border border-white/10 p-3 text-sm focus:border-accent outline-none transition-all" />
-            <input type="email" placeholder="Correo" className="bg-white/5 border border-white/10 p-3 text-sm focus:border-accent outline-none transition-all" />
-            <input type="tel" placeholder="Teléfono" className="bg-white/5 border border-white/10 p-3 text-sm focus:border-accent outline-none transition-all" />
-            <div className="col-span-2">
-              <textarea placeholder="Mensaje" rows={3} className="w-full bg-white/5 border border-white/10 p-3 text-sm focus:border-accent outline-none transition-all" />
-            </div>
-            <button className="col-span-2 bg-accent text-primary font-title font-bold py-3 hover:brightness-110 transition-all uppercase tracking-widest clip-notch-br-sm">
-              Enviar
-            </button>
-          </form>
+          <FooterQuoteForm />
         </div>
       </div>
 

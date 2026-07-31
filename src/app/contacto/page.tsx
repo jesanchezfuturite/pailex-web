@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Paperclip } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import ContactQuoteForm from "@/components/forms/ContactQuoteForm";
 import { getPage, getSite } from "@/lib/api";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -102,87 +103,15 @@ export default async function ContactoPage() {
             </div>
           </div>
 
-          {/* Formulario extendido de cotización (se conecta a POST /api/leads en la Fase 5) */}
-          <div className="bg-gray-50 border border-support/20 p-10 md:p-12 clip-notch-br">
-            <h2 className="font-title text-3xl font-bold text-primary uppercase tracking-tight mb-8">
-              {texts.form_title}
-            </h2>
-            <form className="grid sm:grid-cols-2 gap-6">
-              <ContactField label="Nombre completo" name="nombre" type="text" />
-              <ContactField label="Industria / Empresa" name="empresa" type="text" />
-              <ContactField label="Teléfono / Celular" name="telefono" type="tel" />
-              <ContactField label="Correo electrónico" name="correo" type="email" />
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="planos"
-                  className="block font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2"
-                >
-                  {texts.form_files_label}
-                </label>
-                <label
-                  htmlFor="planos"
-                  className="flex items-center gap-3 bg-white border border-support/30 border-dashed p-4 cursor-pointer hover:border-primary transition-colors"
-                >
-                  <Paperclip size={18} className="text-support shrink-0" />
-                  <span className="font-body text-sm text-industrial-gray">
-                    {texts.form_files_help}
-                  </span>
-                </label>
-                <input
-                  id="planos"
-                  name="planos"
-                  type="file"
-                  multiple
-                  accept=".pdf,.dwg,.dxf,.step,.stp,.igs,.iges,.jpg,.jpeg,.png"
-                  className="sr-only"
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="mensaje"
-                  className="block font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2"
-                >
-                  Mensaje
-                </label>
-                <textarea
-                  id="mensaje"
-                  name="mensaje"
-                  rows={4}
-                  className="w-full bg-white border border-support/30 p-3 text-sm font-body focus:border-primary outline-none transition-all"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="sm:col-span-2 bg-primary text-white font-title font-bold py-4 hover:bg-accent hover:text-primary transition-all uppercase tracking-widest clip-notch-br-sm"
-              >
-                {texts.form_submit_label}
-              </button>
-            </form>
-          </div>
+          {/* Formulario extendido de cotización → POST /api/leads del CMS */}
+          <ContactQuoteForm
+            title={texts.form_title}
+            filesLabel={texts.form_files_label}
+            filesHelp={texts.form_files_help}
+            submitLabel={texts.form_submit_label}
+          />
         </div>
       </section>
-    </div>
-  );
-}
-
-function ContactField({ label, name, type }: { label: string; name: string; type: string }) {
-  return (
-    <div>
-      <label
-        htmlFor={name}
-        className="block font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2"
-      >
-        {label}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        className="w-full bg-white border border-support/30 p-3 text-sm font-body focus:border-primary outline-none transition-all"
-      />
     </div>
   );
 }
