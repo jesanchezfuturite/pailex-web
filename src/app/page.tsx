@@ -4,23 +4,24 @@ import Link from "next/link";
 import Hero from "@/components/sections/Hero";
 import BrandSlider from "@/components/sections/BrandSlider";
 import FAQAccordion from "@/components/sections/FAQAccordion";
-import { getPage, FALLBACK_IMAGE, type HomeCollections, type MediaItem } from "@/lib/api";
+import { getPage, getPosts, FALLBACK_IMAGE, type HomeCollections, type MediaItem } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
+import { formatDate } from "@/lib/format";
+import { pageMetadata, SchemaScript } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<HomeCollections>("home");
-  return {
-    title: page.seo.title ?? undefined,
-    description: page.seo.description ?? undefined,
-  };
+  return pageMetadata(page.seo, "/", page.media.hero_poster ?? null);
 }
 
 export default async function Home() {
-  const page = await getPage<HomeCollections>("home");
+  const [page, posts] = await Promise.all([getPage<HomeCollections>("home"), getPosts()]);
   const { texts, media, collections } = page;
+  const latestPosts = posts.slice(0, 3);
 
   return (
     <div className="bg-white">
+      <SchemaScript schema={page.seo.schema} />
       <Hero texts={texts} media={media} />
 
       {/* Sección Soluciones - Refinada */}
@@ -126,27 +127,50 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Blog - Placeholder (segunda iteración del CMS) */}
-      <section className="py-32 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="border-t-4 border-support pt-12 mb-16">
-            <h2 className="font-title text-4xl font-bold text-primary uppercase tracking-tight">{texts.blog_title}</h2>
+      {/* Blog: últimas notas publicadas en el CMS */}
+      {latestPosts.length > 0 && (
+        <section className="py-32 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="border-t-4 border-support pt-12 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <h2 className="font-title text-4xl font-bold text-primary uppercase tracking-tight">{texts.blog_title}</h2>
+              <Link
+                href="/blog"
+                className="relative overflow-hidden text-primary font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center self-start md:self-auto group/all"
+              >
+                <span className="relative z-10 group-hover/all:text-support transition-colors duration-300">Ver todas las notas</span>
+                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-support group-hover/all:bg-accent origin-left transition-all duration-300" />
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-10">
+              {latestPosts.map((post) => (
+                <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
+                  <div className="bg-white border border-support/10 h-64 mb-6 relative overflow-hidden">
+                    <Image
+                      src={post.image?.url ?? FALLBACK_IMAGE}
+                      alt={post.image?.alt ?? post.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/25 transition-colors duration-500" />
+                    <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-support/40" />
+                    <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-support/40" />
+                  </div>
+                  <time
+                    dateTime={post.published_at ?? undefined}
+                    className="font-title text-support text-xs uppercase tracking-[0.2em]"
+                  >
+                    {formatDate(post.published_at)}
+                  </time>
+                  <h3 className="font-title text-xl font-bold text-primary group-hover:text-support transition-colors uppercase mt-2 leading-tight">
+                    {post.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-10">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="bg-white border border-support/10 h-80 mb-6 relative overflow-hidden flex items-center justify-center">
-                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors" />
-                  <span className="text-support/40 font-title uppercase tracking-[0.2em] text-[10px]">Preview Industrial {i}</span>
-                  <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-support/30" />
-                  <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-support/30" />
-                </div>
-                <h4 className="font-title text-xl font-bold text-primary group-hover:text-support transition-colors uppercase">Título del Artículo de Ingeniería {i}</h4>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <FAQAccordion title={texts.faq_title} faqs={collections.faqs} />
     </div>

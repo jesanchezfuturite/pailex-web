@@ -3,20 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPage, FALLBACK_IMAGE, type NosotrosCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
+import { pageMetadata, SchemaScript } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<NosotrosCollections>("nosotros");
-  return {
-    title: page.seo.title ?? undefined,
-    description: page.seo.description ?? undefined,
-  };
+  return pageMetadata(page.seo, "/nosotros", page.media.hero ?? null);
 }
 
 export default async function NosotrosPage() {
-  const { texts, media, collections } = await getPage<NosotrosCollections>("nosotros");
+  const { texts, media, collections, seo } = await getPage<NosotrosCollections>("nosotros");
 
   return (
     <div className="bg-white">
+      <SchemaScript schema={seo.schema} />
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">

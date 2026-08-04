@@ -1,24 +1,22 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import ProjectImage from "@/components/sections/ProjectImage";
 import { getPage, FALLBACK_IMAGE, type PortafolioCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
+import { pageMetadata, SchemaScript } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<PortafolioCollections>("portafolio");
-  return {
-    title: page.seo.title ?? undefined,
-    description: page.seo.description ?? undefined,
-  };
+  return pageMetadata(page.seo, "/portafolio", page.media.hero ?? null);
 }
 
 export default async function PortafolioPage() {
-  const { texts, media, collections } = await getPage<PortafolioCollections>("portafolio");
+  const { texts, media, collections, seo } = await getPage<PortafolioCollections>("portafolio");
 
   return (
     <div className="bg-white">
+      <SchemaScript schema={seo.schema} />
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
@@ -139,14 +137,6 @@ export default async function PortafolioPage() {
             ))}
           </ul>
 
-          <div className="text-center mt-16">
-            <Link
-              href="#cotizar"
-              className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm"
-            >
-              {texts.development_cta_label}
-            </Link>
-          </div>
         </div>
       </section>
     </div>

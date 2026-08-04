@@ -4,6 +4,9 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+/** URL pública del sitio: canónicas, Open Graph y Schema.org. */
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 /** Imagen de respaldo para los espacios fotográficos: lienzo 1600×900 con el
  *  imagotipo oficial centrado a tamaño proporcional (no se estira ni recorta
  *  el logo en contenedores con object-cover). */
@@ -88,10 +91,33 @@ export interface Project {
   image: (MediaItem & { width: number; height: number }) | null;
 }
 
+export interface PostSummary {
+  title: string;
+  slug: string;
+  excerpt: string;
+  published_at: string | null;
+  image: MediaItem | null;
+}
+
+export interface Post extends PostSummary {
+  content: string;
+}
+
+export interface PageSeo {
+  title: string | null;
+  description: string | null;
+  canonical?: string | null;
+  og_title?: string | null;
+  og_description?: string | null;
+  og_image?: MediaItem | null;
+  /** JSON-LD administrado desde el CMS; se inserta tal cual en la página. */
+  schema?: unknown;
+}
+
 export interface PageData<C = Record<string, never>> {
   slug: string;
   name: string;
-  seo: { title: string | null; description: string | null };
+  seo: PageSeo;
   texts: Record<string, string>;
   media: Record<string, MediaItem>;
   collections: C;
@@ -134,3 +160,21 @@ async function fetchJson<T>(path: string): Promise<T> {
 export const getSite = () => fetchJson<Site>("/api/site");
 
 export const getPage = <C>(slug: string) => fetchJson<PageData<C>>(`/api/pages/${slug}`);
+
+/** Notas publicadas del blog, de la más reciente a la más antigua. */
+export const getPosts = () => fetchJson<PostSummary[]>("/api/posts");
+
+/** Detalle de una nota; null si no existe o no está publicada (→ 404 del sitio). */
+export async function getPost(slug: string): Promise<Post | null> {
+  const res = await fetch(`${API_URL}/api/posts/${encodeURIComponent(slug)}`, {
+    cache: "force-cache",
+    next: { tags: ["content"] },
+  });
+  if (res.status === 404) {
+    return null;
+  }
+  if (!res.ok) {
+    throw new Error(`Error de la API del CMS: /api/posts/${slug} respondió ${res.status}`);
+  }
+  return res.json();
+}

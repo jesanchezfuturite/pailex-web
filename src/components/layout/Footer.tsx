@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Logo from '@/components/brand/Logo';
 import FooterQuoteForm from '@/components/forms/FooterQuoteForm';
 
@@ -25,6 +26,7 @@ export default function Footer({ settings }: { settings: Record<string, string> 
           <ul className="space-y-4 text-sm text-white/70">
             <li><a href="#" className="hover:text-white transition-colors">Aviso de privacidad</a></li>
             <li><a href="#" className="hover:text-white transition-colors">Términos y condiciones</a></li>
+            <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
           </ul>
         </div>
 

@@ -1,22 +1,19 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { getPage, FALLBACK_IMAGE, type IndustriasCollections } from "@/lib/api";
-import { withHighlight } from "@/lib/highlight";
+import { pageMetadata, SchemaScript } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<IndustriasCollections>("industrias");
-  return {
-    title: page.seo.title ?? undefined,
-    description: page.seo.description ?? undefined,
-  };
+  return pageMetadata(page.seo, "/industrias", page.media.hero ?? null);
 }
 
 export default async function IndustriasPage() {
-  const { texts, media, collections } = await getPage<IndustriasCollections>("industrias");
+  const { texts, media, collections, seo } = await getPage<IndustriasCollections>("industrias");
 
   return (
     <div className="bg-white">
+      <SchemaScript schema={seo.schema} />
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
@@ -96,29 +93,6 @@ export default async function IndustriasPage() {
         </section>
       ))}
 
-      {/* CTA hacia cotización */}
-      <section className="py-28 bg-primary text-white relative overflow-hidden">
-        <Image
-          src={FALLBACK_IMAGE}
-          alt=""
-          fill
-          className="object-cover opacity-20 pointer-events-none"
-        />
-        <div className="absolute inset-0 bg-primary/80 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-48 h-48 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-          <h2 className="font-title text-3xl md:text-4xl font-bold uppercase tracking-tight mb-10 max-w-3xl mx-auto leading-tight">
-            {withHighlight(texts.cta_title, texts.cta_title_highlight)}
-          </h2>
-          <Link
-            href="#cotizar"
-            className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm"
-          >
-            {texts.cta_label}
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

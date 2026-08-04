@@ -7,13 +7,11 @@ import {
 } from "lucide-react";
 import { getPage, FALLBACK_IMAGE, type SolucionesCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
+import { pageMetadata, SchemaScript } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<SolucionesCollections>("soluciones");
-  return {
-    title: page.seo.title ?? undefined,
-    description: page.seo.description ?? undefined,
-  };
+  return pageMetadata(page.seo, "/soluciones", page.media.hero ?? null);
 }
 
 // Mapa de iconos administrables desde el CMS (campo "icon" de productos)
@@ -30,11 +28,12 @@ const productIcons: Record<string, LucideIcon> = {
 };
 
 export default async function SolucionesPage() {
-  const { texts, media, collections } = await getPage<SolucionesCollections>("soluciones");
+  const { texts, media, collections, seo } = await getPage<SolucionesCollections>("soluciones");
   const { services, products, capacity_groups: capacity } = collections;
 
   return (
     <div className="bg-white">
+      <SchemaScript schema={seo.schema} />
       {/* Sub-hero: gradación esmeralda cinematográfica de alto contraste
           con acentos lima fríos (dirección de arte del banner) */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
@@ -225,14 +224,6 @@ export default async function SolucionesPage() {
             ))}
           </div>
 
-          <div className="text-center mt-16">
-            <Link
-              href="#cotizar"
-              className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm"
-            >
-              {texts.capacity_cta_label}
-            </Link>
-          </div>
         </div>
       </section>
     </div>

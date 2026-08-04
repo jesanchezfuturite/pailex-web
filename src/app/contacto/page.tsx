@@ -3,24 +3,23 @@ import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 import ContactQuoteForm from "@/components/forms/ContactQuoteForm";
 import { getPage, getSite, FALLBACK_IMAGE } from "@/lib/api";
+import { pageMetadata, SchemaScript } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("contacto");
-  return {
-    title: page.seo.title ?? undefined,
-    description: page.seo.description ?? undefined,
-  };
+  return pageMetadata(page.seo, "/contacto", page.media.hero ?? null);
 }
 
 // Convierte "+52 828 289 7071" en "tel:+528282897071"
 const telHref = (phone?: string) => `tel:${(phone ?? "").replace(/[^\d+]/g, "")}`;
 
 export default async function ContactoPage() {
-  const [{ texts, media }, site] = await Promise.all([getPage("contacto"), getSite()]);
+  const [{ texts, media, seo }, site] = await Promise.all([getPage("contacto"), getSite()]);
   const { settings } = site;
 
   return (
     <div className="bg-white">
+      <SchemaScript schema={seo.schema} />
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
