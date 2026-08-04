@@ -1,42 +1,47 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/components/sections/Hero";
 import BrandSlider from "@/components/sections/BrandSlider";
 import FAQAccordion from "@/components/sections/FAQAccordion";
+import { getPage, FALLBACK_IMAGE, type HomeCollections, type MediaItem } from "@/lib/api";
+import { withHighlight } from "@/lib/highlight";
 
-export default function Home() {
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage<HomeCollections>("home");
+  return {
+    title: page.seo.title ?? undefined,
+    description: page.seo.description ?? undefined,
+  };
+}
+
+export default async function Home() {
+  const page = await getPage<HomeCollections>("home");
+  const { texts, media, collections } = page;
+
   return (
     <div className="bg-white">
-      <Hero />
-      
+      <Hero texts={texts} media={media} />
+
       {/* Sección Soluciones - Refinada */}
       <section className="py-32">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
             <div className="max-w-2xl">
-              <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight">Nuestras Soluciones</h2>
+              <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight">{texts.solutions_title}</h2>
               <div className="w-20 h-1.5 bg-support mt-4" />
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-10">
-            <SolutionCard
-              title="Servicios industriales"
-              desc="Maquila especializada en pailería y maquinados CNC bajo estrictas tolerancias técnicas."
-              image="/images/placeholder-pailex.webp"
-              href="/soluciones#servicios"
-            />
-            <SolutionCard
-              title="Suministros"
-              desc="Venta y habilitado de acero, placas y piezas cortadas a la medida bajo tus especificaciones exactas."
-              image="/images/placeholder-pailex.webp"
-              href="/soluciones#productos"
-            />
-            <SolutionCard
-              title="Infraestructura"
-              desc="Tecnología de corte automatizado para garantizar rapidez y repetibilidad en cada pieza."
-              image="/images/placeholder-pailex.webp"
-              href="/soluciones#capacidad-instalada"
-            />
+            {collections.solution_cards.map((card) => (
+              <SolutionCard
+                key={card.title}
+                title={card.title}
+                desc={card.description}
+                image={card.image}
+                href={card.href}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -45,35 +50,26 @@ export default function Home() {
       <section className="py-28 bg-primary text-white overflow-hidden relative">
         {/* Textura fotográfica sutil bajo el verde institucional */}
         <Image
-          src="/images/placeholder-pailex.webp"
+          src={FALLBACK_IMAGE}
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
         />
         <div className="absolute inset-0 opacity-5 pointer-events-none"
              style={{backgroundImage: 'radial-gradient(#E8FFC0 1px, transparent 1px)', backgroundSize: '30px 30px'}} />
-             
+
         <div className="max-w-7xl mx-auto px-6 text-center mb-20 relative z-10">
-          <h2 className="font-title text-4xl md:text-5xl font-bold uppercase tracking-tight text-white">¿Por qué elegir a <span className="text-accent">Pailex</span>?</h2>
+          <h2 className="font-title text-4xl md:text-5xl font-bold uppercase tracking-tight text-white">{withHighlight(texts.why_title, texts.why_title_highlight)}</h2>
         </div>
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 relative z-10">
-          <FeatureItem 
-            title="Precisión Milimétrica" 
-            desc="Garantizamos tolerancias estrictas en cada proceso de fabricación."
-            isFirst
-          />
-          <FeatureItem 
-            title="Capacidad Integral" 
-            desc="Resolvemos desde el suministro hasta el producto terminado y logística."
-          />
-          <FeatureItem 
-            title="Respuesta Industrial" 
-            desc="Procesos optimizados para tiempos de entrega récord en la industria."
-          />
-          <FeatureItem 
-            title="Garantía de Calidad" 
-            desc="Trabajamos bajo los más rigurosos controles técnicos internacionales."
-          />
+          {collections.features.map((feature, i) => (
+            <FeatureItem
+              key={feature.title}
+              title={feature.title}
+              desc={feature.description}
+              isFirst={i === 0}
+            />
+          ))}
         </div>
       </section>
 
@@ -81,7 +77,7 @@ export default function Home() {
       <section className="py-24 bg-primary relative overflow-hidden">
         {/* Fondo fotográfico en duotono verde */}
         <Image
-          src="/images/placeholder-pailex.webp"
+          src={FALLBACK_IMAGE}
           alt=""
           fill
           className="object-cover opacity-30 pointer-events-none"
@@ -95,33 +91,27 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <h2 className="text-white font-title text-3xl md:text-5xl font-bold mb-12 max-w-5xl mx-auto leading-tight uppercase tracking-tighter">
-            Optimiza tu cadena de suministro y asegura la <span className="text-accent">continuidad de tu operación</span> con nosotros.
+            {withHighlight(texts.cta_title, texts.cta_title_highlight)}
           </h2>
-          <button className="bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm">
-            Iniciar Cotización
-          </button>
+          <a href="#cotizar" className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm">
+            {texts.cta_label}
+          </a>
         </div>
       </section>
 
-      <BrandSlider />
+      <BrandSlider title={texts.brands_title} brands={collections.brands} />
 
       {/* Sectors Grid - Rediseño Tarjetas Técnicas */}
       <section className="py-32 bg-white border-b border-support/10">
         <div className="max-w-7xl mx-auto px-6 text-center mb-16">
-          <h2 className="font-title text-3xl md:text-4xl font-bold text-primary uppercase tracking-tight">Sectores que respaldamos</h2>
+          <h2 className="font-title text-3xl md:text-4xl font-bold text-primary uppercase tracking-tight">{texts.sectors_title}</h2>
         </div>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {[
-            { name: "Cerámica y sanitarios", image: "/images/placeholder-pailex.webp" },
-            { name: "Metalmecánica", image: "/images/placeholder-pailex.webp" },
-            { name: "Energía e industrial", image: "/images/placeholder-pailex.webp" },
-            { name: "Transporte y logística", image: "/images/placeholder-pailex.webp" },
-            { name: "Plástico e industria", image: "/images/placeholder-pailex.webp" },
-          ].map((sector) => (
+          {collections.sectors.map((sector) => (
             <div key={sector.name} className="relative h-72 group overflow-hidden clip-notch-br-sm cursor-default">
               <Image
-                src={sector.image}
-                alt={sector.name}
+                src={FALLBACK_IMAGE}
+                alt={sector.image?.alt ?? sector.name}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -136,11 +126,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Blog - Refinado */}
+      {/* Blog - Placeholder (segunda iteración del CMS) */}
       <section className="py-32 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="border-t-4 border-support pt-12 mb-16">
-            <h2 className="font-title text-4xl font-bold text-primary uppercase tracking-tight">Explora nuestro Blog</h2>
+            <h2 className="font-title text-4xl font-bold text-primary uppercase tracking-tight">{texts.blog_title}</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-10">
             {[1, 2, 3].map((i) => (
@@ -157,20 +147,20 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
-      <FAQAccordion />
+
+      <FAQAccordion title={texts.faq_title} faqs={collections.faqs} />
     </div>
   );
 }
 
-function SolutionCard({ title, desc, image, href }: { title: string, desc: string, image: string, href: string }) {
+function SolutionCard({ title, desc, image, href }: { title: string, desc: string, image: MediaItem | null, href: string }) {
   return (
     <div className="border border-support/20 hover:bg-primary group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br">
       <div className="absolute top-0 left-0 w-full h-1 bg-support group-hover:bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10" />
       <div className="relative h-56 overflow-hidden">
         <Image
-          src={image}
-          alt={title}
+          src={FALLBACK_IMAGE}
+          alt={image?.alt ?? title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"

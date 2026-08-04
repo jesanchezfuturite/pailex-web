@@ -1,4 +1,11 @@
-export default function Hero() {
+import { FALLBACK_IMAGE, type MediaItem } from "@/lib/api";
+
+interface HeroProps {
+  texts: Record<string, string>;
+  media: Record<string, MediaItem>;
+}
+
+export default function Hero({ texts, media }: HeroProps) {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-black">
       {/* Video de planta con Ken Burns lento; poster para conexiones lentas */}
@@ -9,9 +16,9 @@ export default function Hero() {
           muted
           loop
           playsInline
-          poster="/images/placeholder-pailex.webp"
+          poster={FALLBACK_IMAGE}
         >
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          {media.hero_video && <source src={media.hero_video.url} type="video/mp4" />}
         </video>
         {/* Duotono de marca: tinte verde institucional sobre la fotografía */}
         <div className="absolute inset-0 bg-primary/30 mix-blend-multiply" />
@@ -27,21 +34,24 @@ export default function Hero() {
       <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pt-24">
         <div className="max-w-4xl">
           <p className="anim-fade-up anim-delay-1 inline-block border border-accent/60 text-accent font-title text-xs md:text-sm uppercase tracking-[0.25em] px-4 py-2 mb-8 backdrop-blur-sm bg-black/20">
-            35 años garantizando la continuidad de tu planta
+            {texts.hero_badge}
           </p>
           <h1 className="anim-fade-up anim-delay-2 text-white font-title text-4xl md:text-6xl font-bold leading-tight md:leading-[1.05] mb-6 uppercase tracking-tight">
-            Soluciones metalmecánicas industriales
+            {texts.hero_title}
           </h1>
           <div className="anim-grow-x w-24 h-[3px] bg-accent mb-6" />
           <p className="anim-fade-up anim-delay-3 text-white/80 text-lg md:text-2xl font-body mb-3 max-w-2xl">
-            Pailería, maquinados, automatización y proyectos llave en mano.
+            {texts.hero_subtitle}
           </p>
           <p className="anim-fade-up anim-delay-3 text-support text-base md:text-lg font-body mb-10 max-w-2xl">
-            Desde Monterrey hasta donde tu planta lo necesite.
+            {texts.hero_subtitle_secondary}
           </p>
-          <button className="anim-fade-up anim-delay-4 bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest shadow-2xl clip-notch-br-sm">
-            Solicitar cotización
-          </button>
+          <a
+            href="#cotizar"
+            className="anim-fade-up anim-delay-4 inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest shadow-2xl clip-notch-br-sm"
+          >
+            {texts.hero_cta_label}
+          </a>
         </div>
       </div>
     </section>

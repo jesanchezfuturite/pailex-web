@@ -3,94 +3,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import ProjectImage from "@/components/sections/ProjectImage";
+import { getPage, FALLBACK_IMAGE, type PortafolioCollections } from "@/lib/api";
+import { withHighlight } from "@/lib/highlight";
 
-export const metadata: Metadata = {
-  title: "Portafolio | Pailex — Proyectos industriales llave en mano",
-  description:
-    "Casos reales de fabricación e instalación industrial: esmeriladoras, sistemas automatizados, bandas transportadoras y proyectos llave en mano para la industria cerámica.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage<PortafolioCollections>("portafolio");
+  return {
+    title: page.seo.title ?? undefined,
+    description: page.seo.description ?? undefined,
+  };
+}
 
-const projects = [
-  {
-    title: "Fabricación e instalación de banco de vaciado de taza",
-    desc: "Fabricación e instalación de banco de vaciado de taza.",
-    client: "KOHLER / Industria de cerámica",
-    sector: "Industrial",
-    scope: "Diseño, fabricación, pintura e instalación",
-    result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/placeholder-pailex.webp",
-    imageWidth: 1309,
-    imageHeight: 1202,
-  },
-  {
-    title: "Proyecto de humectadora de moldes de yeso",
-    desc: "Diseño, fabricación e instalación de sistema automatizado.",
-    client: "KOHLER / Industria de cerámica",
-    sector: "Industrial",
-    scope: "Diseño, fabricación, instalación y automatización en planta",
-    result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/placeholder-pailex.webp",
-    imageWidth: 1341,
-    imageHeight: 1173,
-  },
-  {
-    title: "Esmeriladora de taza de pared",
-    desc: "Suministro, fabricación, instalación y puesta en marcha.",
-    client: "KOHLER / Industria de cerámica",
-    sector: "Industrial",
-    scope: "Diseño, fabricación, instalación y automatización en planta",
-    result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/placeholder-pailex.webp",
-    imageWidth: 1364,
-    imageHeight: 1153,
-  },
-  {
-    title: "Loop automático para recabado de taza",
-    desc: "Fabricación, instalación y puesta en marcha de loop.",
-    client: "KOHLER / Industria de cerámica",
-    sector: "Industrial",
-    scope: "Modificación, fabricación, instalación y automatización en planta",
-    result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/placeholder-pailex.webp",
-    imageWidth: 1322,
-    imageHeight: 1190,
-  },
-  {
-    title: "Banda transportadora para scrap",
-    desc: "Fabricación, instalación y automatización en planta.",
-    client: "KOHLER / Industria de cerámica",
-    sector: "Industrial",
-    scope: "Fabricación, instalación y automatización en planta",
-    result: "Proyecto entregado en tiempo y en operación al 100%",
-    image: "/images/placeholder-pailex.webp",
-    imageWidth: 1295,
-    imageHeight: 1215,
-  },
-];
+export default async function PortafolioPage() {
+  const { texts, media, collections } = await getPage<PortafolioCollections>("portafolio");
 
-const continuousDevelopment = [
-  "Propela de 1.60 m para agitadores de esmaltes",
-  "Esmeriladora de taza",
-  "Cabina para recabado de taza",
-  "Carros para transporte de tanque sanitario",
-  "Banco para vaciado de urinal",
-  "Mesas de trabajo",
-  "Tableros para herramientas de limpieza",
-  "Tolva de aluminio",
-  "Mesa para pruebas de fugas de tazas",
-  "Turbina para extractor de aire",
-  "Fabricación de estructura metálica",
-];
-
-export default function PortafolioPage() {
   return (
     <div className="bg-white">
       {/* Sub-hero de página interna: fotografía en duotono verde */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src="/images/placeholder-pailex.webp"
-            alt="Proyectos de Pailex para la industria cerámica"
+            src={FALLBACK_IMAGE}
+            alt={media.hero?.alt ?? ""}
             fill
             priority
             sizes="100vw"
@@ -104,14 +38,14 @@ export default function PortafolioPage() {
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-16 pt-40">
           <p className="anim-fade-up anim-delay-1 text-accent font-title text-xs md:text-sm uppercase tracking-[0.25em] mb-4">
-            Proyectos entregados y en operación
+            {texts.hero_eyebrow}
           </p>
           <h1 className="anim-fade-up anim-delay-2 text-white font-title text-5xl md:text-7xl font-bold uppercase tracking-tight">
-            Portafolio
+            {texts.hero_title}
           </h1>
           <div className="anim-grow-x w-24 h-[3px] bg-accent mt-6 mb-6" />
           <p className="anim-fade-up anim-delay-3 text-white/80 text-lg md:text-2xl font-body max-w-2xl">
-            Evidencia técnica de lo que fabricamos, instalamos y dejamos operando en planta.
+            {texts.hero_subtitle}
           </p>
         </div>
       </section>
@@ -121,14 +55,14 @@ export default function PortafolioPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-2xl">
             <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight">
-              Proyectos destacados
+              {texts.projects_title}
             </h2>
             <div className="w-20 h-1.5 bg-support mt-4" />
           </div>
         </div>
       </section>
 
-      {projects.map((project, index) => (
+      {collections.projects.map((project, index) => (
         <section
           key={project.title}
           className={`py-14 ${index % 2 === 1 ? "bg-gray-50" : "bg-white"}`}
@@ -138,10 +72,10 @@ export default function PortafolioPage() {
               <div className="grid lg:grid-cols-[1fr_1.4fr]">
                 {/* Fotografía del proyecto: clic para verla a pantalla completa */}
                 <ProjectImage
-                  src={project.image}
+                  src={FALLBACK_IMAGE}
                   title={project.title}
-                  width={project.imageWidth}
-                  height={project.imageHeight}
+                  width={1600}
+                  height={900}
                 />
 
                 {/* Ficha técnica */}
@@ -168,7 +102,7 @@ export default function PortafolioPage() {
       {/* Desarrollo continuo */}
       <section className="py-32 bg-primary text-white relative overflow-hidden">
         <Image
-          src="/images/placeholder-pailex.webp"
+          src={FALLBACK_IMAGE}
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
@@ -185,17 +119,16 @@ export default function PortafolioPage() {
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl mb-16">
             <h2 className="font-title text-4xl md:text-5xl font-bold uppercase tracking-tight text-white">
-              Desarrollo <span className="text-accent">continuo</span>
+              {withHighlight(texts.development_title, texts.development_title_highlight)}
             </h2>
             <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />
             <p className="text-white/80 font-body text-lg">
-              Fabricaciones recurrentes para cliente industrial: piezas, equipos y
-              estructuras que mantienen su operación en marcha.
+              {texts.development_intro}
             </p>
           </div>
 
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4">
-            {continuousDevelopment.map((item) => (
+            {collections.continuous_development.map((item) => (
               <li
                 key={item}
                 className="flex items-baseline gap-4 border-b border-white/10 pb-3"
@@ -211,7 +144,7 @@ export default function PortafolioPage() {
               href="#cotizar"
               className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm"
             >
-              Cotiza tu proyecto
+              {texts.development_cta_label}
             </Link>
           </div>
         </div>
