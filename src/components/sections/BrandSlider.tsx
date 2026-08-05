@@ -14,9 +14,9 @@ export default function BrandSlider({ title, brands }: BrandSliderProps) {
       </div>
 
       <div className="relative flex overflow-hidden group">
-        <div className="flex animate-marquee whitespace-nowrap py-4 items-center">
+        <div className="flex shrink-0 animate-marquee whitespace-nowrap py-4 items-center">
           {[...brands, ...brands].map((brand, index) => (
-            <div key={index} className="mx-12 text-industrial-gray font-title text-2xl md:text-4xl font-bold opacity-30 hover:opacity-100 transition-opacity uppercase cursor-default tracking-tighter">
+            <div key={index} className="shrink-0 mx-12 text-industrial-gray font-title text-2xl md:text-4xl font-bold opacity-30 hover:opacity-100 transition-opacity uppercase cursor-default tracking-tighter">
               {brand.logo ? (
                 <img
                   src={brand.logo.url}
