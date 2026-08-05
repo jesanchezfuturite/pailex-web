@@ -95,7 +95,7 @@ Todo sale del brandbook oficial. Ante cualquier duda, el brandbook manda.
 ## 6. Pendientes al delegar
 
 1. **Vector oficial del imagotipo** → reemplazar paths en `Logo.tsx` y generar favicon/OG image con el isotipo real.
-2. **Logos de las 16 marcas cliente** para `BrandSlider` (hoy es texto). ⚠️ Toto, Interceramic, Vivolmex, Metalsa y Pemex están marcadas con asterisco en el mockup: **confirmar autorización de uso antes de publicar**.
+2. **Logos de las 16 marcas cliente** para `BrandSlider`: ✅ autorización de uso **confirmada por el cliente (4/ago/2026)**, incluidas Toto, Interceramic, Vivolmex, Metalsa y Pemex. 10 logos ya cargados en el CMS (colección `logo` de cada marca); faltan los archivos de GC Transportes, Grúas Flores, JOYA, Crazy Horse Trucking, Toto y Vivolmex — se suben desde el panel (Marcas) cuando estén.
 3. **Backend del formulario de contacto** (footer): hoy no envía nada. Definir destino con Futurité (patrón habitual de la agencia: webhook n8n + correo transaccional Brevo).
 4. **Páginas internas:** Nosotros, Soluciones (detalle), Industrias, Portafolio, Contacto. Los "Ver más" de soluciones deben enlazar a sus páginas (mockup: Servicios → Servicios, Suministros → Productos, Infraestructura → Capacidad instalada).
 5. **Blog:** 3 tarjetas placeholder en home; falta contenido, imágenes (1200×675) y decisión de CMS o MDX.
