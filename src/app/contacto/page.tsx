@@ -24,7 +24,7 @@ export default async function ContactoPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src={FALLBACK_IMAGE}
+            src={media.hero?.url ?? FALLBACK_IMAGE}
             alt={media.hero?.alt ?? ""}
             fill
             priority

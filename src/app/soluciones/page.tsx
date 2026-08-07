@@ -39,7 +39,7 @@ export default async function SolucionesPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src={FALLBACK_IMAGE}
+            src={media.hero?.url ?? FALLBACK_IMAGE}
             alt={media.hero?.alt ?? ""}
             fill
             priority
@@ -93,7 +93,7 @@ export default async function SolucionesPage() {
             <div className={index % 2 === 1 ? "lg:order-2" : ""}>
               <div className="relative h-[380px] overflow-hidden clip-notch-br">
                 <Image
-                  src={FALLBACK_IMAGE}
+                  src={service.image?.url ?? FALLBACK_IMAGE}
                   alt={service.image?.alt ?? service.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -179,7 +179,7 @@ export default async function SolucionesPage() {
       {/* Capacidad instalada */}
       <section id="capacidad-instalada" className="py-32 bg-primary text-white relative overflow-hidden scroll-mt-24">
         <Image
-          src={FALLBACK_IMAGE}
+          src={media.capacity_background?.url ?? FALLBACK_IMAGE}
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"

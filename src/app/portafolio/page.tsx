@@ -21,7 +21,7 @@ export default async function PortafolioPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src={FALLBACK_IMAGE}
+            src={media.hero?.url ?? FALLBACK_IMAGE}
             alt={media.hero?.alt ?? ""}
             fill
             priority
@@ -70,10 +70,10 @@ export default async function PortafolioPage() {
               <div className="grid lg:grid-cols-[1fr_1.4fr]">
                 {/* Fotografía del proyecto: clic para verla a pantalla completa */}
                 <ProjectImage
-                  src={FALLBACK_IMAGE}
+                  src={project.image?.url ?? FALLBACK_IMAGE}
                   title={project.title}
-                  width={1600}
-                  height={900}
+                  width={project.image?.width ?? 1600}
+                  height={project.image?.height ?? 900}
                 />
 
                 {/* Ficha técnica */}
@@ -100,7 +100,7 @@ export default async function PortafolioPage() {
       {/* Desarrollo continuo */}
       <section className="py-32 bg-primary text-white relative overflow-hidden">
         <Image
-          src={FALLBACK_IMAGE}
+          src={media.development_background?.url ?? FALLBACK_IMAGE}
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"

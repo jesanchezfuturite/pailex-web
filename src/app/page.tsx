@@ -51,7 +51,7 @@ export default async function Home() {
       <section className="py-28 bg-primary text-white overflow-hidden relative">
         {/* Textura fotográfica sutil bajo el verde institucional */}
         <Image
-          src={FALLBACK_IMAGE}
+          src={media.why_background?.url ?? FALLBACK_IMAGE}
           alt=""
           fill
           className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
@@ -78,7 +78,7 @@ export default async function Home() {
       <section className="py-24 bg-primary relative overflow-hidden">
         {/* Fondo fotográfico en duotono verde */}
         <Image
-          src={FALLBACK_IMAGE}
+          src={media.cta_background?.url ?? FALLBACK_IMAGE}
           alt=""
           fill
           className="object-cover opacity-30 pointer-events-none"
@@ -111,7 +111,7 @@ export default async function Home() {
           {collections.sectors.map((sector) => (
             <div key={sector.name} className="relative h-72 group overflow-hidden clip-notch-br-sm cursor-default">
               <Image
-                src={FALLBACK_IMAGE}
+                src={sector.image?.url ?? FALLBACK_IMAGE}
                 alt={sector.image?.alt ?? sector.name}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
@@ -183,7 +183,7 @@ function SolutionCard({ title, desc, image, href }: { title: string, desc: strin
       <div className="absolute top-0 left-0 w-full h-1 bg-support group-hover:bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10" />
       <div className="relative h-56 overflow-hidden">
         <Image
-          src={FALLBACK_IMAGE}
+          src={image?.url ?? FALLBACK_IMAGE}
           alt={image?.alt ?? title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"

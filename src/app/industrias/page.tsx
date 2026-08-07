@@ -18,7 +18,7 @@ export default async function IndustriasPage() {
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image
-            src={FALLBACK_IMAGE}
+            src={media.hero?.url ?? FALLBACK_IMAGE}
             alt={media.hero?.alt ?? ""}
             fill
             priority
@@ -67,7 +67,7 @@ export default async function IndustriasPage() {
             <div className={index % 2 === 1 ? "lg:order-2" : ""}>
               <div className="relative h-[360px] overflow-hidden clip-notch-br group">
                 <Image
-                  src={FALLBACK_IMAGE}
+                  src={industry.image?.url ?? FALLBACK_IMAGE}
                   alt={industry.image?.alt ?? industry.name}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"

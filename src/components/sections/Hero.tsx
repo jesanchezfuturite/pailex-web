@@ -16,7 +16,7 @@ export default function Hero({ texts, media }: HeroProps) {
           muted
           loop
           playsInline
-          poster={FALLBACK_IMAGE}
+          poster={media.hero_poster?.url ?? FALLBACK_IMAGE}
         >
           {media.hero_video && <source src={media.hero_video.url} type="video/mp4" />}
         </video>
