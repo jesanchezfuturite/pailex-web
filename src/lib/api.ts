@@ -19,9 +19,16 @@ export interface MediaItem {
   height?: number | null;
 }
 
+export interface MenuLink {
+  label: string;
+  href: string;
+}
+
 export interface Site {
   settings: Record<string, string>;
-  menu: { label: string; href: string }[];
+  menu: MenuLink[];
+  /** Interiores de solución publicados, para el dropdown de "Soluciones". */
+  solutions_menu: MenuLink[];
 }
 
 export interface SolutionCard {
@@ -59,6 +66,8 @@ export interface Differentiator {
 export interface Service {
   slug: string;
   title: string;
+  /** Destino del título (p. ej. el interior de la solución); null = sin enlace. */
+  href: string | null;
   description: string;
   bullets: string[];
   image: MediaItem | null;
@@ -89,6 +98,59 @@ export interface Project {
   scope: string;
   result: string;
   image: (MediaItem & { width: number; height: number }) | null;
+}
+
+export interface SolutionSummary {
+  name: string;
+  slug: string;
+}
+
+/** Interior de solución: plantilla fija de secciones (hoy 1-3; 4-8 a futuro). */
+export interface SolutionDetail {
+  name: string;
+  slug: string;
+  status: "draft" | "published";
+  seo: PageSeo;
+  banner: {
+    title: string;
+    description: string | null;
+    image: MediaItem | null;
+  };
+  hero: {
+    title: string;
+    description: string | null;
+    media_type: "image" | "video";
+    image: MediaItem | null;
+    video: MediaItem | null;
+    video_poster: MediaItem | null;
+    cta: { show: boolean; label: string; href: string };
+  };
+  intro: {
+    enabled: boolean;
+    title: string | null;
+    content: string | null;
+    background: "white" | "green";
+    list: {
+      enabled: boolean;
+      title: string;
+      items: { title: string; description: string | null }[];
+    };
+  };
+  capabilities: {
+    enabled: boolean;
+    title: string | null;
+    items: {
+      title: string;
+      description: string | null;
+      href: string | null;
+      image: MediaItem | null;
+    }[];
+  };
+  faqs: {
+    enabled: boolean;
+    title: string;
+    items: FaqItem[];
+  };
 }
 
 export interface PostSummary {
@@ -160,6 +222,28 @@ async function fetchJson<T>(path: string): Promise<T> {
 export const getSite = () => fetchJson<Site>("/api/site");
 
 export const getPage = <C>(slug: string) => fetchJson<PageData<C>>(`/api/pages/${slug}`);
+
+/** Interiores de solución publicados, en el orden del menú. */
+export const getSolutions = () => fetchJson<SolutionSummary[]>("/api/solutions");
+
+/**
+ * Detalle de un interior de solución; null si el slug no existe (→ 404).
+ * Incluye borradores: su URL exacta funciona como vista previa y la página
+ * los marca noindex.
+ */
+export async function getSolution(slug: string): Promise<SolutionDetail | null> {
+  const res = await fetch(`${API_URL}/api/solutions/${encodeURIComponent(slug)}`, {
+    cache: "force-cache",
+    next: { tags: ["content"] },
+  });
+  if (res.status === 404) {
+    return null;
+  }
+  if (!res.ok) {
+    throw new Error(`Error de la API del CMS: /api/solutions/${slug} respondió ${res.status}`);
+  }
+  return res.json();
+}
 
 /** Notas publicadas del blog, de la más reciente a la más antigua. */
 export const getPosts = () => fetchJson<PostSummary[]>("/api/posts");

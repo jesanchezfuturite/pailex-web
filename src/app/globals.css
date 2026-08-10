@@ -207,3 +207,26 @@ html {
 }
 
 .prose-pailex tbody tr:nth-child(even) { background: #F6F8F1; }
+
+/* Variante para fondo verde institucional (#004431): colores automáticos */
+.prose-pailex-dark { color: rgba(255, 255, 255, 0.8); }
+.prose-pailex-dark h2,
+.prose-pailex-dark h3,
+.prose-pailex-dark h4,
+.prose-pailex-dark h5,
+.prose-pailex-dark h6 { color: #FFFFFF; }
+.prose-pailex-dark h2::before { background: #E8FFC0; }
+.prose-pailex-dark strong { color: #FFFFFF; }
+.prose-pailex-dark a { color: #E8FFC0; text-decoration-color: #B0BF92; }
+.prose-pailex-dark a:hover { text-decoration-color: #E8FFC0; }
+.prose-pailex-dark li::marker { color: #B0BF92; }
+.prose-pailex-dark blockquote {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: #B0BF92;
+  color: #FFFFFF;
+}
+.prose-pailex-dark hr { border-top-color: rgba(176, 191, 146, 0.4); }
+
+/* Variante compacta (tarjetas de capacidades) */
+.prose-pailex-sm { font-size: 1rem; line-height: 1.7; }
+.prose-pailex-sm p { margin: 0.875rem 0; }

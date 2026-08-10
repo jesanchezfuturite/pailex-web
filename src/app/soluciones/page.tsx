@@ -104,7 +104,16 @@ export default async function SolucionesPage() {
             </div>
             <div className={index % 2 === 1 ? "lg:order-1" : ""}>
               <h3 className="font-title text-3xl md:text-4xl font-bold text-primary uppercase tracking-tight mb-4 leading-none">
-                {service.title}
+                {service.href ? (
+                  <Link
+                    href={service.href}
+                    className="hover:text-support transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  >
+                    {service.title}
+                  </Link>
+                ) : (
+                  service.title
+                )}
               </h3>
               <p className="text-industrial-gray font-body text-lg leading-relaxed mb-8">
                 {service.description}

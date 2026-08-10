@@ -10,8 +10,8 @@
     },
     {
       "name": "pailex-admin",
-      "runtimeExecutable": "php",
-      "runtimeArgs": ["C:\\Users\\William\\Documents\\laragon-6.0.0\\laragon\\www\\pailex-admi\\artisan", "serve", "--port=8000"],
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set PHP_CLI_SERVER_WORKERS=8&& php C:\\Users\\William\\Documents\\laragon-6.0.0\\laragon\\www\\pailex-admi\\artisan serve --port=8000"],
       "port": 8000
     }
   ]

@@ -32,7 +32,7 @@ export default async function RootLayout({
   return (
     <html lang="es">
       <body className={`${spaceGrotesk.variable} ${schibstedGrotesk.variable} font-body antialiased`}>
-        <Navbar menu={site.menu} />
+        <Navbar menu={site.menu} solutionsMenu={site.solutions_menu ?? []} />
         <main>{children}</main>
         <Footer settings={site.settings} />
       </body>
