@@ -86,14 +86,12 @@ export interface CapacityGroup {
 export interface Industry {
   name: string;
   description: string;
-  clients: string[];
   image: MediaItem | null;
 }
 
 export interface Project {
   title: string;
   description: string;
-  client: string;
   sector: string;
   scope: string;
   result: string;
@@ -203,9 +201,31 @@ export type SolucionesCollections = {
 
 export type IndustriasCollections = { industries: Industry[] };
 
+export interface CoverageLocation {
+  name: string;
+  state: string;
+  lat: number;
+  lng: number;
+}
+
+export type CoberturaCollections = { locations: CoverageLocation[] };
+
+export interface SuccessCase {
+  title: string;
+  client: string | null;
+  industry: string | null;
+  challenge: string | null;
+  /** HTML del editor del CMS. */
+  intervention: string | null;
+  benefits: { icon: string; text: string }[];
+  impact: string | null;
+  /** El CTA de contacto se muestra después del caso que tenga esta bandera. */
+  show_cta_after: boolean;
+}
+
 export type PortafolioCollections = {
   projects: Project[];
-  continuous_development: string[];
+  success_cases: SuccessCase[];
 };
 
 async function fetchJson<T>(path: string): Promise<T> {

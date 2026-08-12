@@ -103,8 +103,6 @@ export default async function ContactoPage() {
           {/* Formulario extendido de cotización → POST /api/leads del CMS */}
           <ContactQuoteForm
             title={texts.form_title}
-            filesLabel={texts.form_files_label}
-            filesHelp={texts.form_files_help}
             submitLabel={texts.form_submit_label}
           />
         </div>

@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import {
+  CheckCircle2, Clock, ShieldCheck, TrendingUp, UserCheck, Cog, Zap,
+  RefreshCw, Layers, Package, Wrench, Target, type LucideIcon,
+} from "lucide-react";
 import ProjectImage from "@/components/sections/ProjectImage";
 import { getPage, FALLBACK_IMAGE, type PortafolioCollections } from "@/lib/api";
-import { withHighlight } from "@/lib/highlight";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
+
+// Iconos administrables de los beneficios (campo "icon" en el CMS)
+const benefitIcons: Record<string, LucideIcon> = {
+  check: CheckCircle2,
+  clock: Clock,
+  shield: ShieldCheck,
+  trending: TrendingUp,
+  user: UserCheck,
+  settings: Cog,
+  zap: Zap,
+  refresh: RefreshCw,
+  layers: Layers,
+  package: Package,
+  wrench: Wrench,
+  target: Target,
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<PortafolioCollections>("portafolio");
@@ -78,7 +97,6 @@ export default async function PortafolioPage() {
 
                 {/* Ficha técnica */}
                 <div className="p-10 grid sm:grid-cols-2 gap-x-10 gap-y-8 content-center">
-                  <ProjectField label="Cliente" value={project.client} />
                   <ProjectField label="Sector" value={project.sector} />
                   <ProjectField label="Alcance" value={project.scope} />
                   <div>
@@ -97,48 +115,119 @@ export default async function PortafolioPage() {
         </section>
       ))}
 
-      {/* Desarrollo continuo */}
-      <section className="py-32 bg-primary text-white relative overflow-hidden">
-        <Image
-          src={media.development_background?.url ?? FALLBACK_IMAGE}
-          alt=""
-          fill
-          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-        />
-        <div
-          className="absolute inset-0 opacity-5 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(#E8FFC0 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-        />
-        <div className="absolute top-0 right-0 w-48 h-48 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
+      {/* Casos de éxito: administrables desde el CMS (agregar/quitar/ordenar);
+          el CTA al formulario aparece después del caso marcado en el panel */}
+      {collections.success_cases.length > 0 && (
+        <section className="py-24 bg-primary relative overflow-hidden">
+          <div
+            className="absolute inset-0 opacity-5 pointer-events-none"
+            style={{
+              backgroundImage: "radial-gradient(#E8FFC0 1px, transparent 1px)",
+              backgroundSize: "30px 30px",
+            }}
+          />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="max-w-2xl mb-16">
-            <h2 className="font-title text-4xl md:text-5xl font-bold uppercase tracking-tight text-white">
-              {withHighlight(texts.development_title, texts.development_title_highlight)}
-            </h2>
-            <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />
-            <p className="text-white/80 font-body text-lg">
-              {texts.development_intro}
-            </p>
+          <div className="max-w-5xl mx-auto px-6 relative z-10">
+            <div className="max-w-3xl mb-16">
+              <h2 className="font-title text-4xl md:text-5xl font-bold uppercase tracking-tight text-white">
+                {texts.success_title}
+              </h2>
+              <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />
+              <p className="text-white/80 font-body text-lg">{texts.success_intro}</p>
+            </div>
+
+            <div className="space-y-12">
+              {collections.success_cases.map((caso) => (
+                <div key={caso.title}>
+                  <article className="bg-white clip-notch-br p-10 md:p-12">
+                    <p className="font-title text-support text-xs uppercase tracking-[0.3em] mb-3">
+                      Caso de éxito
+                    </p>
+                    <h3 className="font-title text-2xl md:text-3xl font-bold text-primary uppercase tracking-tight leading-tight mb-4">
+                      {caso.title}
+                    </h3>
+                    {(caso.client || caso.industry) && (
+                      <p className="font-body text-industrial-gray text-sm mb-8">
+                        {[caso.client, caso.industry].filter(Boolean).join(" · ")}
+                      </p>
+                    )}
+
+                    {caso.challenge && (
+                      <div className="mb-8">
+                        <h4 className="font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2">
+                          Desafío
+                        </h4>
+                        <p className="font-body text-industrial-gray leading-relaxed">
+                          {caso.challenge}
+                        </p>
+                      </div>
+                    )}
+
+                    {caso.intervention && (
+                      <div className="mb-8">
+                        <h4 className="font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2">
+                          Nuestra intervención
+                        </h4>
+                        <div
+                          className="prose-pailex prose-pailex-sm"
+                          dangerouslySetInnerHTML={{ __html: caso.intervention }}
+                        />
+                      </div>
+                    )}
+
+                    {caso.benefits.length > 0 && (
+                      <div className="mb-8">
+                        <h4 className="font-title text-support text-[11px] uppercase tracking-[0.25em] mb-4">
+                          Beneficios para el cliente
+                        </h4>
+                        <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
+                          {caso.benefits.map((benefit, i) => {
+                            const Icon = benefitIcons[benefit.icon] ?? CheckCircle2;
+                            return (
+                              <li key={`${benefit.text}-${i}`} className="flex items-start gap-3">
+                                <span className="w-9 h-9 bg-primary flex items-center justify-center clip-notch-br-sm shrink-0">
+                                  <Icon size={17} className="text-accent" strokeWidth={1.8} />
+                                </span>
+                                <span className="font-body text-primary leading-snug pt-1.5">
+                                  {benefit.text}
+                                </span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    )}
+
+                    {caso.impact && (
+                      <div className="bg-primary p-8 clip-notch-br-sm relative overflow-hidden">
+                        <div className="w-8 h-[3px] bg-accent mb-4" />
+                        <h4 className="font-title text-accent text-[11px] uppercase tracking-[0.25em] mb-3">
+                          Impacto generado
+                        </h4>
+                        <p className="font-body text-white/90 text-lg leading-relaxed">
+                          {caso.impact}
+                        </p>
+                      </div>
+                    )}
+                  </article>
+
+                  {caso.show_cta_after && (
+                    <div className="text-center mt-12">
+                      <Link
+                        href="/contacto"
+                        className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                      >
+                        {texts.success_cta_label}
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4">
-            {collections.continuous_development.map((item) => (
-              <li
-                key={item}
-                className="flex items-baseline gap-4 border-b border-white/10 pb-3"
-              >
-                <span className="w-3 h-[2px] bg-accent shrink-0 translate-y-[-3px]" />
-                <span className="font-body text-white/90">{item}</span>
-              </li>
-            ))}
-          </ul>
-
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

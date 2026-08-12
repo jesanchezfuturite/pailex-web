@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Paperclip } from "lucide-react";
+import { SERVICE_OPTIONS, SPECS_OPTIONS } from "@/lib/forms";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -9,31 +9,20 @@ type Status = "idle" | "sending" | "success" | "error";
 
 interface ContactQuoteFormProps {
   title: string;
-  filesLabel: string;
-  filesHelp: string;
   submitLabel: string;
 }
 
-export default function ContactQuoteForm({ title, filesLabel, filesHelp, submitLabel }: ContactQuoteFormProps) {
+const inputClass =
+  "w-full bg-white border border-support/30 p-3 text-sm font-body text-primary focus:border-primary outline-none transition-all";
+
+export default function ContactQuoteForm({ title, submitLabel }: ContactQuoteFormProps) {
   const [status, setStatus] = useState<Status>("idle");
-  const [fileCount, setFileCount] = useState(0);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const raw = new FormData(form);
-
-    // La API espera name/company/email/phone/message y files[]
-    const data = new FormData();
-    data.append("name", String(raw.get("nombre") ?? ""));
-    data.append("company", String(raw.get("empresa") ?? ""));
-    data.append("phone", String(raw.get("telefono") ?? ""));
-    data.append("email", String(raw.get("correo") ?? ""));
-    data.append("message", String(raw.get("mensaje") ?? ""));
+    const data = new FormData(form);
     data.append("source", "contacto");
-    for (const file of raw.getAll("planos")) {
-      if (file instanceof File && file.size > 0) data.append("files[]", file);
-    }
 
     setStatus("sending");
     try {
@@ -44,7 +33,6 @@ export default function ContactQuoteForm({ title, filesLabel, filesHelp, submitL
       });
       if (!res.ok) throw new Error(String(res.status));
       form.reset();
-      setFileCount(0);
       setStatus("success");
     } catch {
       setStatus("error");
@@ -69,54 +57,40 @@ export default function ContactQuoteForm({ title, filesLabel, filesHelp, submitL
         </div>
       ) : (
         <form className="grid sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
-          <Field label="Nombre completo" name="nombre" type="text" required />
-          <Field label="Industria / Empresa" name="empresa" type="text" />
-          <Field label="Teléfono / Celular" name="telefono" type="tel" />
-          <Field label="Correo electrónico" name="correo" type="email" required />
-
           <div className="sm:col-span-2">
-            <span className="block font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2">
-              {filesLabel}
-            </span>
-            <label
-              htmlFor="planos"
-              className="flex items-center gap-3 bg-white border border-support/30 border-dashed p-4 cursor-pointer hover:border-primary transition-colors"
-            >
-              <Paperclip size={18} className="text-support shrink-0" />
-              <span className="font-body text-sm text-industrial-gray">
-                {fileCount > 0 ? `${fileCount} archivo(s) seleccionado(s)` : filesHelp}
-              </span>
-            </label>
-            <input
-              id="planos"
-              name="planos"
-              type="file"
-              multiple
-              accept=".pdf,.dwg,.dxf,.step,.stp,.igs,.iges,.jpg,.jpeg,.png"
-              className="sr-only"
-              onChange={(e) => setFileCount(e.currentTarget.files?.length ?? 0)}
-            />
+            <Field label="Nombre completo" name="name" type="text" required />
           </div>
+          <Field label="Correo electrónico" name="email" type="email" required />
+          <Field label="Teléfono / WhatsApp" name="phone" type="tel" />
+          <Field label="Empresa" name="company" type="text" />
+          <Field label="Cargo" name="position" type="text" />
+
+          <SelectField
+            label="¿Qué tipo de servicio requieres?"
+            name="service_type"
+            options={SERVICE_OPTIONS}
+            required
+          />
+          <SelectField
+            label="¿Cuentas con plano, muestra o especificaciones?"
+            name="has_specs"
+            options={SPECS_OPTIONS}
+            required
+          />
 
           <div className="sm:col-span-2">
             <label
-              htmlFor="mensaje"
+              htmlFor="message"
               className="block font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2"
             >
-              Mensaje
+              Cuéntanos un poco sobre tu requerimiento
             </label>
-            <textarea
-              id="mensaje"
-              name="mensaje"
-              rows={4}
-              className="w-full bg-white border border-support/30 p-3 text-sm font-body focus:border-primary outline-none transition-all"
-            />
+            <textarea id="message" name="message" rows={4} className={inputClass} />
           </div>
 
           {status === "error" && (
             <p className="sm:col-span-2 text-red-600 text-xs font-body">
-              No se pudo enviar tu solicitud. Verifica los datos (los archivos deben
-              ser PDF, DWG, DXF, STEP o imágenes de máximo 20 MB) e intenta de nuevo.
+              No se pudo enviar tu solicitud. Verifica los datos e intenta de nuevo.
             </p>
           )}
 
@@ -142,13 +116,40 @@ function Field({ label, name, type, required }: { label: string; name: string; t
       >
         {label}
       </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        className="w-full bg-white border border-support/30 p-3 text-sm font-body focus:border-primary outline-none transition-all"
-      />
+      <input id={name} name={name} type={type} required={required} className={inputClass} />
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  options,
+  required,
+}: {
+  label: string;
+  name: string;
+  options: readonly string[];
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={name}
+        className="block font-title text-support text-[11px] uppercase tracking-[0.25em] mb-2"
+      >
+        {label}
+      </label>
+      <select id={name} name={name} required={required} defaultValue="" className={inputClass}>
+        <option value="" disabled>
+          Selecciona una opción
+        </option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

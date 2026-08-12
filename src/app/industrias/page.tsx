@@ -82,11 +82,8 @@ export default async function IndustriasPage() {
               <h3 className="font-title text-3xl md:text-4xl font-bold text-primary uppercase tracking-tight leading-none mb-4">
                 {industry.name}
               </h3>
-              <p className="text-industrial-gray font-body text-lg leading-relaxed mb-6">
+              <p className="text-industrial-gray font-body text-lg leading-relaxed">
                 {industry.description}
-              </p>
-              <p className="font-title text-support text-xs md:text-sm uppercase tracking-[0.2em]">
-                {industry.clients.join(" · ")}
               </p>
             </div>
           </div>
