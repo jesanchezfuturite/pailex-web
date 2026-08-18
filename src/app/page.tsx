@@ -1,35 +1,53 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Hero from "@/components/sections/Hero";
+import PageHero from "@/components/sections/PageHero";
 import BrandSlider from "@/components/sections/BrandSlider";
 import FAQAccordion from "@/components/sections/FAQAccordion";
-import { getPage, getPosts, FALLBACK_IMAGE, type HomeCollections, type MediaItem } from "@/lib/api";
+import SectionDots from "@/components/sections/SectionDots";
+import { getPage, getPosts, FALLBACK_IMAGE, type HomeCollections, type MediaItem, type CardBackground } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 import { formatDate } from "@/lib/format";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
+import { sectionStyle, isDotted, cardStyle } from "@/lib/sectionStyle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<HomeCollections>("home");
-  return pageMetadata(page.seo, "/", page.media.hero_poster ?? null);
+  return pageMetadata(page.seo, "/", page.hero.video_poster ?? page.hero.image ?? null);
 }
 
 export default async function Home() {
   const [page, posts] = await Promise.all([getPage<HomeCollections>("home"), getPosts()]);
-  const { texts, media, collections } = page;
+  const { texts, collections, sections } = page;
   const latestPosts = posts.slice(0, 3);
+
+  const solutionsCards = sections.solutions_cards;
+  const whyChoose = sections.why_choose;
+  const ctaBanner = sections.cta_banner;
+  const brands = sections.brands;
+  const sectors = sections.sectors;
+  const blog = sections.blog;
+  const faq = sections.faq;
+
+  const whyStyle = sectionStyle(whyChoose.background);
+  const ctaStyle = sectionStyle(ctaBanner.background);
+  const sectorsStyle = sectionStyle(sectors.background);
+  const blogStyle = sectionStyle(blog.background);
 
   return (
     <div className="bg-white">
       <SchemaScript schema={page.seo.schema} />
-      <Hero texts={texts} media={media} />
+      <PageHero hero={page.hero} />
 
-      {/* Sección Soluciones - Refinada */}
-      <section className="py-32">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* Tarjetas de Soluciones */}
+      <section className={`py-32 relative overflow-hidden ${sectionStyle(solutionsCards.background).section}`}>
+        {isDotted(solutionsCards.background) && <SectionDots />}
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
             <div className="max-w-2xl">
-              <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight">{texts.solutions_title}</h2>
+              <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${sectionStyle(solutionsCards.background).heading}`}>
+                {solutionsCards.title}
+              </h2>
               <div className="w-20 h-1.5 bg-support mt-4" />
             </div>
           </div>
@@ -41,26 +59,21 @@ export default async function Home() {
                 desc={card.description}
                 image={card.image}
                 href={card.href}
+                background={card.background}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ¿Por qué elegir a Pailex? - Refinado con líneas de acento */}
-      <section className="py-28 bg-primary text-white overflow-hidden relative">
-        {/* Textura fotográfica sutil bajo el verde institucional */}
-        <Image
-          src={media.why_background?.url ?? FALLBACK_IMAGE}
-          alt=""
-          fill
-          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-        />
-        <div className="absolute inset-0 opacity-5 pointer-events-none"
-             style={{backgroundImage: 'radial-gradient(#E8FFC0 1px, transparent 1px)', backgroundSize: '30px 30px'}} />
+      {/* ¿Por qué elegir a Pailex? */}
+      <section className={`py-28 overflow-hidden relative ${whyStyle.section}`}>
+        {isDotted(whyChoose.background) && <SectionDots />}
 
         <div className="max-w-7xl mx-auto px-6 text-center mb-20 relative z-10">
-          <h2 className="font-title text-4xl md:text-5xl font-bold uppercase tracking-tight text-white">{withHighlight(texts.why_title, texts.why_title_highlight)}</h2>
+          <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${whyStyle.heading}`}>
+            {withHighlight(whyChoose.title ?? "", whyChoose.title_highlight)}
+          </h2>
         </div>
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 relative z-10">
           {collections.features.map((feature, i) => (
@@ -69,30 +82,22 @@ export default async function Home() {
               title={feature.title}
               desc={feature.description}
               isFirst={i === 0}
+              light={whyChoose.background === "white" || whyChoose.background === "gray"}
             />
           ))}
         </div>
       </section>
 
-      {/* Banner CTA Central — verde institucional; lima solo como acento (brandbook: uso moderado) */}
-      <section className="py-24 bg-primary relative overflow-hidden">
-        {/* Fondo fotográfico en duotono verde */}
-        <Image
-          src={media.cta_background?.url ?? FALLBACK_IMAGE}
-          alt=""
-          fill
-          className="object-cover opacity-30 pointer-events-none"
-        />
-        <div className="absolute inset-0 bg-primary/80 pointer-events-none" />
-        <div className="absolute inset-0 opacity-[0.06] pointer-events-none"
-             style={{backgroundImage: 'radial-gradient(#E8FFC0 2px, transparent 2px)', backgroundSize: '24px 24px'}} />
+      {/* Banner CTA Central */}
+      <section className={`py-24 relative overflow-hidden ${ctaStyle.section}`}>
+        {isDotted(ctaBanner.background) && <SectionDots />}
         {/* Motivo geométrico de marca: triángulos a 45° tipo molinete */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-support/10 [clip-path:polygon(0_100%,0_0,100%_100%)] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-          <h2 className="text-white font-title text-3xl md:text-5xl font-bold mb-12 max-w-5xl mx-auto leading-tight uppercase tracking-tighter">
-            {withHighlight(texts.cta_title, texts.cta_title_highlight)}
+          <h2 className={`font-title text-3xl md:text-5xl font-bold mb-12 max-w-5xl mx-auto leading-tight uppercase tracking-tighter ${ctaStyle.heading}`}>
+            {withHighlight(ctaBanner.title ?? "", ctaBanner.title_highlight)}
           </h2>
           <a href="#cotizar" className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm">
             {texts.cta_label}
@@ -100,14 +105,15 @@ export default async function Home() {
         </div>
       </section>
 
-      <BrandSlider title={texts.brands_title} brands={collections.brands} />
+      <BrandSlider title={brands.title ?? ""} brands={collections.brands} background={brands.background} />
 
-      {/* Sectors Grid - Rediseño Tarjetas Técnicas */}
-      <section className="py-32 bg-white border-b border-support/10">
-        <div className="max-w-7xl mx-auto px-6 text-center mb-16">
-          <h2 className="font-title text-3xl md:text-4xl font-bold text-primary uppercase tracking-tight">{texts.sectors_title}</h2>
+      {/* Sectores que respaldamos */}
+      <section className={`py-32 border-b border-support/10 relative overflow-hidden ${sectorsStyle.section}`}>
+        {isDotted(sectors.background) && <SectionDots />}
+        <div className="max-w-7xl mx-auto px-6 text-center mb-16 relative z-10">
+          <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${sectorsStyle.heading}`}>{sectors.title}</h2>
         </div>
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative z-10">
           {collections.sectors.map((sector) => (
             <div key={sector.name} className="relative h-72 group overflow-hidden clip-notch-br-sm cursor-default">
               <Image
@@ -129,10 +135,11 @@ export default async function Home() {
 
       {/* Blog: últimas notas publicadas en el CMS */}
       {latestPosts.length > 0 && (
-        <section className="py-32 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className={`py-32 relative overflow-hidden ${blogStyle.section}`}>
+          {isDotted(blog.background) && <SectionDots />}
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="border-t-4 border-support pt-12 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <h2 className="font-title text-4xl font-bold text-primary uppercase tracking-tight">{texts.blog_title}</h2>
+              <h2 className={`font-title text-4xl font-bold uppercase tracking-tight ${blogStyle.heading}`}>{blog.title}</h2>
               <Link
                 href="/blog"
                 className="relative overflow-hidden text-primary font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center self-start md:self-auto group/all"
@@ -172,14 +179,17 @@ export default async function Home() {
         </section>
       )}
 
-      <FAQAccordion title={texts.faq_title} faqs={collections.faqs} />
+      <FAQAccordion title={faq.title ?? ""} faqs={collections.faqs} background={faq.background} />
     </div>
   );
 }
 
-function SolutionCard({ title, desc, image, href }: { title: string, desc: string, image: MediaItem | null, href: string }) {
+function SolutionCard({
+  title, desc, image, href, background,
+}: { title: string, desc: string, image: MediaItem | null, href: string, background: CardBackground }) {
+  const style = cardStyle(background);
   return (
-    <div className="border border-support/20 hover:bg-primary group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br">
+    <div className={`border border-support/20 group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br ${style.base} ${style.hover}`}>
       <div className="absolute top-0 left-0 w-full h-1 bg-support group-hover:bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10" />
       <div className="relative h-56 overflow-hidden">
         <Image
@@ -192,8 +202,8 @@ function SolutionCard({ title, desc, image, href }: { title: string, desc: strin
         <div className="absolute inset-0 bg-primary/15 group-hover:bg-primary/40 transition-colors duration-500" />
       </div>
       <div className="p-10">
-        <h3 className="font-title text-3xl font-bold text-primary group-hover:text-accent mb-6 transition-colors uppercase tracking-tight leading-none">{title}</h3>
-        <p className="text-industrial-gray group-hover:text-white/70 mb-10 font-body transition-colors leading-relaxed text-lg">{desc}</p>
+        <h3 className={`font-title text-3xl font-bold mb-6 transition-colors uppercase tracking-tight leading-none group-hover:text-accent ${style.heading}`}>{title}</h3>
+        <p className={`mb-10 font-body transition-colors leading-relaxed text-lg ${style.body}`}>{desc}</p>
         <Link href={href} className="relative overflow-hidden group/btn text-primary font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center">
           <span className="relative z-10 group-hover:text-accent transition-colors duration-300">Ver más</span>
           <div className="absolute bottom-0 left-0 w-full h-[2px] bg-support group-hover:bg-accent transform origin-left transition-all duration-300" />
@@ -203,12 +213,16 @@ function SolutionCard({ title, desc, image, href }: { title: string, desc: strin
   );
 }
 
-function FeatureItem({ title, desc, isFirst }: { title: string, desc: string, isFirst?: boolean }) {
+function FeatureItem({ title, desc, isFirst, light }: { title: string, desc: string, isFirst?: boolean, light?: boolean }) {
   return (
-    <div className={`p-10 border-support/25 ${isFirst ? 'md:border-l-0' : 'md:border-l'} space-y-6 group hover:bg-white/5 transition-colors`}>
+    <div
+      className={`p-10 space-y-6 group transition-colors ${isFirst ? "md:border-l-0" : "md:border-l"} ${
+        light ? "border-support/40 hover:bg-black/[0.03]" : "border-support/25 hover:bg-white/5"
+      }`}
+    >
       <div className="w-8 h-[3px] bg-accent" />
-      <h4 className="font-title font-bold text-2xl uppercase tracking-wider text-white leading-tight">{title}</h4>
-      <p className="text-support text-base font-body leading-relaxed">{desc}</p>
+      <h4 className={`font-title font-bold text-2xl uppercase tracking-wider leading-tight ${light ? "text-primary" : "text-white"}`}>{title}</h4>
+      <p className={`text-base font-body leading-relaxed ${light ? "text-industrial-gray" : "text-support"}`}>{desc}</p>
     </div>
   );
 }

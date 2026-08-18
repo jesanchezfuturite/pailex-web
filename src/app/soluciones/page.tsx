@@ -8,10 +8,13 @@ import {
 import { getPage, FALLBACK_IMAGE, type SolucionesCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
+import PageHero from "@/components/sections/PageHero";
+import SectionDots from "@/components/sections/SectionDots";
+import { sectionStyle, isDotted, cardStyle } from "@/lib/sectionStyle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<SolucionesCollections>("soluciones");
-  return pageMetadata(page.seo, "/soluciones", page.media.hero ?? null);
+  return pageMetadata(page.seo, `/${page.slug}`, page.hero.image ?? null);
 }
 
 // Mapa de iconos administrables desde el CMS (campo "icon" de productos)
@@ -28,55 +31,30 @@ const productIcons: Record<string, LucideIcon> = {
 };
 
 export default async function SolucionesPage() {
-  const { texts, media, collections, seo } = await getPage<SolucionesCollections>("soluciones");
+  const page = await getPage<SolucionesCollections>("soluciones");
+  const { texts, collections, seo, sections } = page;
   const { services, products, capacity_groups: capacity } = collections;
+
+  const servicesSection = sections.services;
+  const productsSection = sections.products;
+  const capacitySection = sections.capacity;
+
+  const servicesStyle = sectionStyle(servicesSection.background);
+  const productsStyle = sectionStyle(productsSection.background);
+  const capacityStyle = sectionStyle(capacitySection.background);
 
   return (
     <div className="bg-white">
       <SchemaScript schema={seo.schema} />
-      {/* Sub-hero: gradación esmeralda cinematográfica de alto contraste
-          con acentos lima fríos (dirección de arte del banner) */}
-      <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
-        <div className="absolute inset-0">
-          <Image
-            src={media.hero?.url ?? FALLBACK_IMAGE}
-            alt={media.hero?.alt ?? ""}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover contrast-125 saturate-[0.85]"
-          />
-          {/* Gradación esmeralda profunda en multiply + sombra hacia negro */}
-          <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-primary/10 to-black/30" />
-          {/* Acento lima frío: resplandor lateral sutil */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-accent/10" />
-        </div>
+      <PageHero hero={page.hero} />
 
-        {/* Línea lima en la base del banner */}
-        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent/60 via-accent/10 to-transparent z-20" />
-        <div className="absolute top-24 right-6 w-10 h-10 border-t-2 border-r-2 border-accent/40 z-20 hidden md:block" />
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-16 pt-40">
-          <p className="anim-fade-up anim-delay-1 text-accent font-title text-xs md:text-sm uppercase tracking-[0.25em] mb-4">
-            {texts.hero_eyebrow}
-          </p>
-          <h1 className="anim-fade-up anim-delay-2 text-white font-title text-5xl md:text-7xl font-bold uppercase tracking-tight">
-            {texts.hero_title}
-          </h1>
-          <div className="anim-grow-x w-24 h-[3px] bg-accent mt-6 mb-6" />
-          <p className="anim-fade-up anim-delay-3 text-white/80 text-lg md:text-2xl font-body max-w-2xl">
-            {texts.hero_subtitle}
-          </p>
-        </div>
-      </section>
-
-      {/* Servicios industriales: filas con fondos alternados blanco/gris */}
-      <section id="servicios" className="pt-32 pb-8 bg-white scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* Servicios industriales: encabezado; cada servicio alterna blanco/gris debajo */}
+      <section id="servicios" className={`pt-32 pb-8 scroll-mt-24 relative overflow-hidden ${servicesStyle.section}`}>
+        {isDotted(servicesSection.background) && <SectionDots />}
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl">
-            <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight">
-              {texts.services_title}
+            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${servicesStyle.heading}`}>
+              {servicesSection.title}
             </h2>
             <div className="w-20 h-1.5 bg-support mt-4" />
           </div>
@@ -143,14 +121,15 @@ export default async function SolucionesPage() {
       </section>
 
       {/* Productos / Suministros */}
-      <section id="productos" className="py-32 bg-gray-50 scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="productos" className={`py-32 scroll-mt-24 relative overflow-hidden ${productsStyle.section}`}>
+        {isDotted(productsSection.background) && <SectionDots />}
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="border-t-4 border-support pt-12 mb-6">
-            <h2 className="font-title text-4xl md:text-5xl font-bold text-primary uppercase tracking-tight">
-              {texts.products_title}
+            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${productsStyle.heading}`}>
+              {productsSection.title}
             </h2>
           </div>
-          <p className="text-industrial-gray font-body text-lg max-w-3xl mb-16">
+          <p className={`font-body text-lg max-w-3xl mb-16 ${productsStyle.body}`}>
             {texts.products_intro}
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -186,51 +165,42 @@ export default async function SolucionesPage() {
       </section>
 
       {/* Capacidad instalada */}
-      <section id="capacidad-instalada" className="py-32 bg-primary text-white relative overflow-hidden scroll-mt-24">
-        <Image
-          src={media.capacity_background?.url ?? FALLBACK_IMAGE}
-          alt=""
-          fill
-          className="object-cover opacity-10 mix-blend-multiply pointer-events-none"
-        />
-        <div
-          className="absolute inset-0 opacity-5 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(#E8FFC0 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-        />
+      <section id="capacidad-instalada" className={`py-32 relative overflow-hidden scroll-mt-24 ${capacityStyle.section}`}>
+        {isDotted(capacitySection.background) && <SectionDots />}
         <div className="absolute top-0 right-0 w-48 h-48 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl mb-16">
-            <h2 className="font-title text-4xl md:text-5xl font-bold uppercase tracking-tight text-white">
-              {withHighlight(texts.capacity_title, texts.capacity_title_highlight)}
+            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${capacityStyle.heading}`}>
+              {withHighlight(capacitySection.title ?? "", capacitySection.title_highlight)}
             </h2>
             <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />
-            <p className="text-white/80 font-body text-lg">
+            <p className={`font-body text-lg ${capacityStyle.body}`}>
               {texts.capacity_intro}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12">
-            {capacity.map((group) => (
-              <div key={group.name} className="border border-white/15 p-10 clip-notch-br bg-white/5">
-                <h3 className="font-title text-2xl font-bold text-accent uppercase tracking-wider mb-8">
-                  {group.name}
-                </h3>
-                <ul className="space-y-4">
-                  {group.equipment.map((item, i) => (
-                    <li key={item} className="flex items-baseline gap-4 border-b border-white/10 pb-3">
-                      <span className="font-title text-support text-xs tracking-widest shrink-0">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="font-body text-white/90">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {capacity.map((group) => {
+              const groupStyle = cardStyle(group.background);
+              return (
+                <div key={group.name} className={`border border-support/20 p-10 clip-notch-br ${groupStyle.base}`}>
+                  <h3 className={`font-title text-2xl font-bold uppercase tracking-wider mb-8 ${groupStyle.heading}`}>
+                    {group.name}
+                  </h3>
+                  <ul className="space-y-4">
+                    {group.equipment.map((item, i) => (
+                      <li key={item} className="flex items-baseline gap-4 border-b border-support/20 pb-3">
+                        <span className="font-title text-support text-xs tracking-widest shrink-0">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className={`font-body ${groupStyle.body}`}>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
 
         </div>

@@ -1,16 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 import type { BrandItem } from "@/lib/api";
+import { sectionStyle, isDotted, type SectionBackground } from "@/lib/sectionStyle";
+import SectionDots from "./SectionDots";
 
 interface BrandSliderProps {
   title: string;
   brands: BrandItem[];
+  background?: SectionBackground;
 }
 
-export default function BrandSlider({ title, brands }: BrandSliderProps) {
+export default function BrandSlider({ title, brands, background = "white" }: BrandSliderProps) {
+  const style = sectionStyle(background);
   return (
-    <section className="py-20 bg-white overflow-hidden border-y border-support/10">
-      <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
-        <h2 className="font-title text-2xl md:text-3xl font-bold text-primary uppercase tracking-wider">{title}</h2>
+    <section className={`py-20 overflow-hidden border-y border-support/10 relative ${style.section}`}>
+      {isDotted(background) && <SectionDots />}
+      <div className="max-w-7xl mx-auto px-6 mb-12 text-center relative z-10">
+        <h2 className={`font-title text-2xl md:text-3xl font-bold uppercase tracking-wider ${style.heading}`}>{title}</h2>
       </div>
 
       <div className="relative flex overflow-hidden group">

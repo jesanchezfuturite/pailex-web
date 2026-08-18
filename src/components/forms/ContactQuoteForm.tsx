@@ -72,7 +72,7 @@ export default function ContactQuoteForm({ title, submitLabel }: ContactQuoteFor
             required
           />
           <SelectField
-            label="¿Cuentas con plano, muestra o especificaciones?"
+            label="¿Cuentas con plano o muestra?"
             name="has_specs"
             options={SPECS_OPTIONS}
             required

@@ -71,11 +71,11 @@ export default function FooterQuoteForm() {
         name="has_specs"
         required
         defaultValue=""
-        aria-label="¿Cuentas con plano, muestra o especificaciones?"
+        aria-label="¿Cuentas con plano o muestra?"
         className={`${inputClass} [&>option]:text-primary`}
       >
         <option value="" disabled>
-          ¿Cuentas con plano, muestra o especificaciones?
+          ¿Cuentas con plano o muestra?
         </option>
         {SPECS_OPTIONS.map((option) => (
           <option key={option} value={option}>

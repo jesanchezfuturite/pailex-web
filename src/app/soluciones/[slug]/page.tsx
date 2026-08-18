@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSolution, getSolutions, FALLBACK_IMAGE } from "@/lib/api";
+import { getSolution, getSolutions, getSite, FALLBACK_IMAGE } from "@/lib/api";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 import FAQAccordion from "@/components/sections/FAQAccordion";
+import ContactCtaBlock from "@/components/sections/ContactCtaBlock";
 
 /**
  * Plantilla única de los interiores de solución (secciones 1-3 aprobadas).
@@ -47,12 +48,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SolutionPage({ params }: Props) {
   const { slug } = await params;
-  const solution = await getSolution(slug);
+  const [solution, site] = await Promise.all([getSolution(slug), getSite()]);
   if (!solution) {
     notFound();
   }
 
-  const { banner, hero, intro, capabilities, faqs } = solution;
+  const { banner, hero, contact_cta: contactCta, intro, capabilities, faqs } = solution;
   const introDark = intro.background === "green";
   const showIntro = intro.enabled && Boolean(intro.title || intro.content);
   const showList = intro.list.enabled && intro.list.items.length > 0;
@@ -156,6 +157,17 @@ export default async function SolutionPage({ params }: Props) {
           )}
         </div>
       </section>
+
+      {/* ── Sección de contacto (opcional): mismo bloque que /contacto ── */}
+      {contactCta.enabled && contactCta.title && (
+        <ContactCtaBlock
+          title={contactCta.title}
+          body={contactCta.body}
+          formTitle={contactCta.form_title}
+          submitLabel={contactCta.form_submit_label}
+          settings={site.settings}
+        />
+      )}
 
       {/* ── Sección 2: Introducción técnica (opcional) ────────── */}
       {showIntro && (

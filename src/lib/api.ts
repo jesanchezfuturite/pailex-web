@@ -31,10 +31,14 @@ export interface Site {
   solutions_menu: MenuLink[];
 }
 
+/** Colores de tarjeta permitidos en todo el sitio. */
+export type CardBackground = "white" | "gray" | "primary" | "support";
+
 export interface SolutionCard {
   title: string;
   description: string;
   href: string;
+  background: CardBackground;
   image: MediaItem | null;
 }
 
@@ -61,6 +65,7 @@ export interface FaqItem {
 export interface Differentiator {
   title: string;
   description: string;
+  background: CardBackground;
 }
 
 export interface Service {
@@ -81,21 +86,14 @@ export interface Product {
 export interface CapacityGroup {
   name: string;
   equipment: string[];
+  background: CardBackground;
 }
 
 export interface Industry {
   name: string;
   description: string;
+  company_names: string[];
   image: MediaItem | null;
-}
-
-export interface Project {
-  title: string;
-  description: string;
-  sector: string;
-  scope: string;
-  result: string;
-  image: (MediaItem & { width: number; height: number }) | null;
 }
 
 export interface SolutionSummary {
@@ -122,6 +120,13 @@ export interface SolutionDetail {
     video: MediaItem | null;
     video_poster: MediaItem | null;
     cta: { show: boolean; label: string; href: string };
+  };
+  contact_cta: {
+    enabled: boolean;
+    title: string | null;
+    body: string | null;
+    form_title: string;
+    form_submit_label: string;
   };
   intro: {
     enabled: boolean;
@@ -174,13 +179,42 @@ export interface PageSeo {
   schema?: unknown;
 }
 
+/** Hero estructurado de las páginas del sitio (mismo shape que el de Solutions). */
+export interface PageHero {
+  eyebrow: string | null;
+  title: string;
+  description: string | null;
+  media_type: "image" | "video";
+  image: MediaItem | null;
+  video: MediaItem | null;
+  video_poster: MediaItem | null;
+  cta: { show: boolean; label: string; href: string };
+}
+
+/** Sección configurable (título, nombre interno para anclas y color de fondo). */
+export interface PageSectionData {
+  internal_name: string | null;
+  title: string | null;
+  title_highlight: string | null;
+  background: "white" | "gray" | "primary" | "primary-dots";
+}
+
 export interface PageData<C = Record<string, never>> {
   slug: string;
   name: string;
   seo: PageSeo;
+  hero: PageHero;
   texts: Record<string, string>;
   media: Record<string, MediaItem>;
+  sections: Record<string, PageSectionData>;
   collections: C;
+}
+
+/** Slug público → clave interna estable, usado por el middleware para
+ *  enrutar una URL personalizada hacia la plantilla que le corresponde. */
+export interface PageRoute {
+  slug: string;
+  template: string;
 }
 
 export type HomeCollections = {
@@ -191,7 +225,18 @@ export type HomeCollections = {
   faqs: FaqItem[];
 };
 
-export type NosotrosCollections = { differentiators: Differentiator[] };
+export interface TimelineItem {
+  year: string;
+  description: string;
+  image: MediaItem | null;
+}
+
+export type NosotrosCollections = {
+  differentiators: Differentiator[];
+  timeline: TimelineItem[];
+  /** Mismas localidades del mapa de Cobertura, reutilizadas en Nosotros. */
+  locations: CoverageLocation[];
+};
 
 export type SolucionesCollections = {
   services: Service[];
@@ -208,12 +253,11 @@ export interface CoverageLocation {
   lng: number;
 }
 
-export type CoberturaCollections = { locations: CoverageLocation[] };
-
 export interface SuccessCase {
   title: string;
   client: string | null;
   industry: string | null;
+  image: MediaItem | null;
   challenge: string | null;
   /** HTML del editor del CMS. */
   intervention: string | null;
@@ -224,7 +268,6 @@ export interface SuccessCase {
 }
 
 export type PortafolioCollections = {
-  projects: Project[];
   success_cases: SuccessCase[];
 };
 
@@ -242,6 +285,9 @@ async function fetchJson<T>(path: string): Promise<T> {
 export const getSite = () => fetchJson<Site>("/api/site");
 
 export const getPage = <C>(slug: string) => fetchJson<PageData<C>>(`/api/pages/${slug}`);
+
+/** Usado por el middleware para resolver slugs personalizados a su plantilla. */
+export const getPageRoutes = () => fetchJson<PageRoute[]>("/api/page-routes");
 
 /** Interiores de solución publicados, en el orden del menú. */
 export const getSolutions = () => fetchJson<SolutionSummary[]>("/api/solutions");
