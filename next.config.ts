@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
   images: {
     // Solo en desarrollo: el optimizador de Next 16 bloquea IPs privadas por defecto
     dangerouslyAllowLocalIP: isLocalApi,
+    // Necesario para /images/placeholder.svg (imagen propia, no subida por usuarios)
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: apiUrl.protocol.replace(":", "") as "http" | "https",

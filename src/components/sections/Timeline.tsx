@@ -92,7 +92,7 @@ function TimelineDot() {
   );
 }
 
-function TimelineImage({ image, className = "" }: { image: TimelineItem["image"]; className?: string }) {
+function TimelineImage({ image, className = "" }: { image: TimelineItemData["image"]; className?: string }) {
   return (
     <div className={`relative overflow-hidden clip-notch-br-sm shrink-0 ${className}`}>
       <Image

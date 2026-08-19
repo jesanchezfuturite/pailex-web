@@ -72,14 +72,28 @@ export default async function SolutionPage({ params }: Props) {
       {/* ── Banner superior: mismo patrón que las demás páginas internas ── */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
-          <Image
-            src={banner.image?.url ?? FALLBACK_IMAGE}
-            alt={banner.image?.alt ?? banner.title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
+          {banner.media_type === "video" && banner.video ? (
+            <video
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={banner.video_poster?.url}
+            >
+              <source src={banner.video.url} type="video/mp4" />
+            </video>
+          ) : (
+            <Image
+              src={banner.image?.url ?? FALLBACK_IMAGE}
+              alt={banner.image?.alt ?? banner.title}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          )}
           <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
         </div>

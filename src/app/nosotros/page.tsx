@@ -8,7 +8,7 @@ import PageHero from "@/components/sections/PageHero";
 import Timeline from "@/components/sections/Timeline";
 import CoverageMap from "@/components/sections/CoverageMap";
 import SectionDots from "@/components/sections/SectionDots";
-import { sectionStyle, isDotted, cardStyle } from "@/lib/sectionStyle";
+import { sectionStyle, isDotted, cardStyle, type CardBackground } from "@/lib/sectionStyle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<NosotrosCollections>("nosotros");
@@ -60,14 +60,27 @@ export default async function NosotrosPage() {
 
           <div className="relative">
             <div className="relative h-[520px] overflow-hidden clip-notch-br">
-              <Image
-                src={media.experience_image?.url ?? FALLBACK_IMAGE}
-                alt={media.experience_image?.alt ?? ""}
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-primary/25 mix-blend-multiply" />
+              {experience.media_type === "video" && media.experience_video ? (
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  controls
+                  preload="metadata"
+                  poster={media.experience_video_poster?.url}
+                >
+                  <source src={media.experience_video.url} type="video/mp4" />
+                </video>
+              ) : (
+                <>
+                  <Image
+                    src={media.experience_image?.url ?? FALLBACK_IMAGE}
+                    alt={media.experience_image?.alt ?? ""}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-primary/25 mix-blend-multiply" />
+                </>
+              )}
             </div>
             {/* Esquinero en L y pleca: detalles geométricos de marca */}
             <div className="absolute -top-4 -left-4 w-12 h-12 border-t-4 border-l-4 border-support hidden md:block" />
@@ -177,10 +190,10 @@ export default async function NosotrosPage() {
 
 function DifferentiatorCard({
   number, title, desc, background,
-}: { number: string; title: string; desc: string; background: "white" | "gray" | "primary" | "support" }) {
+}: { number: string; title: string; desc: string; background: CardBackground }) {
   const style = cardStyle(background);
   return (
-    <div className={`border border-support/20 p-10 group transition-all duration-500 clip-notch-br relative overflow-hidden ${style.base} ${style.hover}`}>
+    <div className={`border p-10 group transition-all duration-500 clip-notch-br relative overflow-hidden ${style.base} ${style.border} ${style.hover}`}>
       <span className="absolute top-6 right-8 font-title font-bold text-5xl text-support/20 group-hover:text-accent/20 transition-colors select-none">
         {number}
       </span>

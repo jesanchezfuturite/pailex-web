@@ -7,10 +7,10 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 /** URL pública del sitio: canónicas, Open Graph y Schema.org. */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-/** Imagen de respaldo para los espacios fotográficos: lienzo 1600×900 con el
- *  imagotipo oficial centrado a tamaño proporcional (no se estira ni recorta
- *  el logo en contenedores con object-cover). */
-export const FALLBACK_IMAGE = "/images/placeholder-pailex.webp";
+/** Imagen de respaldo para los espacios fotográficos sin imagen configurada:
+ *  un lienzo neutro liso, para no mostrar el logo de la empresa como si
+ *  fuera contenido real. */
+export const FALLBACK_IMAGE = "/images/placeholder.svg";
 
 export interface MediaItem {
   url: string;
@@ -110,7 +110,10 @@ export interface SolutionDetail {
   banner: {
     title: string;
     description: string | null;
+    media_type: "image" | "video";
     image: MediaItem | null;
+    video: MediaItem | null;
+    video_poster: MediaItem | null;
   };
   hero: {
     title: string;
@@ -196,7 +199,9 @@ export interface PageSectionData {
   internal_name: string | null;
   title: string | null;
   title_highlight: string | null;
-  background: "white" | "gray" | "primary" | "primary-dots";
+  background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
+  /** Solo aplica a secciones con medio propio (p. ej. "Más de 35 años"). */
+  media_type: "image" | "video" | null;
 }
 
 export interface PageData<C = Record<string, never>> {

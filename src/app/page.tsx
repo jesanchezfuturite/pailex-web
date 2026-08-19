@@ -189,7 +189,7 @@ function SolutionCard({
 }: { title: string, desc: string, image: MediaItem | null, href: string, background: CardBackground }) {
   const style = cardStyle(background);
   return (
-    <div className={`border border-support/20 group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br ${style.base} ${style.hover}`}>
+    <div className={`border group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br ${style.base} ${style.border} ${style.hover}`}>
       <div className="absolute top-0 left-0 w-full h-1 bg-support group-hover:bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10" />
       <div className="relative h-56 overflow-hidden">
         <Image

@@ -184,7 +184,7 @@ export default async function SolucionesPage() {
             {capacity.map((group) => {
               const groupStyle = cardStyle(group.background);
               return (
-                <div key={group.name} className={`border border-support/20 p-10 clip-notch-br ${groupStyle.base}`}>
+                <div key={group.name} className={`border p-10 clip-notch-br ${groupStyle.base} ${groupStyle.border}`}>
                   <h3 className={`font-title text-2xl font-bold uppercase tracking-wider mb-8 ${groupStyle.heading}`}>
                     {group.name}
                   </h3>

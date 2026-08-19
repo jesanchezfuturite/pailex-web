@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
  * Resalta en lima (text-accent) la parte del título marcada en el CMS.
  * Si el texto resaltado no aparece dentro del título, se muestra tal cual.
  */
-export function withHighlight(text: string | undefined, highlight?: string): ReactNode {
+export function withHighlight(text: string | undefined, highlight?: string | null): ReactNode {
   if (!text) return null;
   if (!highlight || !text.includes(highlight)) return text;
 
