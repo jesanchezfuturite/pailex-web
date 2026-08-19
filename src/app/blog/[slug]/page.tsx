@@ -129,7 +129,7 @@ export default async function PostPage({ params }: Props) {
           </Link>
 
           {/* HTML del editor del CMS (contenido interno de confianza) */}
-          <div className="prose-pailex" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className="prose-pailex" dangerouslySetInnerHTML={{ __html: post.content ?? "" }} />
         </div>
       </article>
 

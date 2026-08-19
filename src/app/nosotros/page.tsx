@@ -47,7 +47,7 @@ export default async function NosotrosPage() {
               className={`font-body text-lg leading-relaxed ${
                 experience.background === "white" || experience.background === "gray" ? "prose-pailex" : "prose-pailex prose-pailex-dark"
               }`}
-              dangerouslySetInnerHTML={{ __html: texts.experience_content }}
+              dangerouslySetInnerHTML={{ __html: texts.experience_content ?? "" }}
             />
 
             <Link
