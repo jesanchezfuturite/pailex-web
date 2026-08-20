@@ -63,7 +63,10 @@ export default async function NosotrosPage() {
               {experience.media_type === "video" && media.experience_video ? (
                 <video
                   className="absolute inset-0 w-full h-full object-cover"
-                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
                   preload="metadata"
                   poster={media.experience_video_poster?.url}
                 >

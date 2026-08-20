@@ -50,6 +50,7 @@ export interface Feature {
 export interface BrandItem {
   name: string;
   logo: MediaItem | null;
+  featured: boolean;
 }
 
 export interface SectorItem {
@@ -185,8 +186,11 @@ export interface PageSeo {
 /** Hero estructurado de las páginas del sitio (mismo shape que el de Solutions). */
 export interface PageHero {
   eyebrow: string | null;
+  eyebrow_size: number | null;
   title: string;
+  title_size: number | null;
   description: string | null;
+  description_size: number | null;
   media_type: "image" | "video";
   image: MediaItem | null;
   video: MediaItem | null;

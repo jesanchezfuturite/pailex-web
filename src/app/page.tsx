@@ -105,7 +105,16 @@ export default async function Home() {
         </div>
       </section>
 
-      <BrandSlider title={brands.title ?? ""} brands={collections.brands} background={brands.background} />
+      <BrandSlider
+        title={brands.title ?? ""}
+        brands={collections.brands}
+        background={brands.background}
+        featuredCount={(() => {
+          const parsed = Number.parseInt(texts.brands_featured_count ?? "", 10);
+          return Number.isNaN(parsed) ? 5 : parsed;
+        })()}
+        featuredColor={texts.brands_featured_color === "1"}
+      />
 
       {/* Sectores que respaldamos */}
       <section className={`py-32 border-b border-support/10 relative overflow-hidden ${sectorsStyle.section}`}>

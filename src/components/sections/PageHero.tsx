@@ -49,18 +49,29 @@ export default function PageHero({ hero }: { hero: PageHeroData }) {
           {hero.eyebrow && (
             <p
               className={`anim-fade-up anim-delay-1 inline-block border border-accent/60 text-accent font-title uppercase tracking-[0.25em] px-4 py-2 mb-8 backdrop-blur-sm bg-black/20 ${
-                hero.eyebrow.length > 40 ? "text-[11px] md:text-xs" : "text-xs md:text-sm"
+                hero.eyebrow_size ? "" : hero.eyebrow.length > 40 ? "text-[11px] md:text-xs" : "text-xs md:text-sm"
               }`}
+              style={hero.eyebrow_size ? { fontSize: `${hero.eyebrow_size}px` } : undefined}
             >
               {hero.eyebrow}
             </p>
           )}
-          <h1 className="anim-fade-up anim-delay-2 text-white font-title text-4xl md:text-6xl lg:text-7xl font-bold leading-tight uppercase tracking-tight">
+          <h1
+            className={`anim-fade-up anim-delay-2 text-white font-title font-bold leading-tight uppercase tracking-tight ${
+              hero.title_size ? "" : "text-4xl md:text-6xl lg:text-7xl"
+            }`}
+            style={hero.title_size ? { fontSize: `${hero.title_size}px` } : undefined}
+          >
             {hero.title}
           </h1>
           <div className="anim-grow-x w-24 h-[3px] bg-accent mt-6 mb-6" />
           {hero.description && (
-            <p className="anim-fade-up anim-delay-3 text-white/80 text-lg md:text-2xl font-body max-w-2xl whitespace-pre-line">
+            <p
+              className={`anim-fade-up anim-delay-3 text-white/80 font-body max-w-2xl whitespace-pre-line ${
+                hero.description_size ? "" : "text-lg md:text-2xl"
+              }`}
+              style={hero.description_size ? { fontSize: `${hero.description_size}px` } : undefined}
+            >
               {hero.description}
             </p>
           )}
