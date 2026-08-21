@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { getPage, FALLBACK_IMAGE, type NosotrosCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
@@ -8,7 +9,7 @@ import PageHero from "@/components/sections/PageHero";
 import Timeline from "@/components/sections/Timeline";
 import CoverageMap from "@/components/sections/CoverageMap";
 import SectionDots from "@/components/sections/SectionDots";
-import { sectionStyle, isDotted, cardStyle, type CardBackground } from "@/lib/sectionStyle";
+import { sectionStyle, isDotted, cardStyle, titleSize as titleSizeOf, type CardBackground } from "@/lib/sectionStyle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<NosotrosCollections>("nosotros");
@@ -17,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function NosotrosPage() {
   const page = await getPage<NosotrosCollections>("nosotros");
+  if (page.status !== "published") notFound();
   const { texts, media, collections, seo, sections } = page;
 
   const experience = sections.experience;
@@ -29,6 +31,11 @@ export default async function NosotrosPage() {
   const coverageStyle = sectionStyle(coverage.background);
   const differentiatorsStyle = sectionStyle(differentiators.background);
 
+  const experienceHeading = titleSizeOf(experience.title_size, "text-4xl md:text-5xl");
+  const valueHeading = titleSizeOf(value.title_size, "text-3xl md:text-5xl");
+  const coverageHeading = titleSizeOf(coverage.title_size, "text-3xl md:text-4xl");
+  const differentiatorsHeading = titleSizeOf(differentiators.title_size, "text-4xl md:text-5xl");
+
   return (
     <div className="bg-white">
       <SchemaScript schema={seo.schema} />
@@ -39,7 +46,7 @@ export default async function NosotrosPage() {
         {isDotted(experience.background) && <SectionDots />}
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
           <div>
-            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight leading-none ${experienceStyle.heading}`}>
+            <h2 className={`font-title font-bold uppercase tracking-tight leading-none ${experienceHeading.className} ${experienceStyle.heading}`} style={experienceHeading.style}>
               {experience.title}
             </h2>
             <div className="w-20 h-1.5 bg-support mt-6 mb-10" />
@@ -92,7 +99,12 @@ export default async function NosotrosPage() {
         </div>
       </section>
 
-      <Timeline title={sections.timeline.title ?? "Nuestra trayectoria"} items={collections.timeline} background={sections.timeline.background} />
+      <Timeline
+        title={sections.timeline.title ?? "Nuestra trayectoria"}
+        titleSize={sections.timeline.title_size}
+        items={collections.timeline}
+        background={sections.timeline.background}
+      />
 
       {/* El valor que aportamos a tu negocio */}
       <section className={`py-28 relative overflow-hidden ${valueStyle.section}`}>
@@ -100,7 +112,7 @@ export default async function NosotrosPage() {
         <div className="absolute top-0 right-0 w-48 h-48 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <h2 className={`font-title text-3xl md:text-5xl font-bold uppercase tracking-tight mb-8 ${valueStyle.heading}`}>
+          <h2 className={`font-title font-bold uppercase tracking-tight mb-8 ${valueHeading.className} ${valueStyle.heading}`} style={valueHeading.style}>
             {withHighlight(value.title ?? "", value.title_highlight)}
           </h2>
           <div className="w-16 h-[3px] bg-accent mx-auto mb-10" />
@@ -122,7 +134,7 @@ export default async function NosotrosPage() {
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
               <div className="max-w-2xl mb-12">
-                <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${coverageStyle.heading}`}>
+                <h2 className={`font-title font-bold uppercase tracking-tight ${coverageHeading.className} ${coverageStyle.heading}`} style={coverageHeading.style}>
                   {coverage.title}
                 </h2>
                 <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />
@@ -170,7 +182,7 @@ export default async function NosotrosPage() {
         {isDotted(differentiators.background) && <SectionDots />}
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="border-t-4 border-support pt-12 mb-16">
-            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${differentiatorsStyle.heading}`}>
+            <h2 className={`font-title font-bold uppercase tracking-tight ${differentiatorsHeading.className} ${differentiatorsStyle.heading}`} style={differentiatorsHeading.style}>
               {differentiators.title}
             </h2>
           </div>

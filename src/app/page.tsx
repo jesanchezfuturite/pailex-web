@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import PageHero from "@/components/sections/PageHero";
 import BrandSlider from "@/components/sections/BrandSlider";
 import FAQAccordion from "@/components/sections/FAQAccordion";
@@ -9,7 +10,7 @@ import { getPage, getPosts, FALLBACK_IMAGE, type HomeCollections, type MediaItem
 import { withHighlight } from "@/lib/highlight";
 import { formatDate } from "@/lib/format";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
-import { sectionStyle, isDotted, cardStyle } from "@/lib/sectionStyle";
+import { sectionStyle, isDotted, cardStyle, titleSize } from "@/lib/sectionStyle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<HomeCollections>("home");
@@ -18,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   const [page, posts] = await Promise.all([getPage<HomeCollections>("home"), getPosts()]);
+  if (page.status !== "published") notFound();
   const { texts, collections, sections } = page;
   const latestPosts = posts.slice(0, 3);
 
@@ -45,7 +47,10 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
             <div className="max-w-2xl">
-              <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${sectionStyle(solutionsCards.background).heading}`}>
+              <h2
+                className={`font-title font-bold uppercase tracking-tight ${titleSize(solutionsCards.title_size, "text-4xl md:text-5xl").className} ${sectionStyle(solutionsCards.background).heading}`}
+                style={titleSize(solutionsCards.title_size, "text-4xl md:text-5xl").style}
+              >
                 {solutionsCards.title}
               </h2>
               <div className="w-20 h-1.5 bg-support mt-4" />
@@ -71,7 +76,10 @@ export default async function Home() {
         {isDotted(whyChoose.background) && <SectionDots />}
 
         <div className="max-w-7xl mx-auto px-6 text-center mb-20 relative z-10">
-          <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${whyStyle.heading}`}>
+          <h2
+            className={`font-title font-bold uppercase tracking-tight ${titleSize(whyChoose.title_size, "text-4xl md:text-5xl").className} ${whyStyle.heading}`}
+            style={titleSize(whyChoose.title_size, "text-4xl md:text-5xl").style}
+          >
             {withHighlight(whyChoose.title ?? "", whyChoose.title_highlight)}
           </h2>
         </div>
@@ -96,7 +104,10 @@ export default async function Home() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-support/10 [clip-path:polygon(0_100%,0_0,100%_100%)] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-          <h2 className={`font-title text-3xl md:text-5xl font-bold mb-12 max-w-5xl mx-auto leading-tight uppercase tracking-tighter ${ctaStyle.heading}`}>
+          <h2
+            className={`font-title font-bold mb-12 max-w-5xl mx-auto leading-tight uppercase tracking-tighter ${titleSize(ctaBanner.title_size, "text-3xl md:text-5xl").className} ${ctaStyle.heading}`}
+            style={titleSize(ctaBanner.title_size, "text-3xl md:text-5xl").style}
+          >
             {withHighlight(ctaBanner.title ?? "", ctaBanner.title_highlight)}
           </h2>
           <a href="#cotizar" className="inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm">
@@ -107,20 +118,22 @@ export default async function Home() {
 
       <BrandSlider
         title={brands.title ?? ""}
+        titleSize={brands.title_size}
         brands={collections.brands}
         background={brands.background}
-        featuredCount={(() => {
-          const parsed = Number.parseInt(texts.brands_featured_count ?? "", 10);
-          return Number.isNaN(parsed) ? 5 : parsed;
-        })()}
-        featuredColor={texts.brands_featured_color === "1"}
+        color={texts.brands_color === "1"}
       />
 
       {/* Sectores que respaldamos */}
       <section className={`py-32 border-b border-support/10 relative overflow-hidden ${sectorsStyle.section}`}>
         {isDotted(sectors.background) && <SectionDots />}
         <div className="max-w-7xl mx-auto px-6 text-center mb-16 relative z-10">
-          <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${sectorsStyle.heading}`}>{sectors.title}</h2>
+          <h2
+            className={`font-title font-bold uppercase tracking-tight ${titleSize(sectors.title_size, "text-3xl md:text-4xl").className} ${sectorsStyle.heading}`}
+            style={titleSize(sectors.title_size, "text-3xl md:text-4xl").style}
+          >
+            {sectors.title}
+          </h2>
         </div>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative z-10">
           {collections.sectors.map((sector) => (
@@ -148,7 +161,12 @@ export default async function Home() {
           {isDotted(blog.background) && <SectionDots />}
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="border-t-4 border-support pt-12 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <h2 className={`font-title text-4xl font-bold uppercase tracking-tight ${blogStyle.heading}`}>{blog.title}</h2>
+              <h2
+                className={`font-title font-bold uppercase tracking-tight ${titleSize(blog.title_size, "text-4xl").className} ${blogStyle.heading}`}
+                style={titleSize(blog.title_size, "text-4xl").style}
+              >
+                {blog.title}
+              </h2>
               <Link
                 href="/blog"
                 className="relative overflow-hidden text-primary font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center self-start md:self-auto group/all"
@@ -188,7 +206,7 @@ export default async function Home() {
         </section>
       )}
 
-      <FAQAccordion title={faq.title ?? ""} faqs={collections.faqs} background={faq.background} />
+      <FAQAccordion title={faq.title ?? ""} titleSize={faq.title_size} faqs={collections.faqs} background={faq.background} />
     </div>
   );
 }

@@ -37,6 +37,18 @@ export function sectionStyle(bg: SectionBackground) {
 
 export const isDotted = (bg: SectionBackground) => bg === "primary-dots";
 
+/**
+ * Tamaño de un título de sección: si el gestor tiene un valor en px, se usa
+ * como estilo fijo (reemplazando las clases responsivas); si no, se dejan
+ * las clases de Tailwind por defecto (el mismo tamaño que ya usa el sitio).
+ */
+export function titleSize(size: number | null | undefined, defaultClasses: string) {
+  return {
+    className: size ? "" : defaultClasses,
+    style: size ? { fontSize: `${size}px` } : undefined,
+  };
+}
+
 export type CardBackground = "white" | "gray" | "primary" | "support" | "glass";
 
 /** Fondo base de una tarjeta; el hover siempre oscurece un poco, sin cambiar de tono. */

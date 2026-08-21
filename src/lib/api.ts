@@ -50,7 +50,6 @@ export interface Feature {
 export interface BrandItem {
   name: string;
   logo: MediaItem | null;
-  featured: boolean;
 }
 
 export interface SectorItem {
@@ -202,6 +201,7 @@ export interface PageHero {
 export interface PageSectionData {
   internal_name: string | null;
   title: string | null;
+  title_size: number | null;
   title_highlight: string | null;
   background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
   /** Solo aplica a secciones con medio propio (p. ej. "Más de 35 años"). */
@@ -211,6 +211,8 @@ export interface PageSectionData {
 export interface PageData<C = Record<string, never>> {
   slug: string;
   name: string;
+  /** "draft" = aún no debe mostrarse en el sitio (la página responde 404). */
+  status: "draft" | "published";
   seo: PageSeo;
   hero: PageHero;
   texts: Record<string, string>;

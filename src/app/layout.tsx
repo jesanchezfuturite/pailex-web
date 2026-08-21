@@ -3,6 +3,7 @@ import { Space_Grotesk, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import WhatsAppBubble from "@/components/layout/WhatsAppBubble";
 import { getSite } from "@/lib/api";
 
 const spaceGrotesk = Space_Grotesk({
@@ -35,6 +36,7 @@ export default async function RootLayout({
         <Navbar menu={site.menu} solutionsMenu={site.solutions_menu ?? []} />
         <main>{children}</main>
         <Footer settings={site.settings} />
+        <WhatsAppBubble phone={site.settings.phone_2} />
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getPage, getSite } from "@/lib/api";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
@@ -11,6 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactoPage() {
   const [page, site] = await Promise.all([getPage("contacto"), getSite()]);
+  if (page.status !== "published") notFound();
   const { texts, seo } = page;
   const { settings } = site;
 

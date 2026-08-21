@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { getPage, FALLBACK_IMAGE, type IndustriasCollections } from "@/lib/api";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import SectionDots from "@/components/sections/SectionDots";
-import { sectionStyle, isDotted } from "@/lib/sectionStyle";
+import { sectionStyle, isDotted, titleSize as titleSizeOf } from "@/lib/sectionStyle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<IndustriasCollections>("industrias");
@@ -13,10 +14,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function IndustriasPage() {
   const page = await getPage<IndustriasCollections>("industrias");
+  if (page.status !== "published") notFound();
   const { collections, seo, sections } = page;
 
   const sectorsSection = sections.sectors;
   const sectorsStyle = sectionStyle(sectorsSection.background);
+  const sectorsHeading = titleSizeOf(sectorsSection.title_size, "text-4xl md:text-5xl");
 
   return (
     <div className="bg-white">
@@ -28,7 +31,7 @@ export default async function IndustriasPage() {
         {isDotted(sectorsSection.background) && <SectionDots />}
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl">
-            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${sectorsStyle.heading}`}>
+            <h2 className={`font-title font-bold uppercase tracking-tight ${sectorsHeading.className} ${sectorsStyle.heading}`} style={sectorsHeading.style}>
               {sectorsSection.title}
             </h2>
             <div className="w-20 h-1.5 bg-support mt-4" />

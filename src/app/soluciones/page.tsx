@@ -5,12 +5,13 @@ import {
   Cable, Droplets, Layers, Filter, Container, Forklift, Check,
   Wrench, Cog, Package, type LucideIcon,
 } from "lucide-react";
+import { notFound } from "next/navigation";
 import { getPage, FALLBACK_IMAGE, type SolucionesCollections } from "@/lib/api";
 import { withHighlight } from "@/lib/highlight";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import SectionDots from "@/components/sections/SectionDots";
-import { sectionStyle, isDotted, cardStyle } from "@/lib/sectionStyle";
+import { sectionStyle, isDotted, cardStyle, titleSize as titleSizeOf } from "@/lib/sectionStyle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<SolucionesCollections>("soluciones");
@@ -32,6 +33,7 @@ const productIcons: Record<string, LucideIcon> = {
 
 export default async function SolucionesPage() {
   const page = await getPage<SolucionesCollections>("soluciones");
+  if (page.status !== "published") notFound();
   const { texts, collections, seo, sections } = page;
   const { services, products, capacity_groups: capacity } = collections;
 
@@ -43,6 +45,10 @@ export default async function SolucionesPage() {
   const productsStyle = sectionStyle(productsSection.background);
   const capacityStyle = sectionStyle(capacitySection.background);
 
+  const servicesHeading = titleSizeOf(servicesSection.title_size, "text-4xl md:text-5xl");
+  const productsHeading = titleSizeOf(productsSection.title_size, "text-4xl md:text-5xl");
+  const capacityHeading = titleSizeOf(capacitySection.title_size, "text-4xl md:text-5xl");
+
   return (
     <div className="bg-white">
       <SchemaScript schema={seo.schema} />
@@ -53,7 +59,7 @@ export default async function SolucionesPage() {
         {isDotted(servicesSection.background) && <SectionDots />}
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl">
-            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${servicesStyle.heading}`}>
+            <h2 className={`font-title font-bold uppercase tracking-tight ${servicesHeading.className} ${servicesStyle.heading}`} style={servicesHeading.style}>
               {servicesSection.title}
             </h2>
             <div className="w-20 h-1.5 bg-support mt-4" />
@@ -125,7 +131,7 @@ export default async function SolucionesPage() {
         {isDotted(productsSection.background) && <SectionDots />}
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="border-t-4 border-support pt-12 mb-6">
-            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${productsStyle.heading}`}>
+            <h2 className={`font-title font-bold uppercase tracking-tight ${productsHeading.className} ${productsStyle.heading}`} style={productsHeading.style}>
               {productsSection.title}
             </h2>
           </div>
@@ -171,7 +177,7 @@ export default async function SolucionesPage() {
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl mb-16">
-            <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${capacityStyle.heading}`}>
+            <h2 className={`font-title font-bold uppercase tracking-tight ${capacityHeading.className} ${capacityStyle.heading}`} style={capacityHeading.style}>
               {withHighlight(capacitySection.title ?? "", capacitySection.title_highlight)}
             </h2>
             <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />

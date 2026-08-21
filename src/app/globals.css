@@ -141,8 +141,10 @@ html {
   padding-left: 1.5rem;
 }
 
+.prose-pailex ul { list-style-type: disc; }
+.prose-pailex ol { list-style-type: decimal; }
 .prose-pailex li { margin: 0.625rem 0; padding-left: 0.375rem; }
-.prose-pailex li::marker { color: #B0BF92; font-weight: 700; }
+.prose-pailex li::marker { color: #004431; font-weight: 700; }
 
 .prose-pailex blockquote {
   margin: 2.5rem 0;

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FALLBACK_IMAGE, type TimelineItem as TimelineItemData, type PageSectionData } from "@/lib/api";
-import { sectionStyle, isDotted } from "@/lib/sectionStyle";
+import { sectionStyle, isDotted, titleSize as titleSizeOf } from "@/lib/sectionStyle";
 import SectionDots from "./SectionDots";
 
 /**
@@ -11,20 +11,21 @@ import SectionDots from "./SectionDots";
  * derecha, sin alternar.
  */
 export default function Timeline({
-  title, items, background = "white",
-}: { title: string; items: TimelineItemData[]; background?: PageSectionData["background"] }) {
+  title, titleSize, items, background = "white",
+}: { title: string; titleSize?: number | null; items: TimelineItemData[]; background?: PageSectionData["background"] }) {
   if (items.length === 0) {
     return null;
   }
 
   const style = sectionStyle(background);
+  const heading = titleSizeOf(titleSize, "text-4xl md:text-5xl");
 
   return (
     <section className={`py-32 overflow-hidden relative ${style.section}`}>
       {isDotted(background) && <SectionDots />}
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl mb-20">
-          <h2 className={`font-title text-4xl md:text-5xl font-bold uppercase tracking-tight ${style.heading}`}>
+          <h2 className={`font-title font-bold uppercase tracking-tight ${heading.className} ${style.heading}`} style={heading.style}>
             {title}
           </h2>
           <div className="w-20 h-1.5 bg-support mt-4" />

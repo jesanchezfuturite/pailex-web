@@ -5,6 +5,7 @@ import {
   CheckCircle2, Clock, ShieldCheck, TrendingUp, UserCheck, Cog, Zap,
   RefreshCw, Layers, Package, Wrench, Target, type LucideIcon,
 } from "lucide-react";
+import { notFound } from "next/navigation";
 import { getPage, FALLBACK_IMAGE, type PortafolioCollections } from "@/lib/api";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
@@ -32,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PortafolioPage() {
   const page = await getPage<PortafolioCollections>("portafolio");
+  if (page.status !== "published") notFound();
   const { texts, media, collections, seo } = page;
 
   return (

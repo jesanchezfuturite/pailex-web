@@ -4,14 +4,15 @@ import { getPage } from "@/lib/api";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPage("aviso-privacidad");
-  return pageMetadata(page.seo, "/aviso-privacidad");
+  const page = await getPage("terminos-y-condiciones");
+  return pageMetadata(page.seo, "/terminos-y-condiciones");
 }
 
 // Página de solo documento: sin hero, solo Navbar (fijo) + Footer (globales
 // desde layout.tsx) alrededor de un artículo administrable desde el CMS.
-export default async function AvisoPrivacidadPage() {
-  const page = await getPage("aviso-privacidad");
+// En borrador hasta que se agregue el contenido desde el gestor.
+export default async function TerminosCondicionesPage() {
+  const page = await getPage("terminos-y-condiciones");
   if (page.status !== "published") notFound();
   const { name, texts, seo } = page;
 
