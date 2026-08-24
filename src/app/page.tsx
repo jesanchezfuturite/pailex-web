@@ -53,7 +53,7 @@ export default async function Home() {
               >
                 {solutionsCards.title}
               </h2>
-              <div className="w-20 h-1.5 bg-support mt-4" />
+              <div className={`w-20 h-1.5 mt-4 ${sectionStyle(solutionsCards.background).accentLine}`} />
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-10">
@@ -247,7 +247,7 @@ function FeatureItem({ title, desc, isFirst, light }: { title: string, desc: str
         light ? "border-support/40 hover:bg-black/[0.03]" : "border-support/25 hover:bg-white/5"
       }`}
     >
-      <div className="w-8 h-[3px] bg-accent" />
+      <div className={`w-8 h-[3px] ${light ? "bg-support" : "bg-accent"}`} />
       <h4 className={`font-title font-bold text-2xl uppercase tracking-wider leading-tight ${light ? "text-primary" : "text-white"}`}>{title}</h4>
       <p className={`text-base font-body leading-relaxed ${light ? "text-industrial-gray" : "text-support"}`}>{desc}</p>
     </div>

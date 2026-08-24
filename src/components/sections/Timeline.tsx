@@ -28,7 +28,7 @@ export default function Timeline({
           <h2 className={`font-title font-bold uppercase tracking-tight ${heading.className} ${style.heading}`} style={heading.style}>
             {title}
           </h2>
-          <div className="w-20 h-1.5 bg-support mt-4" />
+          <div className={`w-20 h-1.5 mt-4 ${style.accentLine}`} />
         </div>
 
         {/* Escritorio: horizontal, alternando arriba/abajo */}

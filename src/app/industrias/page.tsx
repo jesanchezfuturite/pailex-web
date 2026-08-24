@@ -34,7 +34,7 @@ export default async function IndustriasPage() {
             <h2 className={`font-title font-bold uppercase tracking-tight ${sectorsHeading.className} ${sectorsStyle.heading}`} style={sectorsHeading.style}>
               {sectorsSection.title}
             </h2>
-            <div className="w-20 h-1.5 bg-support mt-4" />
+            <div className={`w-20 h-1.5 mt-4 ${sectorsStyle.accentLine}`} />
           </div>
         </div>
       </section>
@@ -60,7 +60,7 @@ export default async function IndustriasPage() {
               </div>
             </div>
             <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-              <div className="w-8 h-[3px] bg-accent mb-5" />
+              <div className="w-8 h-[3px] bg-support mb-5" />
               <h3 className="font-title text-3xl md:text-4xl font-bold text-primary uppercase tracking-tight leading-none mb-4">
                 {industry.name}
               </h3>

@@ -62,7 +62,7 @@ export default async function SolucionesPage() {
             <h2 className={`font-title font-bold uppercase tracking-tight ${servicesHeading.className} ${servicesStyle.heading}`} style={servicesHeading.style}>
               {servicesSection.title}
             </h2>
-            <div className="w-20 h-1.5 bg-support mt-4" />
+            <div className={`w-20 h-1.5 mt-4 ${servicesStyle.accentLine}`} />
           </div>
         </div>
       </section>
@@ -180,7 +180,7 @@ export default async function SolucionesPage() {
             <h2 className={`font-title font-bold uppercase tracking-tight ${capacityHeading.className} ${capacityStyle.heading}`} style={capacityHeading.style}>
               {withHighlight(capacitySection.title ?? "", capacitySection.title_highlight)}
             </h2>
-            <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />
+            <div className={`w-20 h-1.5 mt-4 mb-6 ${capacityStyle.accentLine}`} />
             <p className={`font-body text-lg ${capacityStyle.body}`}>
               {texts.capacity_intro}
             </p>

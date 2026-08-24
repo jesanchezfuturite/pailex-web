@@ -15,8 +15,7 @@ interface ContactCtaBlockProps {
 
 /**
  * Bloque de "¿Tienes un proyecto en puerta?": intro + datos de contacto a la
- * izquierda, formulario extendido de cotización a la derecha. Mismo bloque
- * usado en /contacto y, opcionalmente, en los interiores de Soluciones.
+ * izquierda, formulario extendido de cotización a la derecha. Usado en /contacto.
  */
 export default function ContactCtaBlock({ title, body, formTitle, submitLabel, settings }: ContactCtaBlockProps) {
   return (

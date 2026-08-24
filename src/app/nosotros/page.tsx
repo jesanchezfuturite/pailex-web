@@ -49,7 +49,7 @@ export default async function NosotrosPage() {
             <h2 className={`font-title font-bold uppercase tracking-tight leading-none ${experienceHeading.className} ${experienceStyle.heading}`} style={experienceHeading.style}>
               {experience.title}
             </h2>
-            <div className="w-20 h-1.5 bg-support mt-6 mb-10" />
+            <div className={`w-20 h-1.5 mt-6 mb-10 ${experienceStyle.accentLine}`} />
             <div
               className={`font-body text-lg leading-relaxed ${
                 experience.background === "white" || experience.background === "gray" ? "prose-pailex" : "prose-pailex prose-pailex-dark"
@@ -66,7 +66,7 @@ export default async function NosotrosPage() {
           </div>
 
           <div className="relative">
-            <div className="relative h-[520px] overflow-hidden clip-notch-br">
+            <div className="relative aspect-video lg:aspect-auto lg:h-[520px] overflow-hidden clip-notch-br">
               {experience.media_type === "video" && media.experience_video ? (
                 <video
                   className="absolute inset-0 w-full h-full object-cover"
@@ -115,7 +115,7 @@ export default async function NosotrosPage() {
           <h2 className={`font-title font-bold uppercase tracking-tight mb-8 ${valueHeading.className} ${valueStyle.heading}`} style={valueHeading.style}>
             {withHighlight(value.title ?? "", value.title_highlight)}
           </h2>
-          <div className="w-16 h-[3px] bg-accent mx-auto mb-10" />
+          <div className={`w-16 h-[3px] mx-auto mb-10 ${valueStyle.accentLine}`} />
           <p className={`font-body text-lg md:text-xl leading-relaxed ${valueStyle.body}`}>
             {texts.value_body}
           </p>
@@ -137,7 +137,7 @@ export default async function NosotrosPage() {
                 <h2 className={`font-title font-bold uppercase tracking-tight ${coverageHeading.className} ${coverageStyle.heading}`} style={coverageHeading.style}>
                   {coverage.title}
                 </h2>
-                <div className="w-20 h-1.5 bg-accent mt-4 mb-6" />
+                <div className={`w-20 h-1.5 mt-4 mb-6 ${coverageStyle.accentLine}`} />
                 <p className={`font-body text-lg ${coverageStyle.body}`}>{texts.coverage_intro}</p>
               </div>
             </div>
@@ -212,7 +212,7 @@ function DifferentiatorCard({
       <span className="absolute top-6 right-8 font-title font-bold text-5xl text-support/20 group-hover:text-accent/20 transition-colors select-none">
         {number}
       </span>
-      <div className="w-8 h-[3px] bg-accent mb-6" />
+      <div className={`w-8 h-[3px] mb-6 ${style.accentBar}`} />
       <h3 className={`font-title text-2xl font-bold uppercase tracking-tight mb-5 transition-colors leading-tight pr-16 group-hover:text-accent ${style.heading}`}>
         {title}
       </h3>

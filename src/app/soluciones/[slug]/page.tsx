@@ -5,13 +5,17 @@ import { notFound } from "next/navigation";
 import { getSolution, getSolutions, getSite, FALLBACK_IMAGE } from "@/lib/api";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 import FAQAccordion from "@/components/sections/FAQAccordion";
-import ContactCtaBlock from "@/components/sections/ContactCtaBlock";
+import ContactQuoteForm from "@/components/forms/ContactQuoteForm";
+import ContactInfoRow from "@/components/sections/ContactInfoRow";
+import CoverageMap from "@/components/sections/CoverageMap";
+import SectionDots from "@/components/sections/SectionDots";
+import { withHighlight } from "@/lib/highlight";
+import { sectionStyle, isDotted, cardStyle } from "@/lib/sectionStyle";
 
 /**
- * Plantilla única de los interiores de solución (secciones 1-3 aprobadas).
+ * Plantilla única de los interiores de solución (8 secciones aprobadas).
  * La estructura, jerarquía de encabezados (H2 → H3 → H4-H6) y colores por
  * fondo están fijados aquí; el CMS solo administra el contenido permitido.
- * Las secciones 4-8 se agregarán debajo cuando se aprueben.
  */
 
 interface Props {
@@ -53,11 +57,28 @@ export default async function SolutionPage({ params }: Props) {
     notFound();
   }
 
-  const { banner, hero, contact_cta: contactCta, intro, capabilities, faqs } = solution;
+  const {
+    banner, hero, intro, capabilities, problems, coverage, reasons,
+    cta_banner: ctaBanner, faqs,
+  } = solution;
   const introDark = intro.background === "green";
   const showIntro = intro.enabled && Boolean(intro.title || intro.content);
   const showList = intro.list.enabled && intro.list.items.length > 0;
+  const showContact = intro.show_contact;
+  const showHighlight = Boolean(intro.highlight.text);
   const showCapabilities = capabilities.enabled && capabilities.items.length > 0;
+  const showProblems = problems.enabled && problems.items.length > 0;
+  const showCoverage = coverage.enabled && coverage.locations.length > 0;
+  const showReasons = reasons.enabled && reasons.items.length > 0;
+  const showCtaBanner = ctaBanner.enabled && Boolean(ctaBanner.title);
+
+  const capabilitiesStyle = sectionStyle(capabilities.background);
+  const problemsStyle = sectionStyle(problems.background);
+  const coverageStyle = sectionStyle(coverage.background);
+  const reasonsStyle = sectionStyle(reasons.background);
+  const ctaBannerStyle = sectionStyle(ctaBanner.background);
+  const coverageDark = coverage.background !== "white" && coverage.background !== "gray";
+  const ctaBannerDark = ctaBanner.background !== "white" && ctaBanner.background !== "gray";
 
   return (
     <div className="bg-white">
@@ -172,18 +193,7 @@ export default async function SolutionPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── Sección de contacto (opcional): mismo bloque que /contacto ── */}
-      {contactCta.enabled && contactCta.title && (
-        <ContactCtaBlock
-          title={contactCta.title}
-          body={contactCta.body}
-          formTitle={contactCta.form_title}
-          submitLabel={contactCta.form_submit_label}
-          settings={site.settings}
-        />
-      )}
-
-      {/* ── Sección 2: Introducción técnica (opcional) ────────── */}
+      {/* ── Sección 2: Introducción / propuesta de valor (opcional) ── */}
       {showIntro && (
         <section
           className={`py-24 relative overflow-hidden ${introDark ? "bg-primary" : "bg-white border-t border-support/10"}`}
@@ -213,113 +223,258 @@ export default async function SolutionPage({ params }: Props) {
               </div>
             )}
 
-            <div className={showList ? "grid lg:grid-cols-[1.4fr_1fr] gap-12 lg:gap-16" : ""}>
-              {intro.content && (
-                <div
-                  className={introDark ? "prose-pailex prose-pailex-dark" : "prose-pailex"}
-                  dangerouslySetInnerHTML={{ __html: intro.content }}
-                />
-              )}
+            <div className={showContact ? "grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16" : ""}>
+              <div>
+                {intro.content && (
+                  <div
+                    className={introDark ? "prose-pailex prose-pailex-dark" : "prose-pailex"}
+                    dangerouslySetInnerHTML={{ __html: intro.content }}
+                  />
+                )}
 
-              {showList && (
-                <aside
-                  className={`p-10 clip-notch-br self-start ${introDark ? "border border-white/15 bg-white/5" : "border border-support/20 bg-gray-50"}`}
-                >
-                  <h3
-                    className={`font-title text-2xl font-bold uppercase tracking-wider mb-8 ${introDark ? "text-accent" : "text-primary"}`}
-                  >
-                    {intro.list.title}
-                  </h3>
-                  <ul className="space-y-4">
-                    {intro.list.items.map((item, i) => (
-                      <li
-                        key={`${item.title}-${i}`}
-                        className={`flex items-baseline gap-4 pb-3 border-b ${introDark ? "border-white/10" : "border-support/20"}`}
-                      >
-                        <span className="w-3 h-[2px] bg-accent shrink-0 translate-y-[-3px]" aria-hidden />
-                        <div>
-                          <p className={`font-title font-bold ${introDark ? "text-white/90" : "text-primary"}`}>
-                            {item.title}
-                          </p>
-                          {item.description && (
-                            <p className={`font-body text-sm mt-1 ${introDark ? "text-white/70" : "text-industrial-gray"}`}>
-                              {item.description}
-                            </p>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </aside>
-              )}
+                {showList && (
+                  <div className="mt-10">
+                    <h3
+                      className={`font-title text-xl font-bold uppercase tracking-wider mb-6 ${introDark ? "text-accent" : "text-primary"}`}
+                    >
+                      {intro.list.title}
+                    </h3>
+                    <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+                      {intro.list.items.map((item, i) => (
+                        <li
+                          key={`${item.title}-${i}`}
+                          className={`flex items-baseline gap-3 font-body ${introDark ? "text-white/90" : "text-primary"}`}
+                        >
+                          <span className="w-3 h-[2px] bg-accent shrink-0 translate-y-[-3px]" aria-hidden />
+                          <div>
+                            <p className="font-title font-bold">{item.title}</p>
+                            {item.description && (
+                              <p className={`font-body text-sm mt-1 ${introDark ? "text-white/70" : "text-industrial-gray"}`}>
+                                {item.description}
+                              </p>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {showContact && <ContactQuoteForm title="Solicita tu cotización" submitLabel="Enviar" />}
+            </div>
+
+            {showContact && (
+              <div className={`mt-16 pt-10 border-t ${introDark ? "border-white/15" : "border-support/20"}`}>
+                <ContactInfoRow settings={site.settings} />
+              </div>
+            )}
+          </div>
+
+          {showHighlight && (
+            <div className="max-w-7xl mx-auto px-6 mt-12 relative z-10">
+              <p className="text-primary font-title text-xl md:text-2xl uppercase tracking-tight leading-snug">
+                {withHighlight(intro.highlight.text ?? "", intro.highlight.word, "font-bold")}
+              </p>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* ── Sección 3: ¿Qué problemas podemos ayudarte a resolver? (opcional) ── */}
+      {showProblems && (
+        <section className={`py-24 relative overflow-hidden ${problemsStyle.section}`}>
+          {isDotted(problems.background) && <SectionDots />}
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="max-w-2xl mb-16">
+              <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${problemsStyle.heading}`}>
+                {problems.title}
+              </h2>
+              <div className={`w-20 h-1.5 mt-4 ${problemsStyle.accentLine}`} />
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 items-start">
+              {problems.items.map((item, i) => {
+                const itemStyle = cardStyle(item.background);
+                return (
+                  <details key={`${item.question}-${i}`} className={`group border p-8 transition-all ${itemStyle.base} ${itemStyle.border}`}>
+                    <summary className="list-none cursor-pointer flex justify-between items-start gap-4 font-title font-bold text-lg uppercase tracking-tight text-accent">
+                      {item.question}
+                      <span className="group-open:rotate-180 transition-transform text-xs shrink-0 mt-1">▼</span>
+                    </summary>
+                    <p className={`mt-4 font-body leading-relaxed border-t pt-4 text-white ${itemStyle.border}`}>{item.answer}</p>
+                  </details>
+                );
+              })}
             </div>
           </div>
         </section>
       )}
 
-      {/* ── Sección 3: Capacidades / qué hacemos (opcional) ───── */}
+      {/* ── Sección 4: Capacidades / qué hacemos (opcional) ───── */}
       {showCapabilities && (
-        <section className="py-24 bg-white border-t border-support/10">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className={`py-24 relative overflow-hidden ${capabilitiesStyle.section}`}>
+          {isDotted(capabilities.background) && <SectionDots />}
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             {capabilities.title && (
               <div className="max-w-2xl mb-16">
-                <h2 className="font-title text-3xl md:text-4xl font-bold text-primary uppercase tracking-tight">
+                <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${capabilitiesStyle.heading}`}>
                   {capabilities.title}
                 </h2>
-                <div className="w-20 h-1.5 bg-support mt-4" />
+                <div className={`w-20 h-1.5 mt-4 ${capabilitiesStyle.accentLine}`} />
               </div>
             )}
 
             {/* Grid fijo: 3 por fila en escritorio, 2 en tablet, 1 en móvil */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {capabilities.items.map((item, i) => (
-                <article
-                  key={`${item.title}-${i}`}
-                  className="border border-support/20 bg-white group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br flex flex-col"
-                >
-                  <div className="absolute top-0 left-0 w-full h-1 bg-support group-hover:bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10" />
-                  {item.image && (
-                    <div className="relative h-56 overflow-hidden">
-                      <Image
-                        src={item.image.url}
-                        alt={item.image.alt ?? item.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-primary/15 group-hover:bg-primary/30 transition-colors duration-500" />
+              {capabilities.items.map((item, i) => {
+                const itemStyle = cardStyle(item.background);
+                const isDarkCard = item.background === "primary" || item.background === "glass";
+                return (
+                  <article
+                    key={`${item.title}-${i}`}
+                    className={`border group transition-all duration-500 shadow-sm relative overflow-hidden clip-notch-br flex flex-col ${itemStyle.base} ${itemStyle.border}`}
+                  >
+                    <div className={`absolute top-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-10 ${itemStyle.accentBar}`} />
+                    {item.image && (
+                      <div className="relative h-56 overflow-hidden">
+                        <Image
+                          src={item.image.url}
+                          alt={item.image.alt ?? item.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-primary/15 group-hover:bg-primary/30 transition-colors duration-500" />
+                      </div>
+                    )}
+                    <div className="p-8 flex flex-col flex-1">
+                      <h3 className={`font-title text-2xl font-bold uppercase tracking-tight leading-tight mb-4 ${itemStyle.heading}`}>
+                        {item.title}
+                      </h3>
+                      {item.description && (
+                        <div
+                          className={`prose-pailex prose-pailex-sm flex-1 ${isDarkCard ? "prose-pailex-dark" : ""}`}
+                          dangerouslySetInnerHTML={{ __html: item.description }}
+                        />
+                      )}
+                      {item.href && (
+                        <Link
+                          href={item.href}
+                          className={`relative overflow-hidden font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center self-start mt-6 group/btn focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${itemStyle.heading}`}
+                        >
+                          <span className="relative z-10 group-hover/btn:text-accent transition-colors duration-300">
+                            Ver más
+                          </span>
+                          <span className={`absolute bottom-0 left-0 w-full h-[2px] group-hover/btn:bg-accent origin-left transition-all duration-300 ${itemStyle.accentBar}`} />
+                        </Link>
+                      )}
                     </div>
-                  )}
-                  <div className="p-8 flex flex-col flex-1">
-                    <h3 className="font-title text-2xl font-bold text-primary uppercase tracking-tight leading-tight mb-4">
-                      {item.title}
-                    </h3>
-                    {item.description && (
-                      <div
-                        className="prose-pailex prose-pailex-sm flex-1"
-                        dangerouslySetInnerHTML={{ __html: item.description }}
-                      />
-                    )}
-                    {item.href && (
-                      <Link
-                        href={item.href}
-                        className="relative overflow-hidden text-primary font-bold uppercase text-xs tracking-[0.2em] inline-flex items-center self-start mt-6 group/btn focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                      >
-                        <span className="relative z-10 group-hover/btn:text-support transition-colors duration-300">
-                          Ver más
-                        </span>
-                        <span className="absolute bottom-0 left-0 w-full h-[2px] bg-support group-hover/btn:bg-accent origin-left transition-all duration-300" />
-                      </Link>
-                    )}
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
       )}
 
-      {/* ── Sección FAQ: preguntas frecuentes (opcional) ──────── */}
+      {/* ── Sección 5: Cobertura (opcional) ───────────────────── */}
+      {showCoverage && (
+        <section className={`py-24 relative overflow-hidden ${coverageStyle.section}`}>
+          {isDotted(coverage.background) && <SectionDots />}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
+          <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div>
+              {coverage.title && (
+                <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight mb-6 ${coverageStyle.heading}`}>
+                  {coverage.title}
+                </h2>
+              )}
+              {coverage.content && (
+                <div
+                  className={coverageDark ? "prose-pailex prose-pailex-dark" : "prose-pailex"}
+                  dangerouslySetInnerHTML={{ __html: coverage.content }}
+                />
+              )}
+              <Link
+                href={coverage.cta.href}
+                className="inline-block mt-10 bg-primary text-white px-10 py-5 font-title font-bold text-lg hover:bg-accent hover:text-primary transition-all uppercase tracking-widest clip-notch-br-sm"
+              >
+                {coverage.cta.label}
+              </Link>
+            </div>
+            <div className="bg-primary/10 clip-notch-br overflow-hidden">
+              <CoverageMap locations={coverage.locations} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Sección 6: ¿Por qué trabajar con Pailex? (opcional) ── */}
+      {showReasons && (
+        <section className={`py-32 relative overflow-hidden ${reasonsStyle.section}`}>
+          {isDotted(reasons.background) && <SectionDots />}
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            {reasons.title && (
+              <div className={`border-t-4 pt-12 mb-16 ${reasonsStyle.accentLine.replace("bg-", "border-")}`}>
+                <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${reasonsStyle.heading}`}>
+                  {reasons.title}
+                </h2>
+              </div>
+            )}
+            <div className="grid md:grid-cols-2 gap-10">
+              {reasons.items.map((item, i) => {
+                const itemStyle = cardStyle(item.background);
+                return (
+                  <div
+                    key={`${item.title}-${i}`}
+                    className={`border p-10 group transition-all duration-500 clip-notch-br relative overflow-hidden ${itemStyle.base} ${itemStyle.border} ${itemStyle.hover}`}
+                  >
+                    <span className="absolute top-6 right-8 font-title font-bold text-5xl text-support/20 group-hover:text-accent/20 transition-colors select-none">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className={`w-8 h-[3px] mb-6 ${itemStyle.accentBar}`} />
+                    <h3 className={`font-title text-2xl font-bold uppercase tracking-tight mb-4 transition-colors leading-tight pr-16 group-hover:text-accent ${itemStyle.heading}`}>
+                      {item.title}
+                    </h3>
+                    {item.description && (
+                      <p className={`font-body leading-relaxed transition-colors ${itemStyle.body}`}>{item.description}</p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Sección 7: CTA de cierre (opcional) ───────────────── */}
+      {showCtaBanner && (
+        <section className={`py-24 relative overflow-hidden ${ctaBannerStyle.section}`}>
+          {isDotted(ctaBanner.background) && <SectionDots />}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-support/10 [clip-path:polygon(100%_0,0_0,100%_100%)] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-support/10 [clip-path:polygon(0_100%,0_0,100%_100%)] pointer-events-none" />
+          <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <h2 className={`font-title text-3xl md:text-5xl font-bold mb-8 uppercase tracking-tighter leading-tight ${ctaBannerStyle.heading}`}>
+              {ctaBanner.title}
+            </h2>
+            {ctaBanner.body && (
+              <p className={`font-body text-lg mb-10 ${ctaBannerStyle.body}`}>{ctaBanner.body}</p>
+            )}
+            <Link
+              href={ctaBanner.cta.href}
+              className={
+                ctaBannerDark
+                  ? "inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm"
+                  : "inline-block bg-primary text-white px-10 py-5 font-title font-bold text-lg hover:bg-accent hover:text-primary transition-all uppercase tracking-widest clip-notch-br-sm"
+              }
+            >
+              {ctaBanner.cta.label}
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* ── Sección 8: preguntas frecuentes (opcional) ────────── */}
       {faqs.enabled && faqs.items.length > 0 && (
         <FAQAccordion title={faqs.title} faqs={faqs.items} />
       )}

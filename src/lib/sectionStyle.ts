@@ -55,14 +55,14 @@ export type CardBackground = "white" | "gray" | "primary" | "support" | "glass";
 export function cardStyle(bg: CardBackground) {
   switch (bg) {
     case "gray":
-      return { base: "bg-gray-50", border: "border-support/20", hover: "hover:bg-primary hover:text-white", heading: "text-primary", body: "text-industrial-gray group-hover:text-white" };
+      return { base: "bg-gray-50", border: "border-support/20", hover: "hover:bg-primary hover:text-white", heading: "text-primary", body: "text-industrial-gray group-hover:text-white", accentBar: "bg-support group-hover:bg-accent" };
     case "primary":
-      return { base: "bg-primary", border: "border-support/20", hover: "hover:brightness-110", heading: "text-white", body: "text-white/70" };
+      return { base: "bg-primary", border: "border-support/20", hover: "hover:brightness-110", heading: "text-white", body: "text-white/70", accentBar: "bg-accent" };
     case "support":
-      return { base: "bg-support", border: "border-support/20", hover: "hover:brightness-95", heading: "text-primary", body: "text-primary/80" };
+      return { base: "bg-support", border: "border-support/20", hover: "hover:brightness-95", heading: "text-primary", body: "text-primary/80", accentBar: "bg-primary" };
     case "glass":
-      return { base: "bg-white/5", border: "border-white/15", hover: "hover:bg-white/10", heading: "text-white", body: "text-white/70" };
+      return { base: "bg-white/5", border: "border-white/15", hover: "hover:bg-white/10", heading: "text-white", body: "text-white/70", accentBar: "bg-accent" };
     default:
-      return { base: "bg-white", border: "border-support/20", hover: "hover:bg-primary hover:text-white", heading: "text-primary", body: "text-industrial-gray group-hover:text-white" };
+      return { base: "bg-white", border: "border-support/20", hover: "hover:bg-primary hover:text-white", heading: "text-primary", body: "text-industrial-gray group-hover:text-white", accentBar: "bg-support group-hover:bg-accent" };
   }
 }

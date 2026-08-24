@@ -124,33 +124,59 @@ export interface SolutionDetail {
     video_poster: MediaItem | null;
     cta: { show: boolean; label: string; href: string };
   };
-  contact_cta: {
-    enabled: boolean;
-    title: string | null;
-    body: string | null;
-    form_title: string;
-    form_submit_label: string;
-  };
   intro: {
     enabled: boolean;
     title: string | null;
     content: string | null;
     background: "white" | "green";
+    /** Formulario de cotización + datos de contacto (correo, teléfonos, dirección); sin campos propios. */
+    show_contact: boolean;
     list: {
       enabled: boolean;
       title: string;
       items: { title: string; description: string | null }[];
     };
+    /** Franja verde de cierre (p. ej. "El resultado: ..."), con una palabra/frase resaltable. */
+    highlight: { text: string | null; word: string | null };
   };
   capabilities: {
     enabled: boolean;
     title: string | null;
+    background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
     items: {
       title: string;
       description: string | null;
       href: string | null;
+      background: "white" | "gray" | "primary" | "support" | "glass";
       image: MediaItem | null;
     }[];
+  };
+  problems: {
+    enabled: boolean;
+    title: string;
+    background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
+    items: (FaqItem & { background: "white" | "gray" | "primary" | "support" | "glass" })[];
+  };
+  coverage: {
+    enabled: boolean;
+    title: string | null;
+    content: string | null;
+    background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
+    cta: { label: string; href: string };
+    locations: CoverageLocation[];
+  };
+  reasons: {
+    enabled: boolean;
+    title: string;
+    background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
+    items: { title: string; description: string | null; background: "white" | "gray" | "primary" | "support" | "glass" }[];
+  };
+  cta_banner: {
+    enabled: boolean;
+    title: string | null;
+    body: string | null;
+    background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
+    cta: { label: string; href: string };
   };
   faqs: {
     enabled: boolean;
