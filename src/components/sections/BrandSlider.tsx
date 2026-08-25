@@ -8,11 +8,9 @@ interface BrandSliderProps {
   titleSize?: number | null;
   brands: BrandItem[];
   background?: SectionBackground;
-  /** true = logos a color; false (por defecto) = en blanco y negro. */
-  color?: boolean;
 }
 
-export default function BrandSlider({ title, titleSize, brands, background = "white", color = false }: BrandSliderProps) {
+export default function BrandSlider({ title, titleSize, brands, background = "white" }: BrandSliderProps) {
   const style = sectionStyle(background);
   const heading = titleSizeOf(titleSize, "text-2xl md:text-3xl");
 
@@ -26,12 +24,17 @@ export default function BrandSlider({ title, titleSize, brands, background = "wh
       <div className="relative flex overflow-hidden group">
         <div className="flex shrink-0 animate-marquee whitespace-nowrap py-4 items-center">
           {[...brands, ...brands].map((brand, index) => (
-            <div key={index} className="shrink-0 mx-12 text-industrial-gray font-title text-2xl md:text-4xl font-bold opacity-30 hover:opacity-100 transition-opacity uppercase cursor-default tracking-tighter">
+            <div
+              key={index}
+              className={`shrink-0 mx-12 text-industrial-gray font-title text-2xl md:text-4xl font-bold transition-opacity uppercase cursor-default tracking-tighter ${
+                brand.color ? "opacity-100" : "opacity-30 hover:opacity-100"
+              }`}
+            >
               {brand.logo ? (
                 <img
                   src={brand.logo.url}
                   alt={brand.logo.alt ?? brand.name}
-                  className={`h-12 md:h-16 w-auto ${color ? "" : "grayscale"}`}
+                  className={`h-12 md:h-16 w-auto ${brand.color ? "" : "grayscale"}`}
                 />
               ) : (
                 brand.name

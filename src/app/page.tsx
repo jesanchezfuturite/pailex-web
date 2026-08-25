@@ -121,7 +121,6 @@ export default async function Home() {
         titleSize={brands.title_size}
         brands={collections.brands}
         background={brands.background}
-        color={texts.brands_color === "1"}
       />
 
       {/* Sectores que respaldamos */}

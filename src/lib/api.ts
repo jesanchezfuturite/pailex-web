@@ -50,6 +50,8 @@ export interface Feature {
 export interface BrandItem {
   name: string;
   logo: MediaItem | null;
+  /** true = este logo se muestra a color; false (default) = en blanco y negro. */
+  color: boolean;
 }
 
 export interface SectorItem {
