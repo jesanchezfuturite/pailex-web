@@ -94,7 +94,7 @@ export default async function NosotrosPage() {
             </div>
             {/* Esquinero en L y pleca: detalles geométricos de marca */}
             <div className="absolute -top-4 -left-4 w-12 h-12 border-t-4 border-l-4 border-support hidden md:block" />
-            <div className="absolute -bottom-4 right-10 w-24 h-1.5 bg-accent hidden md:block" />
+            <div className="absolute -bottom-4 right-10 w-24 h-1.5 bg-support hidden md:block" />
           </div>
         </div>
       </section>

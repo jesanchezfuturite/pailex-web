@@ -31,33 +31,50 @@ export default function Timeline({
           <div className={`w-20 h-1.5 mt-4 ${style.accentLine}`} />
         </div>
 
-        {/* Escritorio: horizontal, alternando arriba/abajo */}
-        <div className="hidden lg:flex items-stretch relative">
-          <div className="absolute left-0 right-0 top-1/2 h-0.5 bg-support/30 -translate-y-1/2" />
-          {items.map((item, i) => {
-            const imageFirst = i % 2 === 0;
-            return (
-              <div key={`${item.year}-${i}`} className="flex-1 flex flex-col items-center px-4 min-w-0">
-                <div className="w-full flex flex-col items-center justify-end min-h-[260px]">
+        {/* Escritorio: horizontal, alternando arriba/abajo. Tres filas en grid
+            (arriba / rombos+línea / abajo) en vez de una columna por hito, así
+            la fila de rombos siempre tiene la misma altura en todas las
+            columnas y la línea queda centrada con ellos aunque el texto de
+            un lado crezca más que el de otro. */}
+        <div className="hidden lg:block relative">
+          <div className="grid" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+            {items.map((item, i) => {
+              const imageFirst = i % 2 === 0;
+              return (
+                <div key={`top-${item.year}-${i}`} className="flex flex-col items-center justify-end px-4 min-h-[260px]">
                   {imageFirst ? (
                     <TimelineImage image={item.image} className="w-full max-w-[220px] h-40 mb-8" />
                   ) : (
                     <TimelineText year={item.year} description={item.description} className="mb-8" />
                   )}
                 </div>
+              );
+            })}
+          </div>
 
+          <div className="relative grid items-center" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+            <div className="absolute left-0 right-0 top-1/2 h-0.5 bg-support/30 -translate-y-1/2" />
+            {items.map((item, i) => (
+              <div key={`dot-${item.year}-${i}`} className="flex justify-center relative z-10">
                 <TimelineDot />
+              </div>
+            ))}
+          </div>
 
-                <div className="w-full flex flex-col items-center justify-start min-h-[260px]">
+          <div className="grid" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+            {items.map((item, i) => {
+              const imageFirst = i % 2 === 0;
+              return (
+                <div key={`bottom-${item.year}-${i}`} className="flex flex-col items-center justify-start px-4 min-h-[260px]">
                   {imageFirst ? (
                     <TimelineText year={item.year} description={item.description} className="mt-8" />
                   ) : (
                     <TimelineImage image={item.image} className="w-full max-w-[220px] h-40 mt-8" />
                   )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Tablet / celular: vertical, línea a la izquierda, contenido ocupa el ancho disponible */}

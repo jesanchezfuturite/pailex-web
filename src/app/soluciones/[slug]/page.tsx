@@ -260,13 +260,6 @@ export default async function SolutionPage({ params }: Props) {
                   </div>
                 )}
 
-                {intro.cta.show && (
-                  <div className="mt-10">
-                    <Link href={intro.cta.href} className={introDark ? sectionStyle("primary").ctaButton : sectionStyle("white").ctaButton}>
-                      {intro.cta.label}
-                    </Link>
-                  </div>
-                )}
               </div>
 
               {showContact && <ContactQuoteForm title="Solicita tu cotización" submitLabel="Enviar" />}
@@ -278,6 +271,14 @@ export default async function SolutionPage({ params }: Props) {
               <p className="text-primary font-title text-xl md:text-2xl uppercase tracking-tight leading-snug">
                 {withHighlight(intro.highlight.text ?? "", intro.highlight.word, "font-bold")}
               </p>
+            </div>
+          )}
+
+          {intro.cta.show && (
+            <div className="max-w-7xl mx-auto px-6 mt-10 relative z-10">
+              <Link href={intro.cta.href} className={introDark ? sectionStyle("primary").ctaButton : sectionStyle("white").ctaButton}>
+                {intro.cta.label}
+              </Link>
             </div>
           )}
         </section>
@@ -303,14 +304,17 @@ export default async function SolutionPage({ params }: Props) {
             <div className="grid md:grid-cols-2 gap-8 items-start">
               {problems.items.map((item, i) => {
                 const itemStyle = cardStyle(item.background);
+                // En tarjetas oscuras (verde institucional / translúcida) la respuesta se
+                // lee completa en blanco, no al 70% como el resto de las tarjetas.
+                const isDarkCard = item.background === "primary" || item.background === "glass";
                 return (
                   <details key={`${item.question}-${i}`} className={`group border p-8 transition-all ${itemStyle.base} ${itemStyle.border}`}>
-                    <summary className="list-none cursor-pointer flex justify-between items-start gap-4 font-title font-bold text-lg uppercase tracking-tight text-accent">
+                    <summary className={`list-none cursor-pointer flex justify-between items-start gap-4 font-title font-bold text-lg uppercase tracking-tight ${itemStyle.heading}`}>
                       {item.question}
                       <span className="group-open:rotate-180 transition-transform text-xs shrink-0 mt-1">▼</span>
                     </summary>
                     <div
-                      className="mt-4 prose-pailex prose-pailex-sm prose-pailex-dark border-t pt-4 border-white/20"
+                      className={`mt-4 prose-pailex prose-pailex-sm border-t pt-4 ${itemStyle.border} ${isDarkCard ? "prose-pailex-dark text-white!" : ""}`}
                       dangerouslySetInnerHTML={{ __html: item.answer }}
                     />
                   </details>
@@ -334,11 +338,13 @@ export default async function SolutionPage({ params }: Props) {
           {isDotted(capabilities.background) && <SectionDots />}
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             {capabilities.title && (
-              <div className="max-w-2xl mb-16">
-                <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${capabilitiesStyle.heading}`}>
-                  {capabilities.title}
-                </h2>
-                <div className={`w-20 h-1.5 mt-4 ${capabilitiesStyle.accentLine}`} />
+              <div className="mb-16">
+                <div className="max-w-2xl">
+                  <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${capabilitiesStyle.heading}`}>
+                    {capabilities.title}
+                  </h2>
+                  <div className={`w-20 h-1.5 mt-4 ${capabilitiesStyle.accentLine}`} />
+                </div>
                 {capabilities.content && (
                   <div
                     className={`mt-6 prose-pailex ${capabilitiesStyle.heading === "text-white" ? "prose-pailex-dark" : ""}`}
@@ -461,6 +467,9 @@ export default async function SolutionPage({ params }: Props) {
               {reasons.items.map((item, i) => {
                 const itemStyle = cardStyle(item.background);
                 const isDarkCard = item.background === "primary" || item.background === "glass";
+                // Las tarjetas claras se vuelven verde institucional al pasar el mouse
+                // (ver cardStyle().hover); el texto debe pasar a blanco en ese momento.
+                const hoverTextWhite = itemStyle.hover.includes("hover:text-white");
                 return (
                   <div
                     key={`${item.title}-${i}`}
@@ -475,7 +484,7 @@ export default async function SolutionPage({ params }: Props) {
                     </h3>
                     {item.description && (
                       <div
-                        className={`prose-pailex prose-pailex-sm transition-colors ${isDarkCard ? "prose-pailex-dark" : ""}`}
+                        className={`prose-pailex prose-pailex-sm transition-colors ${isDarkCard ? "prose-pailex-dark" : ""} ${hoverTextWhite ? "group-hover:text-white!" : ""}`}
                         dangerouslySetInnerHTML={{ __html: item.description }}
                       />
                     )}
