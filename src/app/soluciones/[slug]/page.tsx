@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSolution, getSolutions, getSite, FALLBACK_IMAGE } from "@/lib/api";
+import { getSolution, getSolutions, FALLBACK_IMAGE } from "@/lib/api";
 import { pageMetadata, SchemaScript } from "@/lib/seo";
 import FAQAccordion from "@/components/sections/FAQAccordion";
 import ContactQuoteForm from "@/components/forms/ContactQuoteForm";
-import ContactInfoRow from "@/components/sections/ContactInfoRow";
 import CoverageMap from "@/components/sections/CoverageMap";
 import SectionDots from "@/components/sections/SectionDots";
 import { withHighlight } from "@/lib/highlight";
@@ -52,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SolutionPage({ params }: Props) {
   const { slug } = await params;
-  const [solution, site] = await Promise.all([getSolution(slug), getSite()]);
+  const solution = await getSolution(slug);
   if (!solution) {
     notFound();
   }
@@ -245,13 +244,14 @@ export default async function SolutionPage({ params }: Props) {
                           key={`${item.title}-${i}`}
                           className={`flex items-baseline gap-3 font-body ${introDark ? "text-white/90" : "text-primary"}`}
                         >
-                          <span className="w-3 h-[2px] bg-accent shrink-0 translate-y-[-3px]" aria-hidden />
+                          <span className="w-3 h-[2px] bg-support shrink-0 translate-y-[-3px]" aria-hidden />
                           <div>
                             <p className="font-title font-bold">{item.title}</p>
                             {item.description && (
-                              <p className={`font-body text-sm mt-1 ${introDark ? "text-white/70" : "text-industrial-gray"}`}>
-                                {item.description}
-                              </p>
+                              <div
+                                className={`prose-pailex prose-pailex-sm text-sm mt-1 ${introDark ? "prose-pailex-dark text-white/70" : "text-industrial-gray"}`}
+                                dangerouslySetInnerHTML={{ __html: item.description }}
+                              />
                             )}
                           </div>
                         </li>
@@ -259,16 +259,18 @@ export default async function SolutionPage({ params }: Props) {
                     </ul>
                   </div>
                 )}
+
+                {intro.cta.show && (
+                  <div className="mt-10">
+                    <Link href={intro.cta.href} className={introDark ? sectionStyle("primary").ctaButton : sectionStyle("white").ctaButton}>
+                      {intro.cta.label}
+                    </Link>
+                  </div>
+                )}
               </div>
 
               {showContact && <ContactQuoteForm title="Solicita tu cotización" submitLabel="Enviar" />}
             </div>
-
-            {showContact && (
-              <div className={`mt-16 pt-10 border-t ${introDark ? "border-white/15" : "border-support/20"}`}>
-                <ContactInfoRow settings={site.settings} />
-              </div>
-            )}
           </div>
 
           {showHighlight && (
@@ -291,6 +293,12 @@ export default async function SolutionPage({ params }: Props) {
                 {problems.title}
               </h2>
               <div className={`w-20 h-1.5 mt-4 ${problemsStyle.accentLine}`} />
+              {problems.content && (
+                <div
+                  className={`mt-6 prose-pailex ${problemsStyle.heading === "text-white" ? "prose-pailex-dark" : ""}`}
+                  dangerouslySetInnerHTML={{ __html: problems.content }}
+                />
+              )}
             </div>
             <div className="grid md:grid-cols-2 gap-8 items-start">
               {problems.items.map((item, i) => {
@@ -301,11 +309,21 @@ export default async function SolutionPage({ params }: Props) {
                       {item.question}
                       <span className="group-open:rotate-180 transition-transform text-xs shrink-0 mt-1">▼</span>
                     </summary>
-                    <p className={`mt-4 font-body leading-relaxed border-t pt-4 text-white ${itemStyle.border}`}>{item.answer}</p>
+                    <div
+                      className="mt-4 prose-pailex prose-pailex-sm prose-pailex-dark border-t pt-4 border-white/20"
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    />
                   </details>
                 );
               })}
             </div>
+            {problems.cta.show && (
+              <div className="mt-12">
+                <Link href={problems.cta.href} className={problemsStyle.ctaButton}>
+                  {problems.cta.label}
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -321,6 +339,12 @@ export default async function SolutionPage({ params }: Props) {
                   {capabilities.title}
                 </h2>
                 <div className={`w-20 h-1.5 mt-4 ${capabilitiesStyle.accentLine}`} />
+                {capabilities.content && (
+                  <div
+                    className={`mt-6 prose-pailex ${capabilitiesStyle.heading === "text-white" ? "prose-pailex-dark" : ""}`}
+                    dangerouslySetInnerHTML={{ __html: capabilities.content }}
+                  />
+                )}
               </div>
             )}
 
@@ -373,6 +397,13 @@ export default async function SolutionPage({ params }: Props) {
                 );
               })}
             </div>
+            {capabilities.cta.show && (
+              <div className="mt-12">
+                <Link href={capabilities.cta.href} className={capabilitiesStyle.ctaButton}>
+                  {capabilities.cta.label}
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -395,12 +426,11 @@ export default async function SolutionPage({ params }: Props) {
                   dangerouslySetInnerHTML={{ __html: coverage.content }}
                 />
               )}
-              <Link
-                href={coverage.cta.href}
-                className="inline-block mt-10 bg-primary text-white px-10 py-5 font-title font-bold text-lg hover:bg-accent hover:text-primary transition-all uppercase tracking-widest clip-notch-br-sm"
-              >
-                {coverage.cta.label}
-              </Link>
+              {coverage.cta.show && (
+                <Link href={coverage.cta.href} className={`mt-10 ${coverageStyle.ctaButton}`}>
+                  {coverage.cta.label}
+                </Link>
+              )}
             </div>
             <div className="bg-primary/10 clip-notch-br overflow-hidden">
               <CoverageMap locations={coverage.locations} />
@@ -419,11 +449,18 @@ export default async function SolutionPage({ params }: Props) {
                 <h2 className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${reasonsStyle.heading}`}>
                   {reasons.title}
                 </h2>
+                {reasons.content && (
+                  <div
+                    className={`mt-6 max-w-2xl prose-pailex ${reasonsStyle.heading === "text-white" ? "prose-pailex-dark" : ""}`}
+                    dangerouslySetInnerHTML={{ __html: reasons.content }}
+                  />
+                )}
               </div>
             )}
             <div className="grid md:grid-cols-2 gap-10">
               {reasons.items.map((item, i) => {
                 const itemStyle = cardStyle(item.background);
+                const isDarkCard = item.background === "primary" || item.background === "glass";
                 return (
                   <div
                     key={`${item.title}-${i}`}
@@ -437,12 +474,22 @@ export default async function SolutionPage({ params }: Props) {
                       {item.title}
                     </h3>
                     {item.description && (
-                      <p className={`font-body leading-relaxed transition-colors ${itemStyle.body}`}>{item.description}</p>
+                      <div
+                        className={`prose-pailex prose-pailex-sm transition-colors ${isDarkCard ? "prose-pailex-dark" : ""}`}
+                        dangerouslySetInnerHTML={{ __html: item.description }}
+                      />
                     )}
                   </div>
                 );
               })}
             </div>
+            {reasons.cta.show && (
+              <div className="mt-12">
+                <Link href={reasons.cta.href} className={reasonsStyle.ctaButton}>
+                  {reasons.cta.label}
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -458,16 +505,12 @@ export default async function SolutionPage({ params }: Props) {
               {ctaBanner.title}
             </h2>
             {ctaBanner.body && (
-              <p className={`font-body text-lg mb-10 ${ctaBannerStyle.body}`}>{ctaBanner.body}</p>
+              <div
+                className={`prose-pailex mb-10 [&_*]:text-center ${ctaBannerDark ? "prose-pailex-dark" : ""}`}
+                dangerouslySetInnerHTML={{ __html: ctaBanner.body }}
+              />
             )}
-            <Link
-              href={ctaBanner.cta.href}
-              className={
-                ctaBannerDark
-                  ? "inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm"
-                  : "inline-block bg-primary text-white px-10 py-5 font-title font-bold text-lg hover:bg-accent hover:text-primary transition-all uppercase tracking-widest clip-notch-br-sm"
-              }
-            >
+            <Link href={ctaBanner.cta.href} className={ctaBannerStyle.ctaButton}>
               {ctaBanner.cta.label}
             </Link>
           </div>
@@ -476,7 +519,13 @@ export default async function SolutionPage({ params }: Props) {
 
       {/* ── Sección 8: preguntas frecuentes (opcional) ────────── */}
       {faqs.enabled && faqs.items.length > 0 && (
-        <FAQAccordion title={faqs.title} faqs={faqs.items} />
+        <FAQAccordion
+          title={faqs.title}
+          content={faqs.content}
+          faqs={faqs.items}
+          background={faqs.background}
+          cta={faqs.cta}
+        />
       )}
     </div>
   );

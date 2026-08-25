@@ -131,7 +131,7 @@ export interface SolutionDetail {
     title: string | null;
     content: string | null;
     background: "white" | "green";
-    /** Formulario de cotización + datos de contacto (correo, teléfonos, dirección); sin campos propios. */
+    /** Formulario de cotización; sin campos propios (título/botón fijos). */
     show_contact: boolean;
     list: {
       enabled: boolean;
@@ -140,10 +140,12 @@ export interface SolutionDetail {
     };
     /** Franja verde de cierre (p. ej. "El resultado: ..."), con una palabra/frase resaltable. */
     highlight: { text: string | null; word: string | null };
+    cta: { show: boolean; label: string; href: string };
   };
   capabilities: {
     enabled: boolean;
     title: string | null;
+    content: string | null;
     background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
     items: {
       title: string;
@@ -152,26 +154,31 @@ export interface SolutionDetail {
       background: "white" | "gray" | "primary" | "support" | "glass";
       image: MediaItem | null;
     }[];
+    cta: { show: boolean; label: string; href: string };
   };
   problems: {
     enabled: boolean;
     title: string;
+    content: string | null;
     background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
     items: (FaqItem & { background: "white" | "gray" | "primary" | "support" | "glass" })[];
+    cta: { show: boolean; label: string; href: string };
   };
   coverage: {
     enabled: boolean;
     title: string | null;
     content: string | null;
     background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
-    cta: { label: string; href: string };
+    cta: { show: boolean; label: string; href: string };
     locations: CoverageLocation[];
   };
   reasons: {
     enabled: boolean;
     title: string;
+    content: string | null;
     background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
     items: { title: string; description: string | null; background: "white" | "gray" | "primary" | "support" | "glass" }[];
+    cta: { show: boolean; label: string; href: string };
   };
   cta_banner: {
     enabled: boolean;
@@ -183,7 +190,10 @@ export interface SolutionDetail {
   faqs: {
     enabled: boolean;
     title: string;
+    content: string | null;
+    background: "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
     items: FaqItem[];
+    cta: { show: boolean; label: string; href: string };
   };
 }
 

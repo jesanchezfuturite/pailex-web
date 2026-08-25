@@ -1,5 +1,12 @@
 export type SectionBackground = "white" | "gray" | "primary" | "primary-dots" | "primary-glass";
 
+// Botón CTA con contraste automático: verde institucional sobre fondos claros,
+// verde lima sobre fondos oscuros (verde institucional).
+const CTA_BUTTON_LIGHT =
+  "inline-block bg-primary text-white px-10 py-5 font-title font-bold text-lg hover:bg-accent hover:text-primary transition-all uppercase tracking-widest clip-notch-br-sm";
+const CTA_BUTTON_DARK =
+  "inline-block bg-accent text-primary px-10 py-5 font-title font-bold text-lg hover:bg-white transition-all uppercase tracking-widest clip-notch-br-sm";
+
 /** Clases según el color de fondo elegido en el gestor; el texto se ajusta solo. */
 export function sectionStyle(bg: SectionBackground) {
   switch (bg) {
@@ -9,6 +16,7 @@ export function sectionStyle(bg: SectionBackground) {
         heading: "text-primary",
         body: "text-industrial-gray",
         accentLine: "bg-support",
+        ctaButton: CTA_BUTTON_LIGHT,
       };
     case "primary":
     case "primary-dots":
@@ -17,6 +25,7 @@ export function sectionStyle(bg: SectionBackground) {
         heading: "text-white",
         body: "text-white/80",
         accentLine: "bg-accent",
+        ctaButton: CTA_BUTTON_DARK,
       };
     case "primary-glass":
       return {
@@ -24,6 +33,7 @@ export function sectionStyle(bg: SectionBackground) {
         heading: "text-white",
         body: "text-white/80",
         accentLine: "bg-accent",
+        ctaButton: CTA_BUTTON_DARK,
       };
     default:
       return {
@@ -31,6 +41,7 @@ export function sectionStyle(bg: SectionBackground) {
         heading: "text-primary",
         body: "text-industrial-gray",
         accentLine: "bg-support",
+        ctaButton: CTA_BUTTON_LIGHT,
       };
   }
 }
