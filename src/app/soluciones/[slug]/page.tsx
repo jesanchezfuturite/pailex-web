@@ -275,7 +275,7 @@ export default async function SolutionPage({ params }: Props) {
           )}
 
           {intro.cta.show && (
-            <div className="max-w-7xl mx-auto px-6 mt-10 relative z-10">
+            <div className="max-w-7xl mx-auto px-6 mt-10 relative z-10 text-center">
               <Link href={intro.cta.href} className={introDark ? sectionStyle("primary").ctaButton : sectionStyle("white").ctaButton}>
                 {intro.cta.label}
               </Link>
