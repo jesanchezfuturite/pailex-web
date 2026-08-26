@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Cable, Droplets, Layers, Filter, Container, Forklift, Check,
+  Cable, Droplets, Layers, Filter, Funnel, Forklift, Check,
   Wrench, Cog, Package, type LucideIcon,
 } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -24,7 +24,7 @@ const productIcons: Record<string, LucideIcon> = {
   droplets: Droplets,
   layers: Layers,
   filter: Filter,
-  container: Container,
+  container: Funnel,
   forklift: Forklift,
   wrench: Wrench,
   cog: Cog,

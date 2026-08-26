@@ -4,6 +4,7 @@ import FooterQuoteForm from '@/components/forms/FooterQuoteForm';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
 import LinkedinIcon from '@/components/icons/LinkedinIcon';
+import YoutubeIcon from '@/components/icons/YoutubeIcon';
 
 // Convierte "+52 828 289 7071" en "tel:+528282897071"
 const telHref = (phone?: string) => `tel:${(phone ?? '').replace(/[^\d+]/g, '')}`;
@@ -16,6 +17,7 @@ export default function Footer({ settings }: { settings: Record<string, string> 
     { url: settings.instagram_url, Icon: InstagramIcon, label: 'Instagram' },
     { url: settings.facebook_url, Icon: FacebookIcon, label: 'Facebook' },
     { url: settings.linkedin_url, Icon: LinkedinIcon, label: 'LinkedIn' },
+    { url: settings.youtube_url, Icon: YoutubeIcon, label: 'YouTube' },
   ].filter((s) => s.url);
 
   return (
@@ -42,10 +44,19 @@ export default function Footer({ settings }: { settings: Record<string, string> 
               ))}
             </div>
           )}
+          <p className="text-support text-xs font-title font-bold uppercase tracking-wider">
+            Para cotizar o contactar con un vendedor:
+          </p>
           <div className="space-y-2 text-sm text-white/80">
             <p><a href={`mailto:${settings.email}`} className="hover:text-accent transition-colors">{settings.email}</a></p>
             <p><a href={telHref(settings.phone_1)} className="hover:text-accent transition-colors">Oficina: {settings.phone_1}</a></p>
             <p><a href={whatsappHref(settings.phone_2)} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">WhatsApp: {settings.phone_2}</a></p>
+          </div>
+          <div className="bg-support/15 border border-support/30 px-4 py-3 space-y-1 clip-notch-br-sm">
+            <p className="text-support text-xs font-title font-bold uppercase tracking-wider">
+              Para ofrecer tus servicios o productos:
+            </p>
+            <p><a href="mailto:compras@pailex.com.mx" className="text-white/80 text-sm hover:text-accent transition-colors">compras@pailex.com.mx</a></p>
           </div>
         </div>
 
