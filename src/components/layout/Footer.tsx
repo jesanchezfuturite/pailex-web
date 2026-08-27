@@ -22,8 +22,9 @@ export default function Footer({ settings }: { settings: Record<string, string> 
 
   return (
     <footer className="bg-primary text-white pt-20 pb-10">
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-        <div className="space-y-6">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-10">
+        {/* Marca (col. 1, fila 1) */}
+        <div className="space-y-6 lg:col-start-1 lg:row-start-1">
           <Logo variant="onDark" markClassName="h-9 w-auto" textClassName="text-2xl" />
           <p className="text-white/60 text-sm leading-relaxed">
             {settings.footer_description}
@@ -44,23 +45,22 @@ export default function Footer({ settings }: { settings: Record<string, string> 
               ))}
             </div>
           )}
+        </div>
+
+        {/* Para cotizar (col. 1, fila 2) — pt-4 iguala el padding superior del recuadro "Para ofrecer" */}
+        <div className="lg:col-start-1 lg:row-start-2 lg:pt-4">
           <p className="text-support text-xs font-title font-bold uppercase tracking-wider">
             Para cotizar o contactar con un vendedor:
           </p>
-          <div className="space-y-2 text-sm text-white/80">
-            <p><a href={`mailto:${settings.email}`} className="hover:text-accent transition-colors">{settings.email}</a></p>
+          <div className="space-y-2 text-sm text-white/80 mt-2">
+            <p><a href={`mailto:${settings.email}`} className="hover:text-accent transition-colors break-words">{settings.email}</a></p>
             <p><a href={telHref(settings.phone_1)} className="hover:text-accent transition-colors">Oficina: {settings.phone_1}</a></p>
             <p><a href={whatsappHref(settings.phone_2)} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">WhatsApp: {settings.phone_2}</a></p>
           </div>
-          <div className="bg-support/15 border border-support/30 px-4 py-3 space-y-1 clip-notch-br-sm">
-            <p className="text-support text-xs font-title font-bold uppercase tracking-wider">
-              Para ofrecer tus servicios o productos:
-            </p>
-            <p><a href="mailto:compras@pailex.com.mx" className="text-white/80 text-sm hover:text-accent transition-colors">compras@pailex.com.mx</a></p>
-          </div>
         </div>
 
-        <div>
+        {/* Legal (col. 2, fila 1) */}
+        <div className="lg:col-start-2 lg:row-start-1">
           <h3 className="font-title font-bold mb-6 text-support uppercase tracking-wider">Legal</h3>
           <ul className="space-y-4 text-sm text-white/70">
             <li><Link href="/aviso-privacidad" className="hover:text-white transition-colors">Aviso de privacidad</Link></li>
@@ -69,7 +69,23 @@ export default function Footer({ settings }: { settings: Record<string, string> 
           </ul>
         </div>
 
-        <div id="cotizar" className="lg:col-span-2 scroll-mt-24">
+        {/* Para ofrecer (col. 2, fila 2 — misma altura que "Para cotizar") */}
+        {settings.purchasing_email && (
+          <div className="lg:col-start-2 lg:row-start-2 bg-support/15 border border-support/30 px-4 pt-4 pb-3 clip-notch-br-sm h-fit">
+            <p className="text-support text-xs font-title font-bold uppercase tracking-wider">
+              Para ofrecer tus servicios o productos:
+            </p>
+            <div className="space-y-1 text-sm mt-2">
+              <p><a href={`mailto:${settings.purchasing_email}`} className="block text-white/80 hover:text-accent transition-colors break-words">{settings.purchasing_email}</a></p>
+              {settings.purchasing_phone && (
+                <p><a href={telHref(settings.purchasing_phone)} className="block text-white/80 hover:text-accent transition-colors">{settings.purchasing_phone}</a></p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Formulario (col. 3-4, ocupa ambas filas) */}
+        <div id="cotizar" className="lg:col-start-3 lg:col-span-2 lg:row-start-1 lg:row-span-2 scroll-mt-24">
           <h3 className="font-title font-bold mb-6 text-support uppercase tracking-wider">{settings.footer_form_title}</h3>
           <FooterQuoteForm />
         </div>

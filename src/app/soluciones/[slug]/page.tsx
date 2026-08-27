@@ -195,7 +195,8 @@ export default async function SolutionPage({ params }: Props) {
       {/* ── Sección 2: Introducción / propuesta de valor (opcional) ── */}
       {showIntro && (
         <section
-          className={`py-24 relative overflow-hidden ${introDark ? "bg-primary" : "bg-white border-t border-support/10"}`}
+          id="cotizar-solucion"
+          className={`py-24 relative overflow-hidden scroll-mt-24 ${introDark ? "bg-primary" : "bg-white border-t border-support/10"}`}
         >
           {introDark && (
             <>
@@ -211,19 +212,19 @@ export default async function SolutionPage({ params }: Props) {
           )}
 
           <div className="max-w-7xl mx-auto px-6 relative z-10">
-            {intro.title && (
-              <div className="max-w-2xl mb-12">
-                <h2
-                  className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${introDark ? "text-white" : "text-primary"}`}
-                >
-                  {intro.title}
-                </h2>
-                <div className={`w-20 h-1.5 mt-4 ${introDark ? "bg-accent" : "bg-support"}`} />
-              </div>
-            )}
-
             <div className={showContact ? "grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16" : ""}>
               <div>
+                {intro.title && (
+                  <div className="max-w-2xl mb-12">
+                    <h2
+                      className={`font-title text-3xl md:text-4xl font-bold uppercase tracking-tight ${introDark ? "text-white" : "text-primary"}`}
+                    >
+                      {intro.title}
+                    </h2>
+                    <div className={`w-20 h-1.5 mt-4 ${introDark ? "bg-accent" : "bg-support"}`} />
+                  </div>
+                )}
+
                 {intro.content && (
                   <div
                     className={introDark ? "prose-pailex prose-pailex-dark" : "prose-pailex"}
