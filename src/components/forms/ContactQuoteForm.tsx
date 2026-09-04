@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SERVICE_OPTIONS, SPECS_OPTIONS } from "@/lib/forms";
+import { trackGenerateLead, trackContactFormSubmit, trackQuoteRequest } from "@/lib/tracking";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -34,6 +35,13 @@ export default function ContactQuoteForm({ title, submitLabel }: ContactQuoteFor
       if (!res.ok) throw new Error(String(res.status));
       form.reset();
       setStatus("success");
+
+      trackGenerateLead({ form_name: title });
+      if (window.location.pathname.startsWith("/soluciones/")) {
+        trackQuoteRequest({ form_name: title, service: String(data.get("service_type") ?? "") });
+      } else {
+        trackContactFormSubmit({ form_name: title, source: "contacto" });
+      }
     } catch {
       setStatus("error");
     }

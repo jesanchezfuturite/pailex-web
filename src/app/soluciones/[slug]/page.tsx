@@ -10,6 +10,7 @@ import CoverageMap from "@/components/sections/CoverageMap";
 import SectionDots from "@/components/sections/SectionDots";
 import { withHighlight } from "@/lib/highlight";
 import { sectionStyle, isDotted, cardStyle } from "@/lib/sectionStyle";
+import TrackPageView from "@/components/analytics/TrackPageView";
 
 /**
  * Plantilla única de los interiores de solución (8 secciones aprobadas).
@@ -82,6 +83,9 @@ export default async function SolutionPage({ params }: Props) {
   return (
     <div className="bg-white">
       <SchemaScript schema={solution.seo.schema} />
+      {solution.status !== "draft" && (
+        <TrackPageView event="view_service" data={{ service_name: solution.name }} />
+      )}
 
       {solution.status === "draft" && (
         <p className="fixed bottom-4 left-4 z-50 bg-industrial-gray text-white font-title text-xs uppercase tracking-[0.2em] px-4 py-2 clip-notch-br-sm">

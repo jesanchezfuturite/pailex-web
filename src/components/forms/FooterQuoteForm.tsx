@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SERVICE_OPTIONS, SPECS_OPTIONS } from "@/lib/forms";
+import { trackGenerateLead, trackQuoteRequest } from "@/lib/tracking";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -29,6 +30,9 @@ export default function FooterQuoteForm() {
       if (!res.ok) throw new Error(String(res.status));
       form.reset();
       setStatus("success");
+
+      trackGenerateLead({ form_name: "footer", source: "footer" });
+      trackQuoteRequest({ form_name: "footer", service: String(data.get("service_type") ?? "") });
     } catch {
       setStatus("error");
     }

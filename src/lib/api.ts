@@ -24,11 +24,32 @@ export interface MenuLink {
   href: string;
 }
 
+/** IDs de medición ya validados por el backend; nunca contienen scripts, solo identificadores. */
+export interface TrackingConfig {
+  gtm: { enabled: boolean; container_id: string | null };
+  ga4: { enabled: boolean; measurement_id: string | null; via_gtm: boolean };
+  meta: { enabled: boolean; pixel_id: string | null; via_gtm: boolean };
+  google_ads: {
+    enabled: boolean;
+    conversion_id: string | null;
+    conversion_label: string | null;
+    via_gtm: boolean;
+  };
+  consent_defaults: {
+    analytics_storage: "granted" | "denied";
+    ad_storage: "granted" | "denied";
+    ad_user_data: "granted" | "denied";
+    ad_personalization: "granted" | "denied";
+  };
+}
+
 export interface Site {
   settings: Record<string, string>;
   menu: MenuLink[];
   /** Interiores de solución publicados, para el dropdown de "Soluciones". */
   solutions_menu: MenuLink[];
+  /** Ausente si el backend desplegado todavía no incluye esta sección. */
+  tracking?: TrackingConfig;
 }
 
 /** Colores de tarjeta permitidos en todo el sitio. */

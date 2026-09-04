@@ -1,6 +1,9 @@
+"use client";
+
 import { Mail, Phone, MapPin } from "lucide-react";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import ContactQuoteForm from "@/components/forms/ContactQuoteForm";
+import { trackEmailClick, trackPhoneClick } from "@/lib/tracking";
 
 // Convierte "+52 828 289 7071" en "tel:+528282897071"
 const telHref = (phone?: string) => `tel:${(phone ?? "").replace(/[^\d+]/g, "")}`;
@@ -33,7 +36,7 @@ export default function ContactCtaBlock({ title, body, formTitle, submitLabel, s
           )}
 
           <div className="space-y-6">
-            <a href={`mailto:${settings.email}`} className="flex items-center gap-5 group">
+            <a href={`mailto:${settings.email}`} onClick={() => trackEmailClick({ email: settings.email, section: "contacto" })} className="flex items-center gap-5 group">
               <span className="w-12 h-12 bg-primary flex items-center justify-center clip-notch-br-sm group-hover:bg-accent transition-colors shrink-0">
                 <Mail size={20} className="text-accent group-hover:text-primary transition-colors" />
               </span>
@@ -41,7 +44,7 @@ export default function ContactCtaBlock({ title, body, formTitle, submitLabel, s
                 {settings.email}
               </span>
             </a>
-            <a href={telHref(settings.phone_1)} className="flex items-center gap-5 group">
+            <a href={telHref(settings.phone_1)} onClick={() => trackPhoneClick({ phone_number: settings.phone_1, section: "contacto" })} className="flex items-center gap-5 group">
               <span className="w-12 h-12 bg-primary flex items-center justify-center clip-notch-br-sm group-hover:bg-accent transition-colors shrink-0">
                 <Phone size={20} className="text-accent group-hover:text-primary transition-colors" />
               </span>
@@ -49,7 +52,7 @@ export default function ContactCtaBlock({ title, body, formTitle, submitLabel, s
                 {settings.phone_1}
               </span>
             </a>
-            <a href={telHref(settings.phone_2)} className="flex items-center gap-5 group">
+            <a href={telHref(settings.phone_2)} onClick={() => trackPhoneClick({ phone_number: settings.phone_2, section: "contacto" })} className="flex items-center gap-5 group">
               <span className="w-12 h-12 bg-primary flex items-center justify-center clip-notch-br-sm group-hover:bg-accent transition-colors shrink-0">
                 <WhatsAppIcon size={20} className="text-accent group-hover:text-primary transition-colors" />
               </span>

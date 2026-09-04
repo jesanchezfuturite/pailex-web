@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Logo from '@/components/brand/Logo';
 import FooterQuoteForm from '@/components/forms/FooterQuoteForm';
@@ -5,6 +7,7 @@ import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
 import LinkedinIcon from '@/components/icons/LinkedinIcon';
 import YoutubeIcon from '@/components/icons/YoutubeIcon';
+import { trackWhatsappClick, trackPhoneClick, trackEmailClick } from '@/lib/tracking';
 
 // Convierte "+52 828 289 7071" en "tel:+528282897071"
 const telHref = (phone?: string) => `tel:${(phone ?? '').replace(/[^\d+]/g, '')}`;
@@ -53,9 +56,9 @@ export default function Footer({ settings }: { settings: Record<string, string> 
             Para cotizar o contactar con un vendedor:
           </p>
           <div className="space-y-2 text-sm text-white/80 mt-2">
-            <p><a href={`mailto:${settings.email}`} className="hover:text-accent transition-colors break-words">{settings.email}</a></p>
-            <p><a href={telHref(settings.phone_1)} className="hover:text-accent transition-colors">Oficina: {settings.phone_1}</a></p>
-            <p><a href={whatsappHref(settings.phone_2)} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">WhatsApp: {settings.phone_2}</a></p>
+            <p><a href={`mailto:${settings.email}`} onClick={() => trackEmailClick({ email: settings.email, section: 'footer' })} className="hover:text-accent transition-colors break-words">{settings.email}</a></p>
+            <p><a href={telHref(settings.phone_1)} onClick={() => trackPhoneClick({ phone_number: settings.phone_1, section: 'footer' })} className="hover:text-accent transition-colors">Oficina: {settings.phone_1}</a></p>
+            <p><a href={whatsappHref(settings.phone_2)} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsappClick({ section: 'footer' })} className="hover:text-accent transition-colors">WhatsApp: {settings.phone_2}</a></p>
           </div>
         </div>
 
@@ -76,9 +79,9 @@ export default function Footer({ settings }: { settings: Record<string, string> 
               Para ofrecer tus servicios o productos:
             </p>
             <div className="space-y-1 text-sm mt-2">
-              <p><a href={`mailto:${settings.purchasing_email}`} className="block text-white/80 hover:text-accent transition-colors break-words">{settings.purchasing_email}</a></p>
+              <p><a href={`mailto:${settings.purchasing_email}`} onClick={() => trackEmailClick({ email: settings.purchasing_email, section: 'footer_purchasing' })} className="block text-white/80 hover:text-accent transition-colors break-words">{settings.purchasing_email}</a></p>
               {settings.purchasing_phone && (
-                <p><a href={telHref(settings.purchasing_phone)} className="block text-white/80 hover:text-accent transition-colors">{settings.purchasing_phone}</a></p>
+                <p><a href={telHref(settings.purchasing_phone)} onClick={() => trackPhoneClick({ phone_number: settings.purchasing_phone, section: 'footer_purchasing' })} className="block text-white/80 hover:text-accent transition-colors">{settings.purchasing_phone}</a></p>
               )}
             </div>
           </div>
